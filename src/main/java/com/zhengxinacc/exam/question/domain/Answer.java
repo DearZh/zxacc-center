@@ -1,0 +1,33 @@
+/*
+ * Power by www.xiaoi.com
+ */
+package com.zhengxinacc.exam.question.domain;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+/**
+ * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
+ * @date 2017年12月24日 上午10:03:11
+ * @version 1.0
+ */
+@Document(collection="exam_answer")
+@Getter
+@Setter
+public class Answer {
+
+	@Id
+	private String id;
+	private String name;
+	@JsonIgnore
+	@JSONField(serialize=false)
+	@DBRef
+	private Question question;
+}
