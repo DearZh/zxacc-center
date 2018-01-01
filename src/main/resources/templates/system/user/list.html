@@ -5,11 +5,11 @@
 		<link th:href="@{/css/system/user/list.css}" rel="stylesheet" />
 	</head>
 	<body class="layui-layout-body">
-		<div class="layui-btn-group">
+		<div class="layui-btn-group" th:style="${param._p}?'display:none;':'display:block;'">
 		    <button class="layui-btn" id="btnAdd">新增</button>
 		    <button class="layui-btn" id="btnEdit">编辑</button>
 		    <button class="layui-btn" id="btnDel">删除</button>
-		  </div>
+		</div>
 		<table class="layui-hide" id="grid"></table>
 		
 		<div class="zx-panel">

@@ -3,7 +3,6 @@
  */
 package com.zhengxinacc.exam.question.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -19,14 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.config.BaseController;
-import com.zhengxinacc.exam.question.domain.Answer;
 import com.zhengxinacc.exam.question.domain.Question;
 import com.zhengxinacc.exam.question.domain.QuestionCate;
 import com.zhengxinacc.exam.question.repository.AnswerRepository;
 import com.zhengxinacc.exam.question.repository.QuestionCateRepository;
 import com.zhengxinacc.exam.question.repository.QuestionRepository;
 import com.zhengxinacc.exam.question.service.QuestionService;
-import com.zhengxinacc.system.user.domain.User;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -59,32 +56,30 @@ public class QuestionController extends BaseController {
 		String catename = request.getParameter("catename");
 		String name = request.getParameter("name");
 		String type = request.getParameter("type");
-		String[] answers = request.getParameterValues("answers[]");
+		String answers = request.getParameter("answers");
+		String key = request.getParameter("key");
 		
-		Question question = null;
-		if (StringUtils.isBlank(id)){
-			question = new Question();
-			question.setCreateUser(getUsername(request));
-		}else{
-			question = questionRepository.findOne(id);
-		}
-		question.setModifyUser(getUsername(request));
-		question.setName(name);
-		question.setCate(questionCateRepository.findOne(cateid));
-		question.setType(Integer.valueOf(type));
-		question = questionRepository.save(question);
-		List<Answer> answerList = new ArrayList<Answer>();
-		for (String answer : answers){
-//			JSONObject json = JSON.parseObject(answer);
-			Answer answerBean = new Answer();
-			answerBean.setName(answer);
-			answerBean.setQuestion(question);
-			answerRepository.save(answerBean);
-			answerList.add(answerBean);
-		}
-		question.setAnswers(answerList);
+		JSONObject param = new JSONObject();
+		param.put("id", id);
+		param.put("cateid", cateid);
+		param.put("catename", catename);
+		param.put("name", name);
+		param.put("type", type);
+		param.put("answers", answers);
+		param.put("key", key);
 		
-		return questionRepository.save(question);
+		return questionService.save(param, getUsername(request));
+	}
+	/**
+	 * 问题删除
+	 * @author eko.zhan at 2017年12月24日 下午9:01:51
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/delete")
+	public JSONObject delete(String id){
+		questionService.delete(id);
+		return writeSuccess();
 	}
 
 	/**
@@ -97,7 +92,10 @@ public class QuestionController extends BaseController {
 	public JSONObject loadList(String cateId, Integer page, Integer size){
 		page = page==null?1:page;
 		size = size==null?10:size;
-		Page<Question> pager = questionService.findAll(page, size, "createDate", Direction.DESC);
+		JSONObject param = new JSONObject();
+		param.put("cateId", cateId);
+		param.put("property", "createDate");
+		Page<Question> pager = questionService.findAll(page, size, param, Direction.DESC);
 		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
@@ -110,6 +108,8 @@ public class QuestionController extends BaseController {
 			JSONObject tmp = (JSONObject)JSONObject.toJSON(question);
 			tmp.put("typeDesc", question.getType()==0?"单选题":(question.getType()==1?"多选题":"判断题"));
 			tmp.put("createDate", DateFormatUtils.format(question.getCreateDate(), "yyyy-MM-dd"));
+			tmp.put("cateid", question.getCate().getId());
+			tmp.put("catename", question.getCate().getName());
 			
 			dataArr.add(tmp);
 		}

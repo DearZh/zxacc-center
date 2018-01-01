@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zhengxinacc.config.BaseBean;
 import com.zhengxinacc.system.permission.domain.Permission;
@@ -38,11 +39,13 @@ public class User extends BaseBean implements UserDetails {
 	private String id;
 	private String username;
 	private String password;
+	@JSONField(serialize=false)
 	private String salt;
 	private UserInfo userInfo;
 	private List<Role> roles;
 
 	@JsonIgnore
+	@JSONField(serialize=false)
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
@@ -63,6 +66,7 @@ public class User extends BaseBean implements UserDetails {
 	}
 
 	@JsonIgnore
+	@JSONField(serialize=false)
 	@Override
 	public String getPassword() {
 		return password;
@@ -74,24 +78,28 @@ public class User extends BaseBean implements UserDetails {
 	}
 	
 	@JsonIgnore
+	@JSONField(serialize=false)
 	@Override
 	public boolean isAccountNonExpired() {
 		return false;
 	}
 	
 	@JsonIgnore
+	@JSONField(serialize=false)
 	@Override
 	public boolean isAccountNonLocked() {
 		return false;
 	}
 
 	@JsonIgnore
+	@JSONField(serialize=false)
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return false;
 	}
 
 	@JsonIgnore
+	@JSONField(serialize=false)
 	@Override
 	public boolean isEnabled() {
 		return false;

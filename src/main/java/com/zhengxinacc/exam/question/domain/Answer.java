@@ -26,6 +26,7 @@ public class Answer {
 	@Id
 	private String id;
 	private String name;
+	private Boolean key; //true-正确答案 false-错误答案
 	@JsonIgnore
 	@JSONField(serialize=false)
 	@DBRef

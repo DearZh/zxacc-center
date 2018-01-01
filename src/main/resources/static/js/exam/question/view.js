@@ -8,6 +8,30 @@ layui.use(['layer', 'table', 'form'], function(){
 	layform.on('radio(type)', function(data){
 		$('.zx-ans-panel').empty();
 		ansCount = 0;
+		if (data.value==2){
+			//如果是判断题，则展示 zx-tof-panel，隐藏 zx-ans-add
+			$('.zx-tof-panel').show();
+			$('.zx-ans-add').hide();
+		}else{
+			//隐藏 zx-tof-panel， 展示 新增答案 zx-ans-add
+			$('.zx-tof-panel').hide();
+			$('.zx-ans-add').show();
+		}
+	});
+	//Fixme 不明白为什么这里要手动写监听事件
+	layform.on('checkbox(multi-ans)', function(data){
+		if (data.elem.checked){
+			data.elem.checked = false;
+			$(data.elem).parent('label').siblings('div').find('input[name="answer"]').attr('_checked', true);
+		}else{
+			data.elem.checked = true;
+			$(data.elem).parent('label').siblings('div').find('input[name="answer"]').attr('_checked', false);
+		}
+	});
+	//单选题监听
+	layform.on('radio(single-ans)', function(data){
+		$('.zx-ans-panel').find('input[name="answer"]').attr('_checked', false);
+		$(data.elem).parent('label').siblings('div').find('input[name="answer"]').attr('_checked', true);
 	});
 	
 	/***********************  右侧试题面板  ****************************/
@@ -20,9 +44,9 @@ layui.use(['layer', 'table', 'form'], function(){
 		    {type:'checkbox'},
 		    {type:'numbers'},
 	        {field:'name', title: '问题名称', sort: true},
-	        {field:'typeDesc', title: '类型', sort: true},
-	        {field:'createDate', title: '创建日期', sort: true},
-	        {field:'createUser', title: '创建人', sort: true}
+	        {field:'typeDesc', title: '类型', width: 100, sort: true},
+	        {field:'createDate', title: '创建日期', width: 120, sort: true},
+	        {field:'createUser', title: '创建人', width: 100, sort: true}
 	    ]],
 	    page: true
 	});
@@ -51,7 +75,16 @@ var setting = {
 	},
 	callback: {
 		onAsyncSuccess: function(event, treeId, treeNode, msg){
-			
+			if (treeNode==undefined){
+				var zTree = $.fn.zTree.getZTreeObj(treeId);
+				var rootNode = zTree.getNodes()[0];
+				zTree.expandNode(rootNode, true);
+			}
+		},
+		onClick: function(event, treeId, treeNode){
+			var cateId = treeNode.id;
+			cateId = cateId=='ROOT'?'':cateId;
+			laytable.reload('grid', {page: {curr: 1}, where: {cateId: cateId}});
 		}
 	}
 };
@@ -115,20 +148,34 @@ $('body').on('click', '.zx-toolbar', function(){
 
 /**************************右侧面板操作*****************************/
 $('#btnAdd, #btnEdit').click(function(){
-	var zTree = $.fn.zTree.getZTreeObj("tree");
-	var treeNodes = zTree.getSelectedNodes();
-	if (treeNodes.length==0){
-		layer.alert('请选择所属分类');
-		return false;
-	}
-	var treeNode = treeNodes[0];
-	if (treeNode.id=='ROOT'){
-		layer.alert('请选择子分类');
-		return false;
+	var _this = this;
+	if ($(_this).attr('id')=='btnAdd'){
+		var zTree = $.fn.zTree.getZTreeObj("tree");
+		var treeNodes = zTree.getSelectedNodes();
+		if (treeNodes.length==0){
+			layer.alert('请选择所属分类');
+			return false;
+		}
+		var treeNode = treeNodes[0];
+		if (treeNode.id=='ROOT'){
+			layer.alert('请选择子分类');
+			return false;
+		}
+		$('input[name="catename"]').val(treeNode.name);
+		$('input[name="cateid"]').val(treeNode.id);
+		$('input[name="name"]').val('');
+		$('.zx-ans-panel').html('');
+	}else{
+		var checked = laytable.checkStatus('grid');
+		if (checked.data.length>0){
+			var row = checked.data[0];
+			$('input[name="catename"]').val(row.catename);
+			$('input[name="cateid"]').val(row.cateid);
+			$('input[name="name"]').val(row.name);
+			$('input[name="type"][value="' + row.type + '"]').attr('checked', 'checked');
+		}
 	}
 	
-	$('input[name="catename"]').val(treeNode.name);
-	$('input[name="cateid"]').val(treeNode.id);
 	
 	layer.open({
 		type: 1,
@@ -138,43 +185,51 @@ $('#btnAdd, #btnEdit').click(function(){
 		yes: function(index, layero){
 			//TODO 保存问题和答案
 			
+			var type = $('input[name="type"]:checked').val();
+			
 			if ($('input[name="name"]').val().trim()==''){
 				$('input[name="name"]').focus();
 				return false;
 			}
-			if ($('input[name="answer"]').length==0){
-				layer.alert('请新增答案');
-				return false;
-			}
-			//判断答案为空的input，如果存在，需要全部填满才能提交
-			if ($('input[name="answer"]').filter(function(index){
-				return $(this).val()=='';
-			}).length>0){
-				$('input[name="answer"]').filter(function(index){
+			if (type!=2){
+				if ($('input[name="answer"]').length==0){
+					layer.alert('请新增答案');
+					return false;
+				}
+				//判断答案为空的input，如果存在，需要全部填满才能提交
+				if ($('input[name="answer"]').filter(function(index){
 					return $(this).val()=='';
-				}).focus();
-				return false;
+				}).length>0){
+					$('input[name="answer"]').filter(function(index){
+						return $(this).val()=='';
+					}).focus();
+					return false;
+				}
 			}
 
 			var param = {
+				id: $('input[name="id"]').val(),
 				cateid: $('input[name="cateid"]').val(),
 				catename: $('input[name="catename"]').val(),
 				name: $('input[name="name"]').val(),
-				type: $('input[name="type"]:checked').val()
+				type: type
 			}
-		
-			var checked = $('input[name="order"]:checked').val();
-			if (checked==undefined){
-				layer.alert('请勾选正确的答案');
-				return false;
+			
+			if (type==2){
+				param.key = $('input[name="tof"]:checked').val();
 			}else{
-				param.rightKeys = [$('input[name="order"]:checked').val()];
+				var checked = $('input[name="order"]:checked').val();
+				if (checked==undefined){
+					layer.alert('请勾选正确的答案');
+					return false;
+				}
 			}
+			
 			var answers = [];
 			$('input[name="answer"]').each(function(i, item){
-				answers.push($(item).val());
+				answers.push({id: $(item).attr('_id'), content: $(item).val(), key: $(item).attr('_checked')});
 			});
-			param.answers = answers;
+			param.answers = JSON.stringify(answers);
 			$.post($.kbase.ctx + '/exam/question/save', param, function(data){
 				console.log(data);
 				laytable.reload('grid', {
@@ -187,14 +242,32 @@ $('#btnAdd, #btnEdit').click(function(){
 		}
 	});
 });
+//删除题目
+$('#btnDel').click(function(){
+	var checked = laytable.checkStatus('grid');
+	if (checked.data.length==0) return false;
+	
+	layer.confirm('确定删除吗', function(index){
+		var row = checked.data[0];
+		var param = {
+			id: row.id
+		}
+		$.post($.kbase.ctx + '/exam/question/delete', param, function(data){
+			if (data.success){
+				laytable.reload('grid', {page: {curr: 1}});
+			}
+		}, 'json');
+		layer.close(index);
+	});
+});
 //增加答案
 $('body').on('click', '.zx-ans-add', function(){
 	var type = $('input[name="type"]:checked').val();
 	$('.zx-ans-panel').append(template('templateAns', {type: type, value: ansCount}));
 	ansCount++;
-	if (type==0){
+	if (type==0){	//单选题
 		layform.render('radio');
-	}else{
+	}else{	//多选题和判断题
 		layform.render('checkbox');
 	}
 });

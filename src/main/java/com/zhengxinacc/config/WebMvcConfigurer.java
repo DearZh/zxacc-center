@@ -29,6 +29,10 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
         
         //考试管理
         registry.addViewController("/exam/question/view").setViewName("exam/question/view");
+        //班级管理
+        registry.addViewController("/exam/grade/list").setViewName("exam/grade/list");
+        //试卷管理
+        registry.addViewController("/exam/paper/list").setViewName("exam/paper/list");
 
 		super.addViewControllers(registry);
 	}

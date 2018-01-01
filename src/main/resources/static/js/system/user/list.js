@@ -25,6 +25,8 @@ layui.use(['table', 'laydate'], function(){
 	laydate.render({
 		elem: $('input[name="birthday"]')[0]
 	});
+	
+	window.laytable = table;
 });
 
 //新增

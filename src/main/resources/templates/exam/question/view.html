@@ -11,7 +11,7 @@
 				<ul id="tree" class="ztree"></ul>
 			</div>
 			<div class="layui-col-xs9">
-				<div class="layui-btn-group">
+				<div class="layui-btn-group" th:style="${param._p}?'display:none;':'display:block;'">
 					<button class="layui-btn" id="btnAdd">新增</button>
 					<button class="layui-btn" id="btnEdit">编辑</button>
 					<button class="layui-btn" id="btnDel">删除</button>
@@ -54,6 +54,17 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="layui-form-item zx-hide zx-tof-panel">
+					<input type="hidden" id="id"/>
+					<div class="layui-block">
+						<div class="layui-input-block">
+							<input type="radio" lay-filter="tof" name="tof" value="true" title="正确" checked="checked" />
+							<input type="radio" lay-filter="tof" name="tof" value="false" title="错误" />
+						</div>
+					</div>
+				</div>
+				
 				<div class="layui-form-item zx-ans-panel">
 					
 				</div>
@@ -66,16 +77,16 @@
 <div class="layui-inline">
 	<label class="layui-form-label">
 		{{if type==0}}
-			<input type="radio" name="order" value="{{value}}" title=" "/>
+			<input type="radio" name="order" lay-filter="single-ans" title=" "/>
 		{{else if type==1}}
-			<input type="checkbox" name="order" value="{{value}}" title=" "/>
+			<input type="checkbox" name="order" lay-filter="multi-ans" title=" "/>
 		{{else if type==2}}
-			<input type="checkbox" name="order" value="{{value}}" title=" "/>
+			
 		{{/if}}
 	</label>
 	<div class="layui-input-inline">
-		<input type="text" name="answer" autocomplete="off" class="layui-input"/>
-		<a href="javascript:void(0);">删除</a>
+		<input type="text" name="answer" autocomplete="off" class="layui-input" _id="{{ansId}}"/>
+		<a href="javascript:void(0);" class="zx-ans-del">删除</a>
 	</div>
 </div>
 </script>
