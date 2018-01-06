@@ -92,11 +92,15 @@ $.fn.zTree.init($("#tree"), setting);
 
 /* ztree 节点 hover 显示toolbar */
 function addHoverDom(treeId, treeNode) {
-	if (treeNode.id=="ROOT") return false;
+	//if (treeNode.id=="ROOT") return false;
     var nodeObj = $("#" + treeNode.tId + "_span");
     if ($(nodeObj).siblings('.zx-toolbar').show().length>0) return false;
     
     var toolbar = template('templateToolbar', {tid: treeNode.tId});
+    //根节点不可编辑和删除
+    if (treeNode.id=="ROOT"){
+    	toolbar = template('templateToolbarRoot', {tid: treeNode.tId});
+    }
     nodeObj.after(toolbar);
 };
 /* ztree 节点 remove hover 隐藏 toolbar */
@@ -231,7 +235,6 @@ $('#btnAdd, #btnEdit').click(function(){
 			});
 			param.answers = JSON.stringify(answers);
 			$.post($.kbase.ctx + '/exam/question/save', param, function(data){
-				console.log(data);
 				laytable.reload('grid', {
 					page: {
 						curr: 1 //重新从第 1 页开始

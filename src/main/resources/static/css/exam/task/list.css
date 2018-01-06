@@ -1,0 +1,9 @@
+.layui-table-body{
+	height: 360px;
+}
+
+@media screen and (max-width: 414px) {
+    .zx-nav-img{
+		width: 414px;
+	}
+}

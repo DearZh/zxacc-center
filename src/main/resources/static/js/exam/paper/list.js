@@ -16,11 +16,11 @@ layui.use(['table', 'laydate'], function(){
 		    {type:'checkbox'},
 		    {type:'numbers'},
 	        {field:'name', title: '试卷名称', sort: true},
-	        {field:'gradeName', title: '班级', sort: true},
-	        {field:'total', title: '总分', sort: true},
-	        {field:'limit', title: '考试限时', sort: true},
-	        {field:'createDate', title: '创建日期', sort: true},
-	        {field:'createUser', title: '创建人', sort: true}
+	        {field:'gradeName', title: '班级', width: 120, sort: true},
+	        {field:'total', title: '总分', width: 80, sort: true},
+	        {field:'limit', title: '限时', width: 80, sort: true},
+	        {field:'createDate', title: '创建日期', width: 120, sort: true},
+	        {field:'createUser', title: '创建人', width: 120, sort: true}
 	    ]],
 	    page: true
 	});
@@ -230,4 +230,20 @@ $('.zx-panel').on('blur', 'input[name="limit"], input[name="total"], input[name=
 		$(_this).focus();
 		$(_this).select();
 	}
+});
+//分数累加
+$('.zx-panel').on('blur', 'input[name="score"]', function(){
+	var _scoreTotal = 0;
+	$('.zx-panel input[name="score"]').each(function(i, item){
+		if ($(item).val()!='' && !isNaN(Number($(item).val()))){
+			_scoreTotal += Number($(item).val());
+		}
+	});
+	layui.use(['layer'], function(){
+		var layer = layui.layer;
+		layer.msg(_scoreTotal, {
+		  offset: 't',
+		  anim: 0
+		});
+	});
 });

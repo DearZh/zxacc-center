@@ -11,27 +11,18 @@
 		<div th:if="${param.logout}">
 			<blockquote class="layui-elem-quote">您已经登出</blockquote>
 		</div>
-		
-		<form class="layui-form" th:action="@{/login}" method="post">
-			<div class="layui-form-item">
-				<label class="layui-form-label">用户名</label>
-				<div class="layui-input-block">
-					<input type="text" name="username" autocomplete="off" placeholder="用户名不能为空" class="layui-input" />
-				</div>
-			</div>
-			<div class="layui-form-item">
-				<label class="layui-form-label">密码</label>
-				<div class="layui-input-block">
-					<input type="password" name="password" placeholder="密码不能为空" autocomplete="off" class="layui-input" />
-				</div>
-			</div>
-			<div class="layui-form-item">
-				<div class="layui-input-block">
-					<button type="submit" class="layui-btn" id="btnSubmit">登录</button>
-					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-				</div>
-			</div>
-		</form>
+		<div class="login">
+		    <h1><img th:src="@{/DATAS/zhengxin_logo_600_230.png}" class="zx-nav-img" /></h1>
+		    <form class="layui-form" th:action="@{/login}" method="post">
+		        <div class="layui-form-item">
+		            <input type="text" name="username" autocomplete="off" placeholder="用户名不能为空" class="layui-input" />
+		        </div>
+		        <div class="layui-form-item">
+		            <input type="password" name="password" placeholder="密码不能为空" autocomplete="off" class="layui-input" />
+		        </div>
+		        <button type="submit" class="layui-btn zx-btn-login" id="btnSubmit">登录</button>
+		    </form>
+		</div>
 		<script type="text/javascript" th:src="@{/js/login/login.js}"></script>
 	</body>
 </html>

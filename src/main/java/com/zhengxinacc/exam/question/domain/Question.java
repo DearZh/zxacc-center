@@ -39,5 +39,4 @@ public class Question extends BaseBean {
 	private Boolean key; //true-正确 false-错误
 	//题目类型
 	private Integer type;
-	
 }

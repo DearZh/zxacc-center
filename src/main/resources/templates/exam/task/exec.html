@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:include="script :: headerFragment" th:with="title='答题卡'"/>
+		<link th:href="@{/css/exam/task/exec.css}" rel="stylesheet" />
+	</head>
+	<body class="layui-layout-body">
+		<input type="hidden" id="id" th:value="${param.id[0]}"/><!-- 试卷id -->
+		<div class="layui-container">
+			<div class="layui-row zx-sandglass">
+				
+			</div>
+			<div class="layui-row">
+				<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+  					<legend class="zx-paper-title">答题卡</legend>
+				</fieldset>
+			</div>
+			
+			<div class="layui-row">
+				<div class="layui-col-xs3">
+					<fieldset class="layui-elem-field">
+						<legend> </legend>
+						<div class="layui-field-box zx-ques-panel">
+							
+						</div>
+					</fieldset>
+				</div>
+				<div class="layui-col-xs9">
+					<div class="layui-row">
+						<button class="layui-btn layui-btn-primary zx-prev layui-btn-sm">上一题</button>
+						<button class="layui-btn layui-btn-primary zx-next layui-btn-sm">下一题</button>
+						<button class="layui-btn layui-btn-primary zx-submit layui-btn-sm">答题完毕</button>
+					</div>
+					<hr class="layui-bg-orange" />
+					<div class="layui-row zx-ques"></div>
+					<div class="layui-row">
+						<form class="layui-form zx-ans">
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			
+		</div>
+		
+		<script type="text/html" id="templateSingle">
+			{{each $data value index}}
+				<input type="radio" name="ans" lay-filter="ans" value="{{value.id}}" title="{{value.name}}" /><br/>
+			{{/each}}
+		</script>
+		<script type="text/html" id="templateMulti">
+			<div class="layui-form-item">
+				<div class="layui-input-block">
+					{{each $data value index}}
+						<input type="checkbox" name="ans" lay-filter="ans" value="{{value.id}}" title="{{value.name}}" lay-skin="primary"/><br/>
+					{{/each}}
+				</div>
+			</div>
+		</script>
+		<script type="text/html" id="templateTof">
+			<input type="radio" name="ans" lay-filter="ans" value="true" title="正确" />
+			<input type="radio" name="ans" lay-filter="ans" value="false" title="错误" />
+		</script>
+		<script type="text/javascript" th:src="@{/js/exam/task/exec.js}"></script>
+	</body>
+</html>

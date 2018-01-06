@@ -41,7 +41,7 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         	throw new BadCredentialsException("用户名不存在");
         }
         User user = (User) userDetails;
-        if (EncryptUtils.verify(password, user.getPassword(), user.getSalt())) {
+        if (!EncryptUtils.verify(password, user.getPassword(), user.getSalt())) {
             throw new BadCredentialsException("用户名或密码错误");
         }
 

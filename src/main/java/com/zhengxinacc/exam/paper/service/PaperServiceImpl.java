@@ -4,8 +4,9 @@
 package com.zhengxinacc.exam.paper.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -21,6 +22,7 @@ import com.zhengxinacc.exam.grade.domain.Grade;
 import com.zhengxinacc.exam.grade.repository.GradeRepository;
 import com.zhengxinacc.exam.grade.service.GradeService;
 import com.zhengxinacc.exam.paper.domain.Paper;
+import com.zhengxinacc.exam.paper.domain.PaperQuestion;
 import com.zhengxinacc.exam.paper.repository.PaperRepository;
 import com.zhengxinacc.system.user.domain.User;
 
@@ -66,7 +68,14 @@ public class PaperServiceImpl implements PaperService {
 		paper.setGrades(gradeList);
 		
 		JSONArray arr = JSON.parseArray(data.getString("questions"));
-		paper.setQuestions(arr);
+		System.out.println(arr);
+		Map<String, PaperQuestion> map = new HashMap<String, PaperQuestion>();
+		for (Object obj : arr){
+			JSONObject json = (JSONObject) obj;
+			PaperQuestion question = new PaperQuestion(json.getString("id"), 0, Double.parseDouble(json.getString("score")));
+			map.put(json.getString("id"), question);
+		}
+		paper.setQuestions(map);
 
 		return paperRepository.save(paper);
 	}

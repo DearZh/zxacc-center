@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:include="script :: headerFragment" th:with="title='我的试卷'"/>
+		<link th:href="@{/css/exam/task/list.css}" rel="stylesheet" />
+	</head>
+	<body class="layui-layout-body">
+		<div class="layui-anim" data-anim="layui-anim-scale">
+			<img th:src="@{/DATAS/zhengxin_logo_600_230.png}" class="zx-nav-img" />
+		</div>
+		<table class="layui-hide" id="grid" lay-filter="grid"></table>
+		<script type="text/html" id="toolbar">
+  			<a class="layui-btn layui-btn-xs" lay-event="doExam">开始答题</a>
+		</script>
+		<script type="text/javascript" th:src="@{/js/exam/task/list.js}"></script>
+	</body>
+</html>

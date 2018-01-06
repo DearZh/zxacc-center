@@ -11,4 +11,5 @@ public class SystemKeys {
 
 	public static final String UTF8 = "UTF-8";
 	public static final String CURRENT_USER = "CURRENT_USER";
+	public static final String ANONYMOUS = "Anonymous";
 }

@@ -9,16 +9,16 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,12 +58,23 @@ public class QuestionServiceImpl implements QuestionService {
 			return questionRepository.findAll(pageable);
 		}else{
 			//TODO spring mongo db 关联查询
-			QuestionCate cate = questionCateRepository.findOne(cateId);
-			ExampleMatcher matcher = ExampleMatcher.matching();
-			Question question = new Question();
-			question.setCate(cate);
-			Example<Question> example = Example.of(question, matcher);
-			return questionRepository.findAll(example, pageable);
+			QuestionCate questionCate = questionCateRepository.findOne(cateId);
+//			ExampleMatcher matcher = ExampleMatcher.matching()
+//					.withMatcher("cateId", GenericPropertyMatchers.contains())
+//					.withIgnoreNullValues()
+//					.withIgnorePaths(new String[]{"id", "name", "cate", "answers", "key", "type"});
+//			Question question = new Question();
+//			question.setCateId(cateId);
+//			Example<Question> example = Example.of(question, matcher);
+			
+//			return questionRepository.findAll(example, pageable);
+			Query query = new Query(Criteria.where("cate").in(new QuestionCate[]{questionCate}));
+			long total = mongoTemplate.count(query, Question.class);
+			query.limit(size);
+			query.skip((page-1)*size);
+			List<Question> list = mongoTemplate.find(query, Question.class);
+			Page<Question> pager = new PageImpl<Question>(list, pageable, total);
+			return pager;
 		}
 	}
 

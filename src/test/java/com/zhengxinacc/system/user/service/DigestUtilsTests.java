@@ -34,4 +34,9 @@ public class DigestUtilsTests {
 		System.out.println(md5Hex);
 	}
 	
+	@Test
+	public void testTof(){
+		System.out.println(Boolean.parseBoolean("true"));
+		System.out.println(Boolean.valueOf("0"));
+	}
 }

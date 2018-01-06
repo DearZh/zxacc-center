@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<th:block th:include="script :: headerFragment" th:with="title='我的试卷'"/>
+		<link th:href="@{/css/exam/task/read.css}" rel="stylesheet" />
+	</head>
+	<body class="layui-layout-body">
+		<input type="hidden" id="taskId" th:value="${param.taskId[0]}" />
+		<fieldset class="layui-elem-field">
+			<legend class="zx-name"></legend>
+			<div class="layui-field-box">本轮测试得分 <span class="zx-total"></span></div>
+		</fieldset>
+		<form class="layui-form" id="panel">
+			
+		</form>
+		
+		<script type="text/html" id="templateFaq">
+			<div class="layui-form-item">
+				{{quesName}}
+			</div>
+			<div class="layui-form-item">
+				{{@content}}
+			</div>
+		</script>
+		
+		<!-- 单选题 -->
+		<script type="text/html" id="templateSingle">
+			{{each $data value index}}
+				{{if value.mark}}
+					<input type="radio" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" checked="" disabled=""/><br/>
+				{{else}}
+					<input type="radio" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" disabled=""/><br/>					
+				{{/if}}
+			{{/each}}
+		</script>
+		<!-- 多选题 -->
+		<script type="text/html" id="templateMulti">
+			{{each $data value index}}
+				{{if value.mark}}
+					<input type="checkbox" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" lay-skin="primary" checked="" disabled=""/><br/>
+				{{else}}
+					<input type="checkbox" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" lay-skin="primary" disabled=""/><br/>
+				{{/if}}
+			{{/each}}
+		</script>
+		<!-- 判断题 -->
+		<script type="text/html" id="templateTof">
+			{{if keyMark}}
+				<input type="radio" name="ans_{{id}}" value="true" title="正确 {{if key}}(正确答案){{/if}}" checked="" disabled=""/>
+			{{else}}
+				<input type="radio" name="ans_{{id}}" value="true" title="正确 {{if key}}(正确答案){{/if}}" disabled=""/>
+			{{/if}}
+			{{if keyMark}}
+				<input type="radio" name="ans_{{id}}" value="false" title="错误 {{if !key}}(正确答案){{/if}}" checked="" disabled=""/>
+			{{else}}
+				<input type="radio" name="ans_{{id}}" value="false" title="错误 {{if !key}}(正确答案){{/if}}" disabled="" />
+			{{/if}}
+		</script>
+		<script type="text/javascript" th:src="@{/js/exam/task/read.js}"></script>
+	</body>
+</html>

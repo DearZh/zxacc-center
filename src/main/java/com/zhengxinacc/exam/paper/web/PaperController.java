@@ -93,7 +93,8 @@ public class PaperController extends BaseController {
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String[] gradeIds = request.getParameterValues("gradeIds[]"); //班级id数组
-		String questions = request.getParameter("question"); //json数组字符串
+		String questions = request.getParameter("questions"); //json数组字符串
+		System.out.println(questions);
 		
 		JSONObject param = new JSONObject();
 		param.put("id", id);
@@ -109,6 +110,7 @@ public class PaperController extends BaseController {
 	
 	@RequestMapping("/delete")
 	public JSONObject delete(String id){
+		paperRepository.delete(id);
 		return writeSuccess();
 	}
 }
