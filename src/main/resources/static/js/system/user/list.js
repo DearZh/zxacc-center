@@ -1,3 +1,13 @@
+/* 不区分大小写 */
+String.prototype.endWithIgnoreCase = function(end){
+	try{
+		if (this.toLowerCase().lastIndexOf(end.toLowerCase())==(this.length-end.length)){
+			return true;
+		}else{
+			return false;
+		}
+	}catch(e){return false;}
+}
 layui.use(['table', 'laydate'], function(){
 	var table = layui.table;
 	var laydate = layui.laydate;
@@ -137,4 +147,38 @@ $('#btnDel').click(function(){
 			layer.close(index);
 		});
 	});
+});
+
+$('#btnImport').click(function(){
+	$('#userFile').click();
+});
+$('#userFile').change(function(){
+	var files = this.files;
+	if (files.length>0){
+		var file = files[0];
+		if (!file.name.endWithIgnoreCase('.xlsx')){
+			layer.alert('仅支持2003版本以上的excel文档');
+			return false;
+		}
+		var formData = new FormData();
+        formData.append('userFile', file);
+        $.ajax({
+            type: 'POST',
+            url: $.kbase.ctx + '/user/import',
+            data: formData,
+            dataType: 'json',
+            contentType: false,// 当有文件要上传时，此项是必须的，否则后台无法识别文件流的起始位置(详见：#1)
+            processData: false,// 是否序列化data属性，默认true(注意：false时type必须是post，详见：#2)
+            success: function(response) {
+            	if (response.success){
+            		layer.alert('导入成功', function(index){
+            			table.reload('grid', {page: {curr: 1}});
+            			layer.close(index);
+            		});
+            	}else{
+            		layer.alert('导入失败');
+            	}
+            }
+        });
+	}
 });

@@ -3,12 +3,18 @@
  */
 package com.zhengxinacc.system.user.service;
 
+import java.io.IOException;
 import java.util.Calendar;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,9 +25,10 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 import com.zhengxinacc.system.user.domain.User;
+import com.zhengxinacc.system.user.domain.UserInfo;
 import com.zhengxinacc.system.user.repository.UserRepository;
 import com.zhengxinacc.util.EncryptUtils;
 
@@ -55,7 +62,7 @@ public class UserServiceImpl implements UserService {
 		//用户密码为空，初始化
 		if (StringUtils.isBlank(user.getPassword())){
 			String salt = String.valueOf(Calendar.getInstance().getTimeInMillis());
-			user.setSalt(Base64.encode(salt.getBytes())); //加密储存秘钥
+			user.setSalt(Base64.encodeBase64String(salt.getBytes())); //加密储存秘钥
 			user.setPassword(EncryptUtils.encode(DEFAULT_PASSWORD, salt));
 		}
 		return userRepository.save(user);
@@ -83,4 +90,56 @@ public class UserServiceImpl implements UserService {
 		userRepository.delete(id);
 	}
 
+	@Override
+	public void importUsers(MultipartFile file, String username) {
+		// excel 从0开始
+		XSSFWorkbook workbook = null;
+		try {
+			workbook = new XSSFWorkbook(file.getInputStream());
+			XSSFSheet sheet = workbook.getSheetAt(0);
+			
+			for (int i=2; i<=sheet.getLastRowNum(); i++) {
+				XSSFRow row = sheet.getRow(i);
+				XSSFCell cell1 = row.getCell(1);	//用户名
+				XSSFCell cell2 = row.getCell(2);	//手机号
+				cell2.setCellType(CellType.STRING);
+				String usernameCN = cell1.getStringCellValue();
+				String phone = cell2.getStringCellValue();
+				
+//				System.out.println(phone);
+//				System.out.println(usernameCN);
+				
+				if (StringUtils.isNotBlank(phone)){
+					User user = userRepository.findByUsername(phone);
+					if (user==null){
+						user = new User();
+						user.setCreateUser(username);
+						user.setUsername(phone);
+						user.setModifyUser(username);
+						
+						UserInfo userInfo = new UserInfo();
+						userInfo.setUsername(usernameCN);
+						userInfo.setPhone(phone);
+						userInfo.setSex(0);
+						userInfo.setEmail("");
+						user.setUserInfo(userInfo);
+						
+						save(user);
+					}
+				}
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally{
+			if (workbook!=null){
+				try {
+					workbook.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 }

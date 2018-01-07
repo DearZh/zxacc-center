@@ -75,13 +75,4 @@ public class GradeServiceImpl implements GradeService {
 		gradeRepository.delete(id);
 	}
 
-	@Override
-	public List<Grade> findByUser(User user) {
-		ExampleMatcher matcher = ExampleMatcher.matchingAny();
-		Grade grade = new Grade();
-		grade.setUsers(Arrays.asList(new User[]{user}));
-		Example<Grade> example = Example.of(grade, matcher);
-		List<Grade> list = gradeRepository.findAll(example);
-		return list;
-	}
 }

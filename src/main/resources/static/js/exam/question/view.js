@@ -186,6 +186,22 @@ $('#btnAdd, #btnEdit').click(function(){
 		btn: ['保存'],
 		area: ['auto', 'auto'],
 		content: $('.zx-panel'),
+//		success: function(layero, index){
+//			if (window.__editor==null){
+//				window.__editor = CKEDITOR.replace( 'editor1', {
+//					toolbar: [
+//						{ name: 'styles', items: [ 'Styles', 'Format' ] },
+//						{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Strike', '-', 'RemoveFormat' ] },
+//						{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote' ] },
+//						{ name: 'links', items: [ 'Link', 'Unlink' ] },
+//						{ name: 'insert', items: [ 'Image', 'EmbedSemantic', 'Table' ] },
+//						{ name: 'tools', items: [ 'Maximize' ] }
+//					],
+//					// Make the editing area bigger than default.
+//					height: 100
+//				});
+//			}
+//		},
 		yes: function(index, layero){
 			//TODO 保存问题和答案
 			

@@ -31,11 +31,4 @@ public interface PaperService {
 	 * @return
 	 */
 	public List<Paper> findByUser(User user);
-	/**
-	 * 根据班级获取该班级分配的试卷
-	 * @author eko.zhan at 2018年1月1日 下午4:37:17
-	 * @param gradeList
-	 * @return
-	 */
-	public List<Paper> findByGrade(List<Grade> gradeList);
 }

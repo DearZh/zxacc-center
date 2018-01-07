@@ -4,6 +4,7 @@
 package com.zhengxinacc.exam.paper.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,18 +83,9 @@ public class PaperServiceImpl implements PaperService {
 
 	@Override
 	public List<Paper> findByUser(User user) {
-		List<Grade> gradeList = gradeService.findByUser(user);
-		return findByGrade(gradeList);
+		List<User> users = Arrays.asList(new User[]{user});
+		List<Grade> gradeList = gradeRepository.findByUsersIn(users);
+		
+		return paperRepository.findByGradesIn(gradeList);
 	}
-
-	@Override
-	public List<Paper> findByGrade(List<Grade> gradeList) {
-		ExampleMatcher matcher = ExampleMatcher.matchingAny();
-		Paper paper = new Paper();
-		paper.setGrades(gradeList);
-		Example<Paper> example = Example.of(paper, matcher);
-		List<Paper> list = paperRepository.findAll(example);
-		return list;
-	}
-
 }

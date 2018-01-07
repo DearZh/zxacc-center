@@ -30,11 +30,4 @@ public interface GradeService {
 	 * @param id
 	 */
 	public void delete(String id);
-	/**
-	 * 根据指定的用户获取该用户所在的班级
-	 * @author eko.zhan at 2018年1月1日 下午4:35:14
-	 * @param user
-	 * @return
-	 */
-	public List<Grade> findByUser(User user);
 }

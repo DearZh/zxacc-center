@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.zhengxinacc.system.user.domain.User;
 
@@ -55,4 +56,10 @@ public interface UserService extends UserDetailsService {
 	 * @param id
 	 */
 	public void delete(String id);
+	/**
+	 * 导入用户
+	 * @author eko.zhan at 2018年1月7日 下午2:58:35
+	 * @param file
+	 */
+	public void importUsers(MultipartFile file, String username);
 }

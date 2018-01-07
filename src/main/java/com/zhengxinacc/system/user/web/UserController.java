@@ -18,6 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -53,7 +55,7 @@ public class UserController extends BaseController {
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("message", "");
-		result.put("count", pager.getSize());
+		result.put("count", pager.getTotalElements());
 		
 		JSONArray dataArr = new JSONArray();
 		List<User> list = pager.getContent();
@@ -134,5 +136,15 @@ public class UserController extends BaseController {
 	@RequestMapping("/loadData")
 	public User loadData(HttpServletRequest request){
 		return getCurrentUser(request);
+	}
+	/**
+	 * 批量导入用户
+	 * @author eko.zhan at 2018年1月7日 下午2:45:13
+	 */
+	@RequestMapping("/import")
+	public JSONObject importUsers(MultipartHttpServletRequest request){
+		MultipartFile file = request.getFile("userFile");
+		userService.importUsers(file, getUsername(request));
+		return writeSuccess();
 	}
 }

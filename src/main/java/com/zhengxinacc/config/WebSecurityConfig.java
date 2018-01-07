@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("sysadmin").password("sysadmin123$").roles("SYSADMIN");
+		auth.inMemoryAuthentication().withUser("zxacc").password("zxacc123$").roles("SYSADMIN");
 		//auth.userDetailsService(userService);
 		auth.authenticationProvider(provider);
 	}

@@ -2,10 +2,9 @@
  * Power by www.xiaoi.com
  */
 package com.zhengxinacc.util;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -36,14 +35,10 @@ public class EncryptUtils {
 	 * @throws Base64DecodingException 
 	 */
 	public static Boolean verify(String input, String target, String salt){
-		try {
-			salt = new String(Base64.decode(salt));
-			String password = encode(input, salt);
-			if (target.equals(password)){
-				return true;
-			}
-		} catch (Base64DecodingException e) {
-			e.printStackTrace();
+		salt = new String(Base64.decodeBase64(salt));
+		String password = encode(input, salt);
+		if (target.equals(password)){
+			return true;
 		}
 		return false;
 	}

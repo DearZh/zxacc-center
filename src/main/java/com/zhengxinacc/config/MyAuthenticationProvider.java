@@ -16,7 +16,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.service.UserService;
 import com.zhengxinacc.util.EncryptUtils;
