@@ -137,7 +137,7 @@ public class TaskServiceImpl implements TaskService {
 			if (taskQuestion.getType()==0){
 				//单选题
 				taskQuestion.getAnswers().forEach(answer -> {
-					if (answer.getKey()==answer.getMark()){
+					if (answer.getKey() && answer.getKey()==answer.getMark()){
 						scoreList.add(taskQuestion.getScore());
 						return;
 					}
@@ -148,7 +148,7 @@ public class TaskServiceImpl implements TaskService {
 				Iterator<Answer> iterator = taskQuestion.getAnswers().iterator();
 				while (iterator.hasNext()){
 					Answer answer = iterator.next();
-					if (answer.getKey()!=answer.getMark()){
+					if (answer.getKey() && answer.getKey()!=answer.getMark()){
 						b = false;
 					}
 				}
@@ -157,7 +157,7 @@ public class TaskServiceImpl implements TaskService {
 				}
 			}else if (taskQuestion.getType()==2){
 				//判断题
-				if (taskQuestion.getKey()==taskQuestion.getKeyMark()){
+				if (taskQuestion.getKey() && taskQuestion.getKey()==taskQuestion.getKeyMark()){
 					scoreList.add(taskQuestion.getScore());
 				}
 			}

@@ -11,15 +11,15 @@ $.post($.kbase.ctx + '/exam/task/loadTask', {taskId: $('#taskId').val()}, functi
 		if (item.type==0){
 			//单选题
 			var content = template('templateSingle', item.answers);
-			$('#panel').append(template('templateFaq', {quesName: quesName, content: content}));
+			$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score,content: content}));
 		}else if (item.type==1){
 			//多选题
 			var content = template('templateMulti', item.answers);
-			$('#panel').append(template('templateFaq', {quesName: quesName, content: content}));
+			$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score, content: content}));
 		}else if (item.type==2){
 			//判断题
 			var content = template('templateTof', item);
-			$('#panel').append(template('templateFaq', {quesName: quesName, content: content}));
+			$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score, content: content}));
 		}
 	}
 	layui.use(['form'], function(){

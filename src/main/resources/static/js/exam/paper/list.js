@@ -115,8 +115,8 @@ $('#btnAdd, #btnEdit').click(function(){
 					if (data.success){
 						layer.alert('保存成功');
 						table.reload('grid', {page: {curr: 1}});
+						layer.close(index);
 					}
-					layer.close(index);
 				});
 				
 			}

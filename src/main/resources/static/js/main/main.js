@@ -9,6 +9,10 @@ $('#navLogout').click(function(){
 	});
 });
 
+$.post($.kbase.ctx + '/user/loadData', function(user){
+	$('.zx-username').text(user.userInfo.username);
+}, 'json');
+
 //左侧导航
 $('.layui-nav').on('click', '.layui-nav-child a', function(){
 	var _this = this;

@@ -28,7 +28,7 @@ public class Answer {
 	private String name;
 	private String value;
 	@JSONField(serialize=false) //答案不应该抛到前端
-	private Boolean key; //true-正确答案 false-错误答案
+	private Boolean key = Boolean.FALSE; //true-正确答案 false-错误答案 答案默认都是错误
 	@JsonIgnore
 	@JSONField(serialize=false)
 	@DBRef

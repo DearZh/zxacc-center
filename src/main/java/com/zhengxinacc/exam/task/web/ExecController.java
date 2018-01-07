@@ -116,7 +116,7 @@ public class ExecController extends BaseController {
 		return writeSuccess();
 	}
 	/**
-	 * 提交试卷
+	 * 提交试卷，计算得分
 	 * @author eko.zhan at 2018年1月6日 下午2:34:00
 	 * @param id
 	 * @param request

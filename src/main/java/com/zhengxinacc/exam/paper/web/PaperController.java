@@ -89,7 +89,7 @@ public class PaperController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/save")
-	public Paper save(HttpServletRequest request){
+	public JSONObject save(HttpServletRequest request){
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String[] gradeIds = request.getParameterValues("gradeIds[]"); //班级id数组
@@ -104,8 +104,8 @@ public class PaperController extends BaseController {
 		param.put("gradeIds", JSON.toJSONString(gradeIds));
 		param.put("username", getUsername(request));
 		param.put("questions", questions);
-		
-		return paperService.save(param);
+		paperService.save(param);
+		return writeSuccess();
 	}
 	
 	@RequestMapping("/delete")

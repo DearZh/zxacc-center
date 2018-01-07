@@ -14,3 +14,7 @@
 .layui-input-block{
 	margin-left: 0px;
 }
+.layui-form-checkbox span{
+	white-space: normal !important;
+	width: auto;
+}

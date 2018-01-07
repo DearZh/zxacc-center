@@ -18,11 +18,12 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
 
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController( "/" ).setViewName("main");
+		registry.addViewController( "/" ).setViewName("exam/task/list");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE );
 
         registry.addViewController("/login").setViewName("login");
-        
+		registry.addViewController( "/main" ).setViewName("main");
+		
         //系统管理
         //用户管理
         registry.addViewController("/user/list").setViewName("system/user/list");

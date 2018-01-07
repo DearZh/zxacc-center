@@ -130,4 +130,9 @@ public class UserController extends BaseController {
 		userService.delete(id);
 		return writeSuccess();
 	}
+	
+	@RequestMapping("/loadData")
+	public User loadData(HttpServletRequest request){
+		return getCurrentUser(request);
+	}
 }
