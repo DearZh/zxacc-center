@@ -4,6 +4,11 @@
 
 @media screen and (max-width: 414px) {
     .zx-nav-img{
-		width: 414px;
+		width: 360px;
+	}
+}
+@media screen and (max-width: 320px) {
+    .zx-nav-img{
+		width: 300px;
 	}
 }
