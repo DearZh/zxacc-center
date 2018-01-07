@@ -29,6 +29,9 @@ layui.use(['table', 'laydate'], function(){
 	        {field:'createDate', title: '创建日期', sort: true},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
+	    done: function(res, curr, count){
+	    	$('.layui-table-body').height($(window).height()-130);
+	    },
 	    page: true
 	});
 	

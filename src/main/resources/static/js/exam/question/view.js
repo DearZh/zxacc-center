@@ -13,6 +13,12 @@ layui.use(['layer', 'table', 'form'], function(){
 			$('.zx-tof-panel').show();
 			$('.zx-ans-add').hide();
 		}else{
+			//新增状态下，单击radio切换默认新增四个选项
+			if ($('#id').val()==''){
+				for (var i=0;i<4;i++){
+					$('.zx-ans-add').click();
+				}
+			}
 			//隐藏 zx-tof-panel， 展示 新增答案 zx-ans-add
 			$('.zx-tof-panel').hide();
 			$('.zx-ans-add').show();
@@ -48,6 +54,9 @@ layui.use(['layer', 'table', 'form'], function(){
 	        {field:'createDate', title: '创建日期', width: 120, sort: true},
 	        {field:'createUser', title: '创建人', width: 100, sort: true}
 	    ]],
+	    done: function(res, curr, count){
+	    	$('.layui-table-body').height($(window).height()-130);
+	    },
 	    page: true
 	});
 	/***********************  右侧试题面板  ****************************/
@@ -153,7 +162,9 @@ $('body').on('click', '.zx-toolbar', function(){
 /**************************右侧面板操作*****************************/
 $('#btnAdd, #btnEdit').click(function(){
 	var _this = this;
+	
 	if ($(_this).attr('id')=='btnAdd'){
+		//新增试题
 		var zTree = $.fn.zTree.getZTreeObj("tree");
 		var treeNodes = zTree.getSelectedNodes();
 		if (treeNodes.length==0){
@@ -170,13 +181,53 @@ $('#btnAdd, #btnEdit').click(function(){
 		$('input[name="name"]').val('');
 		$('.zx-ans-panel').html('');
 	}else{
+		//编辑试题
 		var checked = laytable.checkStatus('grid');
 		if (checked.data.length>0){
 			var row = checked.data[0];
+			console.log(row);
 			$('input[name="catename"]').val(row.catename);
 			$('input[name="cateid"]').val(row.cateid);
 			$('input[name="name"]').val(row.name);
+			$('input[name="type"]').removeAttr('checked');
 			$('input[name="type"][value="' + row.type + '"]').attr('checked', 'checked');
+			layform.render('radio');
+			//$('input[name="type"][value="' + row.type + '"]').click();
+			if (row.type==2){
+				//如果是判断题，则展示 zx-tof-panel，隐藏 zx-ans-add
+				$('input[name="tof"]').removeAttr('checked');
+				if (row.key){
+					$('input[name="tof"]:first').attr('checked', 'checked');
+				}else{
+					$('input[name="tof"]:last').attr('checked', 'checked');
+				}
+				layform.render('radio');
+				$('.zx-tof-panel').show();
+				$('.zx-ans-add').hide();
+			}else{
+				//渲染答案
+				if (row.answers && row.answers.length>0){
+					var _html = '';
+					$(row.answers).each(function(i, item){
+						_html += template('templateAns', {
+							type: row.type,
+							ansId: item.id,
+							ans: item.name
+						});
+					});
+					$('.zx-ans-panel').html(_html);
+					if (row.type==0){	//单选题
+						layform.render('radio');
+					}else{	//多选题和判断题
+						layform.render('checkbox');
+					}
+				}
+				//隐藏 zx-tof-panel， 展示 新增答案 zx-ans-add
+				$('.zx-tof-panel').hide();
+				$('.zx-ans-add').show();
+			}
+		}else{
+			return false;
 		}
 	}
 	

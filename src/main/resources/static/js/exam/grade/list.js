@@ -126,6 +126,9 @@ $('#btnPick').click(function(){
 			btn: ['保存'],
 			area: ['1000px', '460px'],
 			content: $.kbase.ctx + '/user/list?_p=grade',
+			success: function(layero, index){
+				
+			},
 			yes: function(index, layero){
 				var _win = $(layero).find("iframe")[0].contentWindow;
 				//获取用户grid里选中的数据
