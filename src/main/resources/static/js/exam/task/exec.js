@@ -12,17 +12,27 @@ $.post($.kbase.ctx + '/exam/exec/loadPaper', {id: $('#id').val()}, function(data
 	var paper = data.paper;
 	$('.zx-paper-title').text(paper.name);
 	
-	var questions = data.questions;
+	var questions = data.questionList;
 	var i=0;
-	for (var key in questions){
-		//console.log(data.questions[key]);
-		var item = questions[key];
-		var _ind = i+1;
-		if (_ind<10) _ind='0'+_ind;
-		primaryClass = item.isReply?'':'layui-btn-primary';
-		$('.zx-ques-panel').append('<button class="layui-btn layui-btn-sm zx-btn ' + primaryClass + '" _id="' + item.id +'" _score="' + item.score + '" _reply="' + item.isReply + '">' + _ind + '</button>');
-		i++;
-	}
+//	for (var key in questions){
+//		//console.log(data.questions[key]);
+//		var item = questions[key];
+//		var _ind = i+1;
+//		if (_ind<10) _ind='0'+_ind;
+//		primaryClass = item.isReply?'':'layui-btn-primary';
+//		$('.zx-ques-panel').append('<button class="layui-btn layui-btn-sm zx-btn ' + primaryClass + '" _id="' + item.id +'" _score="' + item.score + '" _reply="' + item.isReply + '">' + _ind + '</button>');
+//		i++;
+//	}
+	$(questions).each(function(i, question){
+		for (var key in question){ //只循环一次
+			var item = question[key];
+			var _ind = i+1;
+			if (_ind<10) _ind='0'+_ind;
+			primaryClass = item.isReply?'':'layui-btn-primary';
+			$('.zx-ques-panel').append('<button class="layui-btn layui-btn-sm zx-btn ' + primaryClass + '" _id="' + item.id +'" _score="' + item.score + '" _reply="' + item.isReply + '">' + _ind + '</button>');
+			i++;
+		}
+	});
 	
 	//默认选中第一题
 	$('.zx-ques-panel .zx-btn:first').click();

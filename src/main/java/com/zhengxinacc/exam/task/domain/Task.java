@@ -3,6 +3,7 @@
  */
 package com.zhengxinacc.exam.task.domain;
 
+import java.util.List;
 import java.util.Map;
 
 import lombok.Getter;
@@ -33,4 +34,5 @@ public class Task extends BaseBean {
 	private Integer limit; //当前用户已用时，单位秒
 	private Map<String, TaskQuestion> questions;
 	private Integer status = 0; //0-草稿状态 1-提交  
+	List<Map.Entry<String, TaskQuestion>> questionList;
 }

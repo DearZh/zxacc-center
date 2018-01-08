@@ -1,7 +1,10 @@
-var gradeIds = [];
-var gradeNames = [];
-var quesIds = []; //存储字符串数组，用于识别重复值
-var questions = []; //存储json数组
+//初始化数据
+function init(){
+	window.gradeIds = [];
+	window.gradeNames = [];
+	window.quesIds = []; //存储字符串数组，用于识别重复值
+	window.questions = []; //存储json数组
+};
 //渲染grid
 layui.use(['table', 'laydate'], function(){
 	var table = layui.table;
@@ -34,9 +37,8 @@ $('#btnAdd, #btnEdit').click(function(){
 		var layer = layui.layer;
 		var table = layui.table;
 		
-		
-		//编辑
 		if (_this.id=='btnEdit'){
+			//编辑
 			var checked = table.checkStatus('grid');
 			if (checked.data.length>0){
 				var row = checked.data[0];
@@ -49,8 +51,11 @@ $('#btnAdd, #btnEdit').click(function(){
 				return false;
 			}
 		}else{
+			//新增
+			init();
 			$('#id').val('');
 			$('input[name="name"]').val('');
+			$('.zx-grade-panel').empty();
 			$('#quesPanel').empty();
 		}
 		
@@ -199,12 +204,14 @@ $('#btnPickQues').click(function(){
 							questions.push({
 								id: item.id,
 								name: item.name,
+								type: item.type,
 								score: '',
 								order: currIndex
 							});
 							arr.push({
 								id: item.id,
 								name: item.name,
+								type: item.type,
 								score: '',
 								order: currIndex
 							});

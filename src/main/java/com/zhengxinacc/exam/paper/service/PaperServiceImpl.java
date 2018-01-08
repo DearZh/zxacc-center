@@ -69,11 +69,11 @@ public class PaperServiceImpl implements PaperService {
 		paper.setGrades(gradeList);
 		
 		JSONArray arr = JSON.parseArray(data.getString("questions"));
-		System.out.println(arr);
+		//System.out.println(arr);
 		Map<String, PaperQuestion> map = new HashMap<String, PaperQuestion>();
 		for (Object obj : arr){
 			JSONObject json = (JSONObject) obj;
-			PaperQuestion question = new PaperQuestion(json.getString("id"), 0, Double.parseDouble(json.getString("score")));
+			PaperQuestion question = new PaperQuestion(json.getString("id"), Integer.valueOf(json.getString("order")), Double.parseDouble(json.getString("score")));
 			map.put(json.getString("id"), question);
 		}
 		paper.setQuestions(map);

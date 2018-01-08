@@ -94,7 +94,7 @@
 			{{each $data value index}}
 				<tr _id="{{value.id}}">
 					<td>{{index+1}}<a href="javascript:void(0);" _id="{{value.id}}" class="zx-ques-del"><img th:src="@{/DATAS/bin_closed.png}"/></a></td>
-					<td>{{value.name}}</td>
+					<td><span class="layui-badge">{{if value.type==0}}单选题{{else if value.type==1}}多选题{{else}}判断题{{/if}}</span> {{value.name}}</td>
 					<td><input type="text" class="layui-input zx-score" name="score" value="{{value.score}}"/></td>
 					<td><input type="text" class="layui-input zx-order" name="order" value="{{value.order}}"/></td>
 				</tr>
