@@ -86,7 +86,7 @@ public class GradeController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/save")
-	public Grade save(HttpServletRequest request){
+	public JSONObject save(HttpServletRequest request){
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String[] users = request.getParameterValues("users[]"); //学生id数组
@@ -96,9 +96,9 @@ public class GradeController extends BaseController {
 		param.put("name", name);
 		param.put("users", JSON.toJSONString(users));
 		param.put("username", getUsername(request));
+		gradeService.save(param);
 		
-		
-		return gradeService.save(param);
+		return writeSuccess();
 		
 	}
 	

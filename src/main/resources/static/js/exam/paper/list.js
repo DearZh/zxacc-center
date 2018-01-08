@@ -43,21 +43,15 @@ $('#btnAdd, #btnEdit').click(function(){
 				
 				$('#id').val(row.id);
 				$('input[name="name"]').val(row.name);
-				if (row.users){
-					$(row.users).each(function(i, item){
-						if ($.inArray(item.id, userIds)==-1){
-							userIds.push(item.id);
-							userNames.push(item.userInfo.username);
-						}
-					});
-					$('.zx-user-panel').html(userNames.join(' '));
-				}
+				//TODO 编辑渲染
+				
 			}else{
 				return false;
 			}
 		}else{
 			$('#id').val('');
 			$('input[name="name"]').val('');
+			$('#quesPanel').empty();
 		}
 		
 		layer.open({
@@ -113,9 +107,12 @@ $('#btnAdd, #btnEdit').click(function(){
 								
 				$.post($.kbase.ctx + '/exam/paper/save', param, function(data){
 					if (data.success){
-						layer.alert('保存成功');
-						table.reload('grid', {page: {curr: 1}});
-						layer.close(index);
+						layer.alert('保存成功', function(index0){
+							table.reload('grid', {page: {curr: 1}});
+							layer.close(index0);
+							layer.close(index);
+						});
+						
 					}
 				});
 				
@@ -194,20 +191,22 @@ $('#btnPickQues').click(function(){
 				var checked = _win.laytable.checkStatus('grid');
 				if (checked.data.length>0){
 					var arr = [];
+					var currIndex = $('#quesPanel tr').length;
 					$(checked.data).each(function(i, item){
 						if ($.inArray(item.id, quesIds)==-1){
+							currIndex++;
 							quesIds.push(item.id);
 							questions.push({
 								id: item.id,
 								name: item.name,
 								score: '',
-								order: ''
+								order: currIndex
 							});
 							arr.push({
 								id: item.id,
 								name: item.name,
 								score: '',
-								order: ''
+								order: currIndex
 							});
 						}
 					});
@@ -246,4 +245,31 @@ $('.zx-panel').on('blur', 'input[name="score"]', function(){
 		  anim: 0
 		});
 	});
+});
+//单条试题删除，还需要删除 quesIds 和 questions 中的数据
+$('.zx-panel').on('click', '.zx-ques-del', function(){
+	var id = $(this).attr('_id');
+	/*quesIds.push(item.id);
+	questions.push({
+		id: item.id,
+		name: item.name,
+		score: '',
+		order: currIndex
+	});*/
+	var tmpQuesIds = [];
+	$(quesIds).each(function(i, item){
+		if (item!=id){
+			tmpQuesIds.push(item);
+		}
+	});
+	quesIds = tmpQuesIds;
+	var tmpQuestions = [];
+	$(questions).each(function(i, item){
+		if (item.id!=id){
+			tmpQuestions.push(item);
+		}
+	});
+	questions = tmpQuestions;
+	
+	$(this).parents('tr').remove();
 });

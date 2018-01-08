@@ -81,10 +81,12 @@ $('#btnAdd, #btnEdit').click(function(){
 				
 				$.post($.kbase.ctx + '/exam/grade/save', param, function(data){
 					if (data.success){
-						layer.alert('保存成功');
-						table.reload('grid', {page: {curr: 1}});
+						layer.alert('保存成功', function(index0){
+							table.reload('grid', {page: {curr: 1}});
+							layer.close(index0);
+							layer.close(index);
+						});
 					}
-					layer.close(index);
 				});
 				
 			}
