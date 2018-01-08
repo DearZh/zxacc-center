@@ -50,7 +50,7 @@
 			{{else}}
 				<input type="radio" name="ans_{{id}}" value="true" title="正确 {{if key}}(正确答案){{/if}}" disabled=""/>
 			{{/if}}
-			{{if keyMark}}
+			{{if !keyMark}}
 				<input type="radio" name="ans_{{id}}" value="false" title="错误 {{if !key}}(正确答案){{/if}}" checked="" disabled=""/>
 			{{else}}
 				<input type="radio" name="ans_{{id}}" value="false" title="错误 {{if !key}}(正确答案){{/if}}" disabled="" />

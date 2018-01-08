@@ -21,6 +21,7 @@ import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.exam.paper.service.PaperService;
 import com.zhengxinacc.exam.task.domain.Task;
 import com.zhengxinacc.exam.task.repository.TaskRepository;
+import com.zhengxinacc.exam.task.service.TaskService;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -35,6 +36,8 @@ public class TaskController extends BaseController {
 	private PaperService paperService;
 	@Resource
 	private TaskRepository taskRepository;
+	@Resource
+	private TaskService taskService;
 	
 	@RequestMapping("/loadList")
 	public JSONObject list(HttpServletRequest request){
@@ -75,6 +78,6 @@ public class TaskController extends BaseController {
 	@RequestMapping("loadTask")
 	public Task loadTask(String taskId){
 		Task task = taskRepository.findOne(taskId);
-		return task;
+		return taskService.setQuestionList(task);
 	}
 }

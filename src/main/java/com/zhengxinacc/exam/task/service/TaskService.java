@@ -35,4 +35,11 @@ public interface TaskService {
 	 * @return
 	 */
 	public Task submit(String paperId, String username);
+	/**
+	 * 处理试题排序
+	 * @author eko.zhan at 2018年1月8日 下午4:27:50
+	 * @param task
+	 * @return
+	 */
+	public Task setQuestionList(Task task);
 }

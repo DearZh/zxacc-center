@@ -4,24 +4,26 @@ $.post($.kbase.ctx + '/exam/task/loadTask', {taskId: $('#taskId').val()}, functi
 	$('.zx-total').text(task.score);
 	
 	var i = 0;
-	for (var key in task.questions){
-		i++;
-		var item = task.questions[key];
-		var quesName = i + "、" + item.name;
-		if (item.type==0){
-			//单选题
-			var content = template('templateSingle', item.answers);
-			$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score,content: content}));
-		}else if (item.type==1){
-			//多选题
-			var content = template('templateMulti', item.answers);
-			$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score, content: content}));
-		}else if (item.type==2){
-			//判断题
-			var content = template('templateTof', item);
-			$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score, content: content}));
+	$(task.questionList).each(function(i, question){
+		for (var key in question){
+			i++;
+			var item = task.questions[key];
+			var quesName = i + "、" + item.name;
+			if (item.type==0){
+				//单选题
+				var content = template('templateSingle', item.answers);
+				$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score,content: content}));
+			}else if (item.type==1){
+				//多选题
+				var content = template('templateMulti', item.answers);
+				$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score, content: content}));
+			}else if (item.type==2){
+				//判断题
+				var content = template('templateTof', item);
+				$('#panel').append(template('templateFaq', {quesName: quesName, score: item.score, content: content}));
+			}
 		}
-	}
+	});
 	layui.use(['form'], function(){
 		var form = layui.form;
 		form.render();

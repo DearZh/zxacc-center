@@ -5,6 +5,8 @@ package com.zhengxinacc.exam.task.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -69,13 +71,17 @@ public class TaskServiceImpl implements TaskService {
 			for (Answer answer : answers){
 				if (answer.getId().equals(ans)){
 					answer.setMark(Boolean.TRUE);
-					break;
+				}else{
+					answer.setMark(Boolean.FALSE);
 				}
 			}
 		}else if (taskQuestion.getType()==1){
 			//多选题
 			//ans 西文逗号分隔的字符串
 			List<String> asList = Arrays.asList(ans.split(","));
+			for (Answer answer : answers){
+				answer.setMark(Boolean.FALSE);
+			}
 			for (String as : asList){
 				for (Answer answer : answers){
 					if (answer.getId().equals(as)){
@@ -150,6 +156,8 @@ public class TaskServiceImpl implements TaskService {
 					Answer answer = iterator.next();
 					if (answer.getKey() && answer.getKey()!=answer.getMark()){
 						b = false;
+					}else if (!answer.getKey() && answer.getKey()!=answer.getMark()){
+						b = false;
 					}
 				}
 				if (b){
@@ -157,7 +165,7 @@ public class TaskServiceImpl implements TaskService {
 				}
 			}else if (taskQuestion.getType()==2){
 				//判断题
-				if (taskQuestion.getKey() && taskQuestion.getKey()==taskQuestion.getKeyMark()){
+				if (taskQuestion.getKey()==taskQuestion.getKeyMark()){
 					scoreList.add(taskQuestion.getScore());
 				}
 			}
@@ -170,6 +178,25 @@ public class TaskServiceImpl implements TaskService {
 		task.setScore(total);
 		
 		return taskRepository.save(task);
+	}
+
+	@Override
+	public Task setQuestionList(Task task) {
+		Map<String, TaskQuestion> questions = task.getQuestions();
+		List<Map.Entry<String, TaskQuestion>> list = new ArrayList<Map.Entry<String, TaskQuestion>>(questions.entrySet());
+		Collections.sort(list, new Comparator<Map.Entry<String, TaskQuestion>>() {
+			@Override
+			public int compare(Map.Entry<String, TaskQuestion> o1, Map.Entry<String, TaskQuestion> o2) {
+				TaskQuestion q1 = o1.getValue();
+				TaskQuestion q2 = o2.getValue();
+				if (q1.getOrder()!=null && q2.getOrder()!=null){
+					return q1.getOrder().compareTo(q2.getOrder());
+				}
+				return 0;
+			}
+		});
+		task.setQuestionList(list);
+		return task;
 	}
 
 }

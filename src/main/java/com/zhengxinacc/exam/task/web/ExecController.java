@@ -57,20 +57,7 @@ public class ExecController extends BaseController {
 	@RequestMapping("/loadPaper")
 	public Task loadPaper(String id, HttpServletRequest request){
 		Task task = taskService.init(id, getUsername(request));
-		Map<String, TaskQuestion> questions = task.getQuestions();
-		List<Map.Entry<String, TaskQuestion>> list = new ArrayList<Map.Entry<String, TaskQuestion>>(questions.entrySet());
-		Collections.sort(list, new Comparator<Map.Entry<String, TaskQuestion>>() {
-			@Override
-			public int compare(Map.Entry<String, TaskQuestion> o1, Map.Entry<String, TaskQuestion> o2) {
-				TaskQuestion q1 = o1.getValue();
-				TaskQuestion q2 = o2.getValue();
-				if (q1.getOrder()!=null && q2.getOrder()!=null){
-					return q1.getOrder().compareTo(q2.getOrder());
-				}
-				return 0;
-			}
-		});
-		task.setQuestionList(list);
+		task = taskService.setQuestionList(task);
 		return task;
 	}
 	
