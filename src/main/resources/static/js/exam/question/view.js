@@ -176,6 +176,7 @@ $('#btnAdd, #btnEdit').click(function(){
 			layer.alert('请选择子分类');
 			return false;
 		}
+		$('#id').val('');
 		$('input[name="catename"]').val(treeNode.name);
 		$('input[name="cateid"]').val(treeNode.id);
 		$('input[name="name"]').val('');
@@ -186,6 +187,7 @@ $('#btnAdd, #btnEdit').click(function(){
 		if (checked.data.length>0){
 			var row = checked.data[0];
 			console.log(row);
+			$('#id').val(row.id); //试题id
 			$('input[name="catename"]').val(row.catename);
 			$('input[name="cateid"]').val(row.cateid);
 			$('input[name="name"]').val(row.name);
@@ -212,6 +214,7 @@ $('#btnAdd, #btnEdit').click(function(){
 						_html += template('templateAns', {
 							type: row.type,
 							ansId: item.id,
+							key: item.key || false,
 							ans: item.name
 						});
 					});
@@ -279,7 +282,7 @@ $('#btnAdd, #btnEdit').click(function(){
 			}
 
 			var param = {
-				id: $('input[name="id"]').val(),
+				id: $('#id').val(),
 				cateid: $('input[name="cateid"]').val(),
 				catename: $('input[name="catename"]').val(),
 				name: $('input[name="name"]').val(),
