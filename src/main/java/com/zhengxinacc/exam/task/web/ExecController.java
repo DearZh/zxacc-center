@@ -71,7 +71,15 @@ public class ExecController extends BaseController {
 	@RequestMapping("/loadQues")
 	public TaskQuestion loadQues(String paperId, String id, HttpServletRequest request){
 		Task task = taskService.init(paperId, getUsername(request));
-		return task.getQuestions().get(id);
+		//需要处理答案，标准答案不应该抛出到答题界面
+		TaskQuestion taskQuestion = task.getQuestions().get(id);
+		taskQuestion.setKey(null);
+		if (taskQuestion.getAnswers()!=null){
+			taskQuestion.getAnswers().forEach(answer -> {
+				answer.setKey(null);
+			});
+		}
+		return taskQuestion;
 	}
 	/**
 	 * 我的可以参加考试的列表
