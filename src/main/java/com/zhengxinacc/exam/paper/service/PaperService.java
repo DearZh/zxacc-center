@@ -6,7 +6,6 @@ package com.zhengxinacc.exam.paper.service;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zhengxinacc.exam.grade.domain.Grade;
 import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.system.user.domain.User;
 
@@ -31,4 +30,11 @@ public interface PaperService {
 	 * @return
 	 */
 	public List<Paper> findByUser(User user);
+	/**
+	 * 处理试题排序
+	 * @author eko.zhan at 2018年1月8日 下午4:27:50
+	 * @param task
+	 * @return
+	 */
+	public Paper setQuestionList(Paper paper);
 }

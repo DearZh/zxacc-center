@@ -16,7 +16,8 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PaperQuestion {
 	private String id;	//对应问题主键id
+	private String name;
+	private Integer type;
 	private Integer order = 0;
 	private Double score;
-	
 }

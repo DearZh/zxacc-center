@@ -30,8 +30,9 @@ layui.use(['table', 'laydate'], function(){
 	
 });
 
-//新增和保存
+//新增和编辑
 $('#btnAdd, #btnEdit').click(function(){
+	init();
 	var _this = this;
 	layui.use(['layer', 'table'], function(){
 		var layer = layui.layer;
@@ -43,8 +44,36 @@ $('#btnAdd, #btnEdit').click(function(){
 			if (checked.data.length>0){
 				var row = checked.data[0];
 				
+				console.log(row);
+				
 				$('#id').val(row.id);
 				$('input[name="name"]').val(row.name);
+				$('input[name="limit"]').val(row.limit);
+				$('input[name="total"]').val(row.total);
+				//渲染班级
+				if (row.grades!=null && row.grades.length>0){
+					$(row.grades).each(function(i, item){
+						gradeIds.push(item.id);
+						gradeNames.push(item.name);
+					});
+					$('.zx-grade-panel').html(gradeNames.join(' '));
+				}
+				//问答渲染
+				if (row.questionList!=null && row.questionList.length>0){
+					$(row.questionList).each(function(i, question){
+						for (var key in question){
+							var item = question[key];
+							questions.push({
+								id: item.id,
+								name: item.name,
+								type: item.type,
+								score: item.score,
+								order: item.order
+							});
+						}
+					});
+					$('#quesPanel').html(template('templateQues', questions));
+				}
 				//TODO 编辑渲染
 				
 			}else{
@@ -179,6 +208,12 @@ $('#btnPick').click(function(){
 			}
 		});
 	});
+});
+//清空班级
+$('#btnClear').click(function(){
+	gradeIds = [];
+	gradeNames = [];
+	$('.zx-grade-panel').empty();
 });
 
 //选择试题

@@ -27,6 +27,7 @@ import com.zhengxinacc.exam.grade.repository.GradeRepository;
 import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.exam.paper.repository.PaperRepository;
 import com.zhengxinacc.exam.paper.service.PaperService;
+import com.zhengxinacc.exam.question.repository.QuestionRepository;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -66,6 +67,7 @@ public class PaperController extends BaseController {
 		JSONArray dataArr = new JSONArray();
 		List<Paper> list = pager.getContent();
 		for (Paper paper : list){
+			paper = paperService.setQuestionList(paper);
 			JSONObject tmp = (JSONObject)JSONObject.toJSON(paper);
 			tmp.put("createDate", DateFormatUtils.format(paper.getCreateDate(), "yyyy-MM-dd"));
 			String grades = "";
