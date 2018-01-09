@@ -11,12 +11,22 @@
 				<ul id="tree" class="ztree"></ul>
 			</div>
 			<div class="layui-col-xs9">
-				<div class="layui-btn-group" th:style="${param._p}?'display:none;':'display:block;'">
-					<button class="layui-btn" id="btnAdd">新增</button>
-					<button class="layui-btn" id="btnEdit">编辑</button>
-					<button class="layui-btn" id="btnDel">删除</button>
+				<div class="zx-btn-group layui-form">
+					<div th:style="${param._p}?'display:none;':'display:inline;'">
+						<button class="layui-btn" id="btnAdd">新增</button>
+						<button class="layui-btn" id="btnEdit">编辑</button>
+						<button class="layui-btn" id="btnDel">删除</button>
+					</div>
 					<input type="text" id="keyword" name="keyword" class="layui-input zx-keyword" placeholder="请输入关键字"/>
 		    		<button class="layui-btn" id="btnQuery">查询</button>
+					<div class="layui-input-inline">
+						<select name="typeOpts" lay-filter="typeOpts">
+							<option value=""></option>
+							<option value="0">单选题</option>
+							<option value="1">多选题</option>
+							<option value="2">判断题</option>
+						</select>
+					</div>
 				</div>
 				<table class="layui-hide" id="grid"></table>
 			</div>

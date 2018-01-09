@@ -50,7 +50,10 @@ public class UserController extends BaseController {
 	@RequestMapping("/loadList")
 	public JSONObject loadList(Integer page, Integer limit, String keyword){
 		
-		Page<User> pager = userService.findAll(page, limit, "createDate", Direction.DESC, keyword);
+		JSONObject param = new JSONObject();
+		param.put("property", "createDate");
+		param.put("keyword", keyword);
+		Page<User> pager = userService.findAll(page, limit, param, Direction.DESC);
 		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);

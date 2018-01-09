@@ -49,18 +49,31 @@ public class QuestionServiceImpl implements QuestionService {
 	private MongoTemplate mongoTemplate;
 	
 	@Override
-	public Page<Question> findAll(Integer page, Integer size, JSONObject data, Direction desc, String keyword) {
+	public Page<Question> findAll(Integer page, Integer size, JSONObject data, Direction desc) {
 		String property = data.getString("property");
 		String cateId = data.getString("cateId");
+		String keyword = data.getString("keyword");
+		Integer type = data.getInteger("type");
+		
 		Order order = new Order(desc, property);
 		Pageable pageable = new PageRequest(page-1, size, new Sort(order));
 		if (StringUtils.isBlank(cateId)){
+			//无分类
 			if (StringUtils.isBlank(keyword)){
-				return questionRepository.findAll(pageable);
+				if (type==null){
+					return questionRepository.findAll(pageable);
+				}else{
+					return questionRepository.findByType(type, pageable);
+				}
 			}else{
-				return questionRepository.findByNameLike(keyword, pageable);
+				if (type==null){
+					return questionRepository.findByNameLike(keyword, pageable);
+				}else{
+					return questionRepository.findByNameLikeAndType(keyword, type, pageable);
+				}
 			}
 		}else{
+			//有分类
 			//TODO spring mongo db 关联查询
 			QuestionCate questionCate = questionCateRepository.findOne(cateId);
 //			ExampleMatcher matcher = ExampleMatcher.matching()
@@ -82,9 +95,18 @@ public class QuestionServiceImpl implements QuestionService {
 //			Page<Question> pager = new PageImpl<Question>(list, pageable, total);
 			
 			if (StringUtils.isBlank(keyword)){
-				return questionRepository.findByCate(questionCate, pageable);
+				if (type==null){
+					return questionRepository.findByCate(questionCate, pageable);
+				}else{
+					return questionRepository.findByCateAndType(questionCate, type, pageable);
+				}
 			}else{
-				return questionRepository.findByCateAndNameLike(questionCate, keyword, pageable);
+				if (type==null){
+					return questionRepository.findByCateAndNameLike(questionCate, keyword, pageable);
+				}else{
+					return questionRepository.findByCateAndNameLikeAndType(questionCate, keyword, type, pageable);
+				}
+				
 			}
 		}
 	}

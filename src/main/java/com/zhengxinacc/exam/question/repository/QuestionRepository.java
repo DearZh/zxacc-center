@@ -22,8 +22,19 @@ public interface QuestionRepository extends MongoRepository<Question, String> {
 	
 	Page<Question> findByNameLike(String name, Pageable pageable);
 	
+	Page<Question> findByNameLikeAndType(String name, Integer type, Pageable pageable);
+	
 	Page<Question> findByCate(QuestionCate cate, Pageable pageable);
 	
 	Page<Question> findByCateAndNameLike(QuestionCate cate, String name, Pageable pageable);
+
+	Page<Question> findByType(Integer type, Pageable pageable);
+
+	Page<Question> findByCateAndType(QuestionCate questionCate, Integer type,
+			Pageable pageable);
+
+	Page<Question> findByCateAndNameLikeAndType(QuestionCate questionCate,
+			String keyword, Integer type, Pageable pageable);
+	
 
 }

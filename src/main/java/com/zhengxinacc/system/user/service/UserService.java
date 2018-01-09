@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.system.user.domain.User;
 
 /**
@@ -49,7 +50,7 @@ public interface UserService extends UserDetailsService {
 	 * @param desc
 	 * @return
 	 */
-	public Page<User> findAll(Integer page, Integer size, String property, Direction desc, String keyword);
+	public Page<User> findAll(Integer page, Integer size, JSONObject data, Direction desc);
 	/**
 	 * 删除用户
 	 * @author eko.zhan at 2017年12月23日 下午7:15:33

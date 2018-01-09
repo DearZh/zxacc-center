@@ -3,7 +3,10 @@
 }
 .zx-keyword{
 	width:160px;
-	margin: 0 2px 0 2px;
+	margin: 2px;
 	display: inline;
 	font-size: 14px;
+}
+.layui-btn+.layui-btn{
+	margin-left: 0px;
 }

@@ -39,6 +39,21 @@ layui.use(['layer', 'table', 'form'], function(){
 		$('.zx-ans-panel').find('input[name="answer"]').attr('_checked', false);
 		$(data.elem).parent('label').siblings('div').find('input[name="answer"]').attr('_checked', true);
 	});
+	//下拉选择框
+	layform.on('select(typeOpts)', function(data){
+		var keyword = $('#keyword').val();
+		var type = data.value;
+		layui.use(['table'], function(){
+			var table = layui.table;
+			table.reload('grid', {
+				page: {curr: 1},
+				where: {
+					keyword: keyword,
+					type: type
+				}
+			});
+		});
+	});
 	
 	/***********************  右侧试题面板  ****************************/
 	laytable.render({
@@ -55,7 +70,7 @@ layui.use(['layer', 'table', 'form'], function(){
 	        {field:'createUser', title: '创建人', width: 100, sort: true}
 	    ]],
 	    done: function(res, curr, count){
-	    	$('.layui-table-body').height($(window).height()-130);
+	    	$('.layui-table-body').height($(window).height()-140);
 	    },
 	    page: true
 	});

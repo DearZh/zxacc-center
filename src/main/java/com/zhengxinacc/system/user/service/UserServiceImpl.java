@@ -27,6 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.domain.UserInfo;
 import com.zhengxinacc.system.user.repository.UserRepository;
@@ -79,7 +80,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Page<User> findAll(Integer page, Integer size, String property, Direction desc, String keyword) {
+	public Page<User> findAll(Integer page, Integer size, JSONObject data, Direction desc) {
+		String property = data.getString("property");
+		String keyword = data.getString("keyword");
+		
 		Order order = new Order(desc, property);
 		Pageable pageable = new PageRequest(page-1, size, new Sort(order));
 		if (StringUtils.isNotBlank(keyword)){
