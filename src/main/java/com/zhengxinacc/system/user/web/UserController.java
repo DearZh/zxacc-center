@@ -48,9 +48,9 @@ public class UserController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/loadList")
-	public JSONObject loadList(Integer page, Integer limit){
+	public JSONObject loadList(Integer page, Integer limit, String keyword){
 		
-		Page<User> pager = userService.findAll(page, limit, "createDate", Direction.DESC);
+		Page<User> pager = userService.findAll(page, limit, "createDate", Direction.DESC, keyword);
 		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);

@@ -126,7 +126,7 @@ $('#btnAdd, #btnEdit').click(function(){
 		});
 	});
 });
-
+//用户删除
 $('#btnDel').click(function(){
 	layui.use(['layer', 'table'], function(){
 		var layer = layui.layer;
@@ -151,7 +151,7 @@ $('#btnDel').click(function(){
 		});
 	});
 });
-
+//用户导入
 $('#btnImport').click(function(){
 	$('#userFile').click();
 });
@@ -183,5 +183,28 @@ $('#userFile').change(function(){
             	}
             }
         });
+	}
+});
+//用户查询
+$('#btnQuery').click(function(){
+	var keyword = $('#keyword').val();
+//	if (keyword=='') {
+//		$('#keyword').select();
+//		return false;
+//	}
+	
+	layui.use(['table'], function(){
+		var table = layui.table;
+		table.reload('grid', {
+			page: {curr: 1},
+			where: {
+				keyword: keyword
+			}
+		});
+	});
+});
+$('#keyword').keyup(function(e){
+	if (e.keyCode==13){
+		$('#btnQuery').click();
 	}
 });

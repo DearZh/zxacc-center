@@ -49,7 +49,7 @@ public interface UserService extends UserDetailsService {
 	 * @param desc
 	 * @return
 	 */
-	public Page<User> findAll(Integer page, Integer size, String property, Direction desc);
+	public Page<User> findAll(Integer page, Integer size, String property, Direction desc, String keyword);
 	/**
 	 * 删除用户
 	 * @author eko.zhan at 2017年12月23日 下午7:15:33

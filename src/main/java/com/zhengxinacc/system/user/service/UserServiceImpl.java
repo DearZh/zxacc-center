@@ -79,9 +79,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Page<User> findAll(Integer page, Integer size, String property, Direction desc) {
+	public Page<User> findAll(Integer page, Integer size, String property, Direction desc, String keyword) {
 		Order order = new Order(desc, property);
 		Pageable pageable = new PageRequest(page-1, size, new Sort(order));
+		if (StringUtils.isNotBlank(keyword)){
+			return userRepository.findByUsernameLike(keyword, pageable);
+		}
 		return userRepository.findAll(pageable);
 	}
 
