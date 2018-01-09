@@ -3,13 +3,13 @@
  */
 package com.zhengxinacc.exam.question.repository;
 
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import com.zhengxinacc.exam.question.domain.Question;
+import com.zhengxinacc.exam.question.domain.QuestionCate;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -18,5 +18,12 @@ import com.zhengxinacc.exam.question.domain.Question;
  */
 @Repository
 public interface QuestionRepository extends MongoRepository<Question, String> {
+
+	
+	Page<Question> findByNameLike(String name, Pageable pageable);
+	
+	Page<Question> findByCate(QuestionCate cate, Pageable pageable);
+	
+	Page<Question> findByCateAndNameLike(QuestionCate cate, String name, Pageable pageable);
 
 }

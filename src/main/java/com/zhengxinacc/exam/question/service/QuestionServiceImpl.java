@@ -49,13 +49,17 @@ public class QuestionServiceImpl implements QuestionService {
 	private MongoTemplate mongoTemplate;
 	
 	@Override
-	public Page<Question> findAll(Integer page, Integer size, JSONObject data, Direction desc) {
+	public Page<Question> findAll(Integer page, Integer size, JSONObject data, Direction desc, String keyword) {
 		String property = data.getString("property");
 		String cateId = data.getString("cateId");
 		Order order = new Order(desc, property);
 		Pageable pageable = new PageRequest(page-1, size, new Sort(order));
 		if (StringUtils.isBlank(cateId)){
-			return questionRepository.findAll(pageable);
+			if (StringUtils.isBlank(keyword)){
+				return questionRepository.findAll(pageable);
+			}else{
+				return questionRepository.findByNameLike(keyword, pageable);
+			}
 		}else{
 			//TODO spring mongo db 关联查询
 			QuestionCate questionCate = questionCateRepository.findOne(cateId);
@@ -68,13 +72,20 @@ public class QuestionServiceImpl implements QuestionService {
 //			Example<Question> example = Example.of(question, matcher);
 			
 //			return questionRepository.findAll(example, pageable);
-			Query query = new Query(Criteria.where("cate").in(new QuestionCate[]{questionCate}));
-			long total = mongoTemplate.count(query, Question.class);
-			query.limit(size);
-			query.skip((page-1)*size);
-			List<Question> list = mongoTemplate.find(query, Question.class);
-			Page<Question> pager = new PageImpl<Question>(list, pageable, total);
-			return pager;
+			
+			//mongoTemplate 的方法
+//			Query query = new Query(Criteria.where("cate").in(new QuestionCate[]{questionCate}));
+//			long total = mongoTemplate.count(query, Question.class);
+//			query.limit(size);
+//			query.skip((page-1)*size);
+//			List<Question> list = mongoTemplate.find(query, Question.class);
+//			Page<Question> pager = new PageImpl<Question>(list, pageable, total);
+			
+			if (StringUtils.isBlank(keyword)){
+				return questionRepository.findByCate(questionCate, pageable);
+			}else{
+				return questionRepository.findByCateAndNameLike(questionCate, keyword, pageable);
+			}
 		}
 	}
 

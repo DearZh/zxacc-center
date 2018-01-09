@@ -89,13 +89,13 @@ public class QuestionController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/loadList")
-	public JSONObject loadList(String cateId, Integer page, Integer limit){
+	public JSONObject loadList(String cateId, Integer page, Integer limit, String keyword){
 		page = page==null?1:page;
 		limit = limit==null?10:limit;
 		JSONObject param = new JSONObject();
 		param.put("cateId", cateId);
 		param.put("property", "createDate");
-		Page<Question> pager = questionService.findAll(page, limit, param, Direction.DESC);
+		Page<Question> pager = questionService.findAll(page, limit, param, Direction.DESC, keyword);
 		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);

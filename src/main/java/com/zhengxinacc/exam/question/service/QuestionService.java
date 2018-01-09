@@ -25,7 +25,7 @@ public interface QuestionService {
 	 * @param desc
 	 * @return
 	 */
-	public Page<Question> findAll(Integer page, Integer size, JSONObject data, Direction desc);
+	public Page<Question> findAll(Integer page, Integer size, JSONObject data, Direction desc, String keyword);
 	/**
 	 * 删除问题，同时删除答案
 	 * @author eko.zhan at 2017年12月24日 下午9:02:44
