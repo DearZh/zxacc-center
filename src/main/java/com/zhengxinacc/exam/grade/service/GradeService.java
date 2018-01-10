@@ -3,11 +3,11 @@
  */
 package com.zhengxinacc.exam.grade.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort.Direction;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.exam.grade.domain.Grade;
-import com.zhengxinacc.system.user.domain.User;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -30,4 +30,14 @@ public interface GradeService {
 	 * @param id
 	 */
 	public void delete(String id);
+	/**
+	 * 获取班级集合
+	 * @author eko.zhan at 2018年1月10日 上午10:07:35
+	 * @param page
+	 * @param size
+	 * @param data
+	 * @param desc
+	 * @return
+	 */
+	public Page<Grade> findAll(Integer page, Integer size, JSONObject data, Direction desc);
 }

@@ -6,9 +6,13 @@
 	</head>
 	<body class="layui-layout-body">
 		<div class="zx-btn-group">
-		    <button class="layui-btn" id="btnAdd">新增</button>
-		    <button class="layui-btn" id="btnEdit">编辑</button>
-		    <button class="layui-btn" id="btnDel">删除</button>
+			<div th:style="${param._p}?'display:none;':'display:inline;'">
+			    <button class="layui-btn" id="btnAdd">新增</button>
+			    <button class="layui-btn" id="btnEdit">编辑</button>
+			    <button class="layui-btn" id="btnDel">删除</button>
+		    </div>
+		    <input type="text" id="keyword" name="keyword" class="layui-input zx-keyword" placeholder="请输入关键字"/>
+		    <button class="layui-btn" id="btnQuery">查询</button>
 		  </div>
 		<table class="layui-hide" id="grid"></table>
 		

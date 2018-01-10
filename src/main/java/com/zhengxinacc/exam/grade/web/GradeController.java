@@ -10,11 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,12 +44,11 @@ public class GradeController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/loadList")
-	public JSONObject loadList(Integer page, Integer limit){
-		Order order = new Order(Direction.DESC, "createDate");
-		Pageable pageable = new PageRequest(page-1, limit, new Sort(order));
-		
-		Page<Grade> pager = gradeRepository.findAll(pageable);
-		
+	public JSONObject loadList(Integer page, Integer limit, String keyword){
+		JSONObject param = new JSONObject();
+		param.put("property", "createDate");
+		param.put("keyword", keyword);
+		Page<Grade> pager = gradeService.findAll(page, limit, param, Direction.DESC);
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("message", "");

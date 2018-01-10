@@ -5,6 +5,8 @@ package com.zhengxinacc.exam.grade.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import com.zhengxinacc.exam.grade.domain.Grade;
@@ -24,4 +26,6 @@ public interface GradeRepository extends  MongoRepository<Grade, String>{
 	 * @return
 	 */
 	public List<Grade> findByUsersIn(List<User> users);
+
+	public Page<Grade> findByNameLike(String keyword, Pageable pageable);
 }

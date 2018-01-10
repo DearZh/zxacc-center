@@ -118,7 +118,29 @@ $('#btnDel').click(function(){
 		});
 	});
 });
-
+//查询
+$('#btnQuery').click(function(){
+	var keyword = $('#keyword').val();
+//	if (keyword=='') {
+//		$('#keyword').select();
+//		return false;
+//	}
+	
+	layui.use(['table'], function(){
+		var table = layui.table;
+		table.reload('grid', {
+			page: {curr: 1},
+			where: {
+				keyword: keyword
+			}
+		});
+	});
+});
+$('#keyword').keyup(function(e){
+	if (e.keyCode==13){
+		$('#btnQuery').click();
+	}
+});
 //选择
 $('#btnPick').click(function(){
 	layui.use(['layer'], function(){

@@ -53,11 +53,11 @@ public class PaperController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/loadList")
-	public JSONObject loadList(Integer page, Integer limit){
-		Order order = new Order(Direction.DESC, "createDate");
-		Pageable pageable = new PageRequest(page-1, limit, new Sort(order));
-		
-		Page<Paper> pager = paperRepository.findAll(pageable);
+	public JSONObject loadList(Integer page, Integer limit, String keyword){
+		JSONObject param = new JSONObject();
+		param.put("property", "createDate");
+		param.put("keyword", keyword);
+		Page<Paper> pager = paperService.findAll(page, limit, param, Direction.DESC);
 		
 		JSONObject result = new JSONObject();
 		result.put("code", 0);

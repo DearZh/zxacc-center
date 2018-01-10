@@ -16,6 +16,12 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -114,5 +120,19 @@ public class PaperServiceImpl implements PaperService {
 		});
 		paper.setQuestionList(list);
 		return paper;
+	}
+
+	@Override
+	public Page<Paper> findAll(Integer page, Integer size, JSONObject data, Direction desc) {
+		String property = data.getString("property");
+		String keyword = data.getString("keyword");
+		Order order = new Order(desc, property);
+		Pageable pageable = new PageRequest(page-1, size, new Sort(order));
+		
+		if (StringUtils.isBlank(keyword)){
+			return paperRepository.findAll(pageable);
+		}else{
+			return paperRepository.findByNameLike(keyword, pageable);
+		}
 	}
 }
