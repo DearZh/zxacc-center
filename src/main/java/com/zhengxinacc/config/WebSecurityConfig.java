@@ -26,23 +26,35 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationProvider provider;
 	@Autowired
 	private MyAuthenticationSuccessHandler successHandler;
+	@Autowired
+	private MyAccessDeniedHandler accessDeniedHandler;
 	
 	/**
 	 * 设置拦截规则，设置默认登录页面以及登录成功后的跳转页面 
 	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests()
-			.anyRequest().authenticated() //任何请求,登录后可以访问
+		http
+			.authorizeRequests()
+				.antMatchers("/about").permitAll()
+				.antMatchers("/exam/**").hasAnyRole("ADMIN", "EXAM")
+				.antMatchers("/user/**", "/role/**", "/menu/**", "/permission/**").hasAnyRole("ADMIN")
+				.anyRequest().authenticated() //任何请求,登录后可以访问
 			//注意顺序
-			.and().formLogin()
-			.loginPage("/login")
-			.defaultSuccessUrl("/")
-			.failureUrl("/login?error")
-			.permitAll()
-			.successHandler(successHandler) //登录页面用户任意访问
-			.and().logout()
-			.permitAll(); //注销行为任意访问
+			.and()
+			.formLogin()
+				.loginPage("/login")
+				.defaultSuccessUrl("/")
+				.failureUrl("/login?error")
+				.permitAll()
+				.successHandler(successHandler) //登录页面用户任意访问
+			.and()
+			.logout()
+				.permitAll() //注销行为任意访问
+			.and()
+			.exceptionHandling().accessDeniedHandler(accessDeniedHandler)
+			;
+			
 		//http://blog.csdn.net/u012373815/article/details/55047285
 		http.csrf().disable();
 		
@@ -58,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("zxacc").password("zxacc123$").roles("SYSADMIN");
+		auth.inMemoryAuthentication().withUser("zxacc").password("zxacc123$").roles("ADMIN");
 		//auth.userDetailsService(userService);
 		auth.authenticationProvider(provider);
 	}
