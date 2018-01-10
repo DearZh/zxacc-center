@@ -5,6 +5,7 @@ package com.zhengxinacc.system.user.service;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -17,11 +18,15 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -47,6 +52,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) {
@@ -86,8 +94,20 @@ public class UserServiceImpl implements UserService {
 		
 		Order order = new Order(desc, property);
 		Pageable pageable = new PageRequest(page-1, size, new Sort(order));
+		
 		if (StringUtils.isNotBlank(keyword)){
-			return userRepository.findByUsernameLike(keyword, pageable);
+			//return userRepository.findByUsernameLike(keyword, pageable);
+			Criteria criteria = new Criteria();
+			criteria.orOperator(Criteria.where("username").regex(keyword),
+					Criteria.where("userInfo.username").regex(keyword),
+					Criteria.where("userInfo.phone").regex(keyword));
+			Query query = new Query(criteria);
+			long total = mongoTemplate.count(query, User.class);
+			query.limit(size);
+			query.skip((page-1)*size);
+			List<User> list = mongoTemplate.find(query, User.class);
+			Page<User> pager = new PageImpl<User>(list, pageable, total);
+			return pager;
 		}
 		return userRepository.findAll(pageable);
 	}
