@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 	<head>
 		<th:block th:include="script :: headerFragment" th:with="title='考试系统管理后台'"/>
 		<link th:href="@{/css/main/main.css}" rel="stylesheet" />
@@ -64,16 +65,16 @@
 							<a class="" href="javascript:void(0);">系统管理</a>
 							<dl class="layui-nav-child">
 								<dd>
-									<a href="javascript:void(0);" id="mgrUser">用户管理</a>
+									<a href="javascript:void(0);" _url="/user/list" id="mgrUser">用户管理</a>
 								</dd>
 								<dd>
-									<a href="javascript:void(0);" id="mgrRole">角色管理</a>
+									<a href="javascript:void(0);" _url="/role/list" id="mgrRole">角色管理</a>
 								</dd>
 								<dd>
-									<a href="javascript:void(0);" id="mgrMenu">菜单管理</a>
+									<a href="javascript:void(0);" _url="/menu/list" id="mgrMenu">菜单管理</a>
 								</dd>
 								<dd>
-									<a href="javascript:void(0);" id="mgrPermission">权限管理</a>
+									<a href="javascript:void(0);" _url="/permission/list" id="mgrPermission">权限管理</a>
 								</dd>
 							</dl></li>
 						<li class="layui-nav-item">

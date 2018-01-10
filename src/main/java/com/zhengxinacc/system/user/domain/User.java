@@ -54,7 +54,7 @@ public class User extends BaseBean implements UserDetails {
         	for (Role role : roles) {
         		if (role.getPermissions()!=null){
         			for (Permission permission : role.getPermissions()){
-		        		auths.add(new SimpleGrantedAuthority(permission.getName()));
+		        		auths.add(new SimpleGrantedAuthority(permission.getKey()));
 		        	}
         		}
 	        }

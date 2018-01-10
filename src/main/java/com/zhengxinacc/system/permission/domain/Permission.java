@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.zhengxinacc.config.BaseBean;
 import com.zhengxinacc.system.role.domain.Role;
 
 /**
@@ -21,11 +22,11 @@ import com.zhengxinacc.system.role.domain.Role;
 @Document(collection="sys_permission")
 @Getter
 @Setter
-public class Permission {
+public class Permission extends BaseBean {
 
 	@Id
 	private String id;
 	private String name;
 	private String key;
-	private List<Role> roles;
+	
 }
