@@ -52,7 +52,7 @@ public class GradeController extends BaseController {
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("message", "");
-		result.put("count", pager.getSize());
+		result.put("count", pager.getTotalElements());
 		
 		JSONArray dataArr = new JSONArray();
 		List<Grade> list = pager.getContent();

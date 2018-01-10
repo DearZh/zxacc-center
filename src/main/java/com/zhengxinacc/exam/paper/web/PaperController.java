@@ -62,7 +62,7 @@ public class PaperController extends BaseController {
 		JSONObject result = new JSONObject();
 		result.put("code", 0);
 		result.put("message", "");
-		result.put("count", pager.getSize());
+		result.put("count", pager.getTotalElements());
 		
 		JSONArray dataArr = new JSONArray();
 		List<Paper> list = pager.getContent();

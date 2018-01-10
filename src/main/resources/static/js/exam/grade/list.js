@@ -1,5 +1,8 @@
-var userIds = [];
-var userNames = [];
+function init(){
+	window.userIds = [];
+	window.userNames = [];
+}
+
 //渲染grid
 layui.use(['table', 'laydate'], function(){
 	var table = layui.table;
@@ -18,6 +21,9 @@ layui.use(['table', 'laydate'], function(){
 	        {field:'createDate', title: '创建日期', sort: true},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
+	    done: function(res, curr, count){
+	    	$('.layui-table-body').height($(window).height()-140);
+	    },
 	    page: true
 	});
 	
@@ -27,6 +33,7 @@ layui.use(['table', 'laydate'], function(){
 
 //新增和保存
 $('#btnAdd, #btnEdit').click(function(){
+	init();
 	var _this = this;
 	layui.use(['layer', 'table'], function(){
 		var layer = layui.layer;
@@ -56,6 +63,7 @@ $('#btnAdd, #btnEdit').click(function(){
 		}else{
 			$('#id').val('');
 			$('input[name="name"]').val('');
+			$('.zx-user-panel').empty();
 		}
 		
 		layer.open({
