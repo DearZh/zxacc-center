@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -71,7 +72,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User save(User user) {
+	public User save(User tmpUser) {
+		//如果有账号相同的用户，不提醒，直接覆盖
+		User user = userRepository.findByUsername(tmpUser.getUsername());
+		if (user!=null){
+			BeanUtils.copyProperties(tmpUser, user, new String[]{"id"});
+		}
 		//用户密码为空，初始化
 		if (StringUtils.isBlank(user.getPassword())){
 			String salt = String.valueOf(Calendar.getInstance().getTimeInMillis());
