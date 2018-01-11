@@ -33,6 +33,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhengxinacc.system.permission.repository.PermissionRepository;
+import com.zhengxinacc.system.permission.service.PermissionService;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.domain.UserInfo;
 import com.zhengxinacc.system.user.repository.UserRepository;
@@ -52,7 +54,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+	@Autowired
+	private PermissionService permissionService;
 	@Autowired
 	private MongoTemplate mongoTemplate;
 	
@@ -62,6 +65,7 @@ public class UserServiceImpl implements UserService {
         if (user==null) {
             throw new UsernameNotFoundException("用户名不存在");
         }
+        user.setAuthorities(permissionService.getAuthorities(user));
         logger.debug("username:" + user.getUsername()+";password:" + user.getPassword());
         return user;
 	}

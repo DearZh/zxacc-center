@@ -3,6 +3,10 @@
  */
 package com.zhengxinacc.system.permission.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,12 +15,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.system.permission.domain.Permission;
 import com.zhengxinacc.system.permission.repository.PermissionRepository;
 import com.zhengxinacc.system.role.domain.Role;
+import com.zhengxinacc.system.role.repository.RoleRepository;
+import com.zhengxinacc.system.user.domain.User;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -28,6 +36,8 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Autowired
 	private PermissionRepository permissionRepository;
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Override
 	public Page<Permission> findAll(Integer page, Integer size, JSONObject data, Direction desc) {
@@ -60,6 +70,28 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public void delete(String id) {
 		permissionRepository.delete(id);
+	}
+
+	@Override
+	public List<GrantedAuthority> getAuthorities(User user) {
+		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
+        List<Role> roles = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));//user.getRoles();
+        if (roles!=null){
+        	for (Role role : roles) {
+        		if (role.getPermissions()!=null){
+        			role.getPermissions().forEach(permission -> {
+        				if (!permission.getKey().startsWith("ROLE_")){
+        					permission.setKey("ROLE_" + permission.getKey());
+        				}
+        				auths.add(new SimpleGrantedAuthority(permission.getKey()));
+        			});
+        		}
+	        }
+        }
+        if (auths.size()==0){
+        	auths.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return auths;
 	}
 	
 	

@@ -4,13 +4,17 @@
 package com.zhengxinacc.system.user.domain;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +24,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zhengxinacc.config.BaseBean;
 import com.zhengxinacc.system.permission.domain.Permission;
+import com.zhengxinacc.system.permission.service.PermissionService;
 import com.zhengxinacc.system.role.domain.Role;
 
 /**
@@ -35,6 +40,7 @@ public class User extends BaseBean implements UserDetails {
 	 * @author eko.zhan at 2017年12月23日 下午3:23:39
 	 */
 	private static final long serialVersionUID = 110895296317295676L;
+	
 	@Id
 	private String id;
 	private String username;
@@ -42,28 +48,10 @@ public class User extends BaseBean implements UserDetails {
 	@JSONField(serialize=false)
 	private String salt;
 	private UserInfo userInfo;
-	private List<Role> roles;
-
-	@JsonIgnore
-	@JSONField(serialize=false)
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
-        List<Role> roles = getRoles();
-        if (roles!=null){
-        	for (Role role : roles) {
-        		if (role.getPermissions()!=null){
-        			for (Permission permission : role.getPermissions()){
-		        		auths.add(new SimpleGrantedAuthority(permission.getKey()));
-		        	}
-        		}
-	        }
-        }
-        if (auths.size()==0){
-        	auths.add(new SimpleGrantedAuthority("ROLE_USER"));
-        }
-        return auths;
-	}
+//	@DBRef
+//	private List<Role> roles; //role 中已经引用了 user，如果多对多双向引用会导致死循环，由于role量少，所以采用直接记录
+	@Transient
+	private List<GrantedAuthority> authorities;
 
 	@JsonIgnore
 	@JSONField(serialize=false)

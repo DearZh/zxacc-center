@@ -3,11 +3,13 @@
  */
 package com.zhengxinacc.system.role.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
@@ -54,12 +56,23 @@ public class RoleController extends BaseController {
 		
 		JSONArray dataArr = new JSONArray();
 		List<Role> list = pager.getContent();
+		List<String> tmpList = new ArrayList<String>();
 		for (Role role : list){
 			JSONObject tmp = (JSONObject)JSONObject.toJSON(role);
 			tmp.put("createDate", DateFormatUtils.format(role.getCreateDate(), "yyyy-MM-dd"));
-			
+			tmpList.clear();
+			role.getPermissions().forEach(permission -> {
+				tmpList.add(permission.getName());
+			});
+			tmp.put("permissionNames", tmpList.toArray(new String[tmpList.size()]));
+			tmpList.clear();
+			role.getUsers().forEach(user -> {
+				tmpList.add(user.getUserInfo().getUsername());
+			});
+			tmp.put("userNames", tmpList.toArray(new String[tmpList.size()]));
 			dataArr.add(tmp);
 		}
+		
 		
 		result.put("data", dataArr);
 		
@@ -71,12 +84,16 @@ public class RoleController extends BaseController {
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String key = request.getParameter("key");
+		String permissionIds = request.getParameter("permissionIds");
+		String userIds = request.getParameter("userIds");
 		
 		JSONObject param = new JSONObject();
 		param.put("id", id);
 		param.put("name", name);
 		param.put("key", key);
 		param.put("username", getUsername(request));
+		param.put("permissionIds", permissionIds);
+		param.put("userIds", userIds);
 		
 		roleService.save(param);
 		

@@ -1,3 +1,9 @@
+function init(){
+	window.permissionIds = [];
+	window.permissionNames = [];
+	window.userIds = [];
+	window.userNames = [];
+}
 /* 不区分大小写 */
 String.prototype.endWithIgnoreCase = function(end){
 	try{
@@ -22,8 +28,8 @@ layui.use(['table', 'laydate'], function(){
 		    {type:'numbers'},
 	        {field:'name', title: '名称', sort: true},
 	        {field:'key', title: '标识', sort: true},
-	        {field:'', title: '权限', sort: true},
-	        {field:'birthday', title: '用户', sort: true},
+	        {field:'permissionNames', title: '权限', sort: true},
+	        {field:'userNames', title: '用户', sort: true},
 	        {field:'createDate', title: '创建日期', sort: true},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
@@ -42,6 +48,7 @@ layui.use(['table', 'laydate'], function(){
 
 //新增
 $('#btnAdd, #btnEdit').click(function(){
+	init();
 	var _this = this;
 	layui.use(['layer', 'table'], function(){
 		var layer = layui.layer;
@@ -52,10 +59,30 @@ $('#btnAdd, #btnEdit').click(function(){
 			var checked = table.checkStatus('grid');
 			if (checked.data.length>0){
 				var row = checked.data[0];
-				
 				$('#id').val(row.id);
 				$('input[name="name"]').val(row.name);
 				$('input[name="key"]').val(row.key);
+				
+				if (row.permissions){
+					$(row.permissions).each(function(i, item){
+						if ($.inArray(item.id, permissionIds)==-1){
+							permissionIds.push(item.id);
+							permissionNames.push(item.name);
+						}
+					});
+					$('.zx-permission-panel').html(permissionNames.join(' '));
+				}
+				
+				if (row.users){
+					$(row.users).each(function(i, item){
+						if ($.inArray(item.id, userIds)==-1){
+							userIds.push(item.id);
+							userNames.push(item.userInfo.username);
+						}
+					});
+					$('.zx-user-panel').html(userNames.join(' '));
+				}
+				
 			}else{
 				return false;
 			}
@@ -85,6 +112,8 @@ $('#btnAdd, #btnEdit').click(function(){
 					id: $('#id').val(),
 					name: $('input[name="name"]').val(),
 					key: $('input[name="key"]').val(),
+					permissionIds: permissionIds.join(','),
+					userIds: userIds.join(',')
 				}
 				
 				$.post($.kbase.ctx + '/role/save', param, function(data){
@@ -127,11 +156,6 @@ $('#btnDel').click(function(){
 //用户查询
 $('#btnQuery').click(function(){
 	var keyword = $('#keyword').val();
-//	if (keyword=='') {
-//		$('#keyword').select();
-//		return false;
-//	}
-	
 	layui.use(['table'], function(){
 		var table = layui.table;
 		table.reload('grid', {
@@ -146,4 +170,73 @@ $('#keyword').keyup(function(e){
 	if (e.keyCode==13){
 		$('#btnQuery').click();
 	}
+});
+//选择权限
+$('#btnPick').click(function(){
+	layui.use(['layer'], function(){
+		var layer = layui.layer;
+		layer.open({
+			type: 2,
+			btn: ['保存'],
+			area: ['1000px', '460px'],
+			content: $.kbase.ctx + '/permission/list?_p=role',
+			yes: function(index, layero){
+				var _win = $(layero).find("iframe")[0].contentWindow;
+				//获取用户grid里选中的数据
+				var checked = _win.laytable.checkStatus('grid');
+				if (checked.data.length>0){
+					$(checked.data).each(function(i, item){
+						if ($.inArray(item.id, permissionIds)==-1){
+							permissionIds.push(item.id);
+							permissionNames.push(item.name);
+						}
+					});
+					$('.zx-permission-panel').html(permissionNames.join(' '));
+				}else{
+					return false;
+				}
+				layer.close(index);
+			}
+		});
+	});
+});
+$('#btnClear').click(function(){
+	permissionIds = [];
+	permissionNames = [];
+	$('.zx-permission-panel').empty();
+});
+
+//选择用户
+$('#btnPickUser').click(function(){
+	layui.use(['layer'], function(){
+		var layer = layui.layer;
+		layer.open({
+			type: 2,
+			btn: ['保存'],
+			area: ['1000px', '460px'],
+			content: $.kbase.ctx + '/user/list?_p=role',
+			yes: function(index, layero){
+				var _win = $(layero).find("iframe")[0].contentWindow;
+				//获取用户grid里选中的数据
+				var checked = _win.laytable.checkStatus('grid');
+				if (checked.data.length>0){
+					$(checked.data).each(function(i, item){
+						if ($.inArray(item.id, userIds)==-1){
+							userIds.push(item.id);
+							userNames.push(item.usernameCN);
+						}
+					});
+					$('.zx-user-panel').html(userNames.join(' '));
+				}else{
+					return false;
+				}
+				layer.close(index);
+			}
+		});
+	});
+});
+$('#btnClearUser').click(function(){
+	userIds = [];
+	userNames = [];
+	$('.zx-user-panel').empty();
 });
