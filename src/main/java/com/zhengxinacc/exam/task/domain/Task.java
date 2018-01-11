@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -34,5 +35,6 @@ public class Task extends BaseBean {
 	private Integer limit; //当前用户已用时，单位秒
 	private Map<String, TaskQuestion> questions;
 	private Integer status = 0; //0-草稿状态 1-提交  
+	@Transient
 	List<Map.Entry<String, TaskQuestion>> questionList;
 }

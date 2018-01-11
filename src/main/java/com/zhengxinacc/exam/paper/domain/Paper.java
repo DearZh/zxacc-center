@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -40,6 +41,7 @@ public class Paper extends BaseBean {
 	private Date beginDate; //考试有效时间-开始
 	private Date endDate; //考试有效时间-结束
 	private Map<String, PaperQuestion> questions; //{"score":"10","id":"5a4c6f378149763070f067cf","order":""},{"score":"10","id":"5a4c6f3e8149763070f067d0","order":""}
+	@Transient
 	List<Map.Entry<String, PaperQuestion>> questionList;
 	
 }
