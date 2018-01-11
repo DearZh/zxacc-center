@@ -16,6 +16,7 @@ import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -124,10 +125,12 @@ public class UserController extends BaseController {
 		userInfo.setEmail(email);
 		user.setUserInfo(userInfo);
 		
-		user = userService.save(user);
-		
-		return writeSuccess(user);
-		
+		try{
+			user = userService.save(user);
+			return writeSuccess(user);
+		}catch(UsernameNotFoundException e){
+			return writeFailure(e.getMessage());
+		}
 	}
 	
 	@RequestMapping("/delete")

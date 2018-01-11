@@ -73,10 +73,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User save(User tmpUser) {
-		//如果有账号相同的用户，不提醒，直接覆盖
-		User user = userRepository.findByUsername(tmpUser.getUsername());
-		if (user!=null){
-			BeanUtils.copyProperties(tmpUser, user, new String[]{"id"});
+		User user = tmpUser;
+		if (StringUtils.isBlank(tmpUser.getId())){
+			//新用户如果有账号相同的用户，不提醒，直接覆盖
+			user = userRepository.findByUsername(tmpUser.getUsername());
+			if (user!=null){
+				//BeanUtils.copyProperties(tmpUser, user, new String[]{"id"});
+				logger.warn("用户名 " + user.getUsername() + " 存在重复");
+				throw new UsernameNotFoundException("用户名 " + user.getUsername() + " 存在重复");
+			}
 		}
 		//用户密码为空，初始化
 		if (StringUtils.isBlank(user.getPassword())){

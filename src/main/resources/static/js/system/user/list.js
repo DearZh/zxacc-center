@@ -106,6 +106,7 @@ $('#btnAdd, #btnEdit').click(function(){
 				}
 				
 				$.post($.kbase.ctx + '/user/save', param, function(data){
+					console.log(data);
 					if (data.success){
 						layer.alert('保存成功');
 						table.reload('grid', {
@@ -118,6 +119,8 @@ $('#btnAdd, #btnEdit').click(function(){
 								}
 							}
 						});
+					}else{
+						layer.alert(data.response.message);
 					}
 					layer.close(index);
 				});

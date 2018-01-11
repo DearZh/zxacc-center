@@ -10,35 +10,6 @@
 			<div class="layui-header">
 				<div class="layui-logo">麻城正欣会计</div>
 				<!-- 头部区域（可配合layui已有的水平导航） -->
-				<ul class="layui-nav layui-layout-left">
-					<li class="layui-nav-item"><a href="javascript:void(0);">首页</a></li>
-					<li class="layui-nav-item"><a href="javascript:void(0);">系统管理</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:void(0);" lay-id="mgrUser">用户管理</a>
-							</dd>
-							<dd>
-								<a href="javascript:void(0);">角色管理</a>
-							</dd>
-							<dd>
-								<a href="javascript:void(0);">权限管理</a>
-							</dd>
-						</dl></li>
-					<li class="layui-nav-item">
-						<a href="javascript:void(0);">考试管理</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:void(0);">题目管理</a>
-							</dd>
-							<dd>
-								<a href="javascript:void(0);">班级管理</a>
-							</dd>
-							<dd>
-								<a href="javascript:void(0);">试卷管理</a>
-							</dd>
-						</dl>
-					</li>
-				</ul>
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item">
 						<a href="javascript:void(0);"> 
@@ -61,7 +32,7 @@
 				<div class="layui-side-scroll">
 					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 					<ul class="layui-nav layui-nav-tree" lay-filter="zxYNav">
-						<li class="layui-nav-item layui-nav-itemed">
+						<li class="layui-nav-item layui-nav-itemed" sec:authorize="hasRole('ADMIN')">
 							<a class="" href="javascript:void(0);">系统管理</a>
 							<dl class="layui-nav-child">
 								<dd>
@@ -77,7 +48,7 @@
 									<a href="javascript:void(0);" _url="/permission/list" id="mgrPermission">权限管理</a>
 								</dd>
 							</dl></li>
-						<li class="layui-nav-item">
+						<li class="layui-nav-item" sec:authorize="hasAnyRole('ADMIN', 'EXAM')">
 							<a href="javascript:void(0);">考试管理</a>
 							<dl class="layui-nav-child">
 								<dd>
