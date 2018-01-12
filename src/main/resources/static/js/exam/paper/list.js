@@ -202,7 +202,21 @@ $('#keyword').keyup(function(e){
 		$('#btnQuery').click();
 	}
 });
-
+//查阅成绩单
+$('#btnView').click(function(){
+	layui.use(['layer'], function(){
+		var layer = layui.layer;
+		layer.open({
+			type: 2,
+			btn: ['保存'],
+			area: ['1000px', '460px'],
+			content: $.kbase.ctx + '/exam/paper/result?_p=paper',
+			yes: function(index, layero){
+				layer.close(index);
+			}
+		});
+	});
+});
 //选择班级
 $('#btnPick').click(function(){
 	layui.use(['layer'], function(){

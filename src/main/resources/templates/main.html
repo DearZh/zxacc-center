@@ -62,6 +62,14 @@
 								</dd>
 							</dl>
 						</li>
+						<li class="layui-nav-item">
+							<a href="javascript:void(0);">我的考试</a>
+							<dl class="layui-nav-child">
+								<dd>
+									<a href="javascript:void(0);" _url="/exam/question/view" id="mgrMyTask">成绩查阅</a>
+								</dd>
+							</dl>
+						</li>
 					</ul>
 				</div>
 			</div>
@@ -70,11 +78,11 @@
 				<!-- 内容主体区域 -->
 				<div class="layui-tab layui-tab-brief" lay-filter="zxTab" lay-allowClose="true">
 					<ul class="layui-tab-title">
-						<li class="layui-this" lay-id="mgrUser">用户管理</li>
+						<li class="layui-this" lay-id="home" lay-allowclose="false">首页</li>
 					</ul>
 					<div class="layui-tab-content">
 						<div class="layui-tab-item layui-show">
-							<iframe th:src="@{/user/list}"></iframe>
+							<iframe th:src="@{/index}"></iframe>
 						</div>
 					</div>
 				</div>
