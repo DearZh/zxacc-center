@@ -28,6 +28,8 @@ import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.exam.paper.repository.PaperRepository;
 import com.zhengxinacc.exam.paper.service.PaperService;
 import com.zhengxinacc.exam.question.repository.QuestionRepository;
+import com.zhengxinacc.exam.task.domain.Task;
+import com.zhengxinacc.exam.task.repository.TaskRepository;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -44,6 +46,8 @@ public class PaperController extends BaseController {
 	private GradeRepository gradeRepository;
 	@Resource
 	private PaperService paperService;
+	@Resource
+	private TaskRepository taskRepository;
 
 	/**
 	 * 加载数据
@@ -114,5 +118,36 @@ public class PaperController extends BaseController {
 	public JSONObject delete(String id){
 		paperRepository.delete(id);
 		return writeSuccess();
+	}
+	
+	/**
+	 * 获取所有考试成绩
+	 * @author eko.zhan at 2018年1月12日 下午12:58:31
+	 * @return
+	 */
+	@RequestMapping("/loadTask")
+	public JSONObject loadTask(String paperId){
+		Paper paper = paperRepository.findOne(paperId);
+		List<Task> list = taskRepository.findByPaper(paper);
+		JSONObject result = new JSONObject();
+		result.put("code", 0);
+		result.put("message", "");
+		result.put("count", list.size());
+		
+		JSONArray dataArr = new JSONArray();
+		for (Task task : list){
+			JSONObject tmp = (JSONObject)JSONObject.toJSON(task);
+			tmp.put("createDate", DateFormatUtils.format(task.getCreateDate(), "yyyy-MM-dd HH:mm"));
+			tmp.put("modifyDate", DateFormatUtils.format(task.getModifyDate(), "yyyy-MM-dd HH:mm"));
+			if (task.getStatus()==1){
+				tmp.put("statusDesc", "已完成");
+			}else{
+				tmp.put("statusDesc", "考试中");
+			}
+			dataArr.add(tmp);
+		}
+		
+		result.put("data", dataArr);
+		return result;
 	}
 }

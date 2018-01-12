@@ -204,17 +204,41 @@ $('#keyword').keyup(function(e){
 });
 //查阅成绩单
 $('#btnView').click(function(){
-	layui.use(['layer'], function(){
+	layui.use(['layer', 'table'], function(){
 		var layer = layui.layer;
-		layer.open({
-			type: 2,
-			btn: ['保存'],
-			area: ['1000px', '460px'],
-			content: $.kbase.ctx + '/exam/paper/result?_p=paper',
-			yes: function(index, layero){
-				layer.close(index);
-			}
-		});
+		var table = layui.table;
+		var checked = table.checkStatus('grid');
+		if (checked.data.length>0){
+			var row = checked.data[0];
+			table.render({
+				elem: '#taskGrid',
+				id: 'taskGrid',
+				url: $.kbase.ctx + '/exam/paper/loadTask',
+				cellMinWidth: 80,
+				cols: [[
+				    {type:'numbers'},
+			        {field:'createUser', title: '学员', width: 120, sort: true},
+			        {field:'score', title: '得分', width: 80, sort: true},
+			        {field:'createDate', title: '开始时间', width: 160, sort: true},
+			        {field:'modifyDate', title: '完成时间', width: 160, sort: true},
+			        {field:'statusDesc', title: '状态', width: 120, sort: true}
+			    ]],
+			    width: 700,
+			    //height: 350,
+			    where: {
+			    	paperId: row.id
+			    }
+			});
+			layer.open({
+				type: 1,
+				btn: ['保存'],
+				area: ['720px', '360px'],
+				content: $('.layui-table-view:eq(1)'),
+				yes: function(index, layero){
+					layer.close(index);
+				}
+			});
+		}
 	});
 });
 //选择班级
