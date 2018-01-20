@@ -14,6 +14,10 @@ import org.springframework.stereotype.Component;
 import com.eastrobot.log.annotation.Interval;
 import com.zhengxinacc.exam.question.domain.QuestionCate;
 import com.zhengxinacc.exam.question.repository.QuestionCateRepository;
+import com.zhengxinacc.system.permission.domain.Permission;
+import com.zhengxinacc.system.permission.repository.PermissionRepository;
+import com.zhengxinacc.system.role.domain.Role;
+import com.zhengxinacc.system.role.repository.RoleRepository;
 import com.zhengxinacc.util.SystemKeys;
 
 /**
@@ -27,6 +31,10 @@ public class StartupRunner implements CommandLineRunner {
 
 	@Resource
 	private QuestionCateRepository questionCateRepository;
+	@Resource
+	private PermissionRepository permissionRepository;
+	@Resource
+	private RoleRepository roleRepository;
 	
 	@Override
 	@Interval
@@ -44,8 +52,39 @@ public class StartupRunner implements CommandLineRunner {
 			saveQuestionCate("单选题", questionCate.getId());
 			saveQuestionCate("多选题", questionCate.getId());
 			saveQuestionCate("判断题", questionCate.getId());
-			
 		}
+		
+		//创建权限
+		List<Permission> pList = permissionRepository.findAll();
+		if (pList.size()==0){
+			savePermission("管理员", "ADMIN");
+			savePermission("普通用户", "USER");
+			savePermission("考试管理员", "EXAM");
+		}
+		//创建角色
+		List<Role> rList = roleRepository.findAll();
+		if (rList.size()==0){
+			saveRole("系统管理员", "SYS_ADMIN");
+			saveRole("考试管理员", "SYS_EXAM");
+		}
+	}
+	
+	private void saveRole(String name, String key) {
+		Role role = new Role();
+		role.setName(name);
+		role.setKey(key);
+		role.setCreateUser(SystemKeys.ANONYMOUS);
+		role.setModifyUser(SystemKeys.ANONYMOUS);
+		roleRepository.save(role);
+	}
+
+	private void savePermission(String name, String key) {
+		Permission permission = new Permission();
+		permission.setName(name);
+		permission.setKey(key);
+		permission.setCreateUser(SystemKeys.ANONYMOUS);
+		permission.setModifyUser(SystemKeys.ANONYMOUS);
+		permissionRepository.save(permission);
 	}
 	/**
 	 * 保存 QuestionCate
