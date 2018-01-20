@@ -1,7 +1,8 @@
 //渲染grid
-layui.use(['table', 'laydate'], function(){
+layui.use(['table', 'laydate', 'layer'], function(){
 	var table = layui.table;
 	var laydate = layui.laydate;
+	window.layer = layui.layer;
 
 	table.render({
 		elem: '#grid',
@@ -28,5 +29,11 @@ layui.use(['table', 'laydate'], function(){
 				});
 			}
 		}
+	});
+});
+
+$('.zx-nav-img').click(function(){
+	layer.confirm('确定进入首页吗', function(index, layero){
+		location.href = $.kbase.ctx + '/main';
 	});
 });
