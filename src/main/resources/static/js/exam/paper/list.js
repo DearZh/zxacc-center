@@ -226,15 +226,15 @@ $('#btnView').click(function(){
 			        {field:'statusDesc', title: '状态', width: 120, sort: true}
 			    ]],
 			    width: 700,
-			    //height: 350,
+			    height: 260,
 			    where: {
 			    	paperId: row.id
 			    }
 			});
 			layer.open({
 				type: 1,
-				btn: ['保存'],
-				area: ['720px', '360px'],
+				btn: ['关闭'],
+				area: ['720px', '380px'],
 				content: $('.layui-table-view:eq(1)'),
 				yes: function(index, layero){
 					layer.close(index);

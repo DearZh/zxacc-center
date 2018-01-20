@@ -57,15 +57,15 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 		logger.debug(user);
 		request.getSession().setAttribute(SystemKeys.CURRENT_USER, user);
 		
-		List<Role> list = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));
-		if (list!=null){
-			for (Role r : list){
-				if (r.getKey().contains("SYS_")){
-					super.setDefaultTargetUrl("/main");
-					break;
-				}
-			}
-		}
+//		List<Role> list = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));
+//		if (list!=null){
+//			for (Role r : list){
+//				if (r.getKey().contains("SYS_")){
+//					super.setDefaultTargetUrl("/main");
+//					break;
+//				}
+//			}
+//		}
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}
