@@ -4,6 +4,8 @@
 package com.zhengxinacc.config;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.zhengxinacc.system.role.domain.Role;
+import com.zhengxinacc.system.role.repository.RoleRepository;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.service.UserService;
 import com.zhengxinacc.util.SystemKeys;
@@ -32,6 +36,8 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RoleRepository roleRepository;
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request,
@@ -51,6 +57,15 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 		logger.debug(user);
 		request.getSession().setAttribute(SystemKeys.CURRENT_USER, user);
 		
+		List<Role> list = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));
+		if (list!=null){
+			for (Role r : list){
+				if (r.getKey().contains("SYS_")){
+					super.setDefaultTargetUrl("/main");
+					break;
+				}
+			}
+		}
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}
