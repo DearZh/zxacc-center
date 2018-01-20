@@ -19,4 +19,5 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 
 	public List<Task> findByPaper(Paper paper);
 	public Task findByPaperAndCreateUser(Paper paper, String username);
+	public List<Task> findByCreateUser(String username);
 }

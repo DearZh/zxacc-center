@@ -75,8 +75,12 @@ public class PaperController extends BaseController {
 			JSONObject tmp = (JSONObject)JSONObject.toJSON(paper);
 			tmp.put("createDate", DateFormatUtils.format(paper.getCreateDate(), "yyyy-MM-dd"));
 			String grades = "";
-			for (Grade grade : paper.getGrades()){
-				grades += grade.getName() + " ";
+			if (paper.getGrades()!=null){
+				for (Grade grade : paper.getGrades()){
+					if (grade!=null){
+						grades += grade.getName() + " ";
+					}
+				}
 			}
 			tmp.put("gradeName", grades);
 			dataArr.add(tmp);

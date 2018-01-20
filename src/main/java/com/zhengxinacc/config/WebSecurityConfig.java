@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers("/about").permitAll()
 				.antMatchers("/user/loadData", "/user/save").authenticated()
-				.antMatchers("/exam/task/**").hasAnyRole("USER")
+				.antMatchers("/exam/task/**").hasAnyRole("ADMIN", "EXAM", "USER")
 				.antMatchers("/exam/**").hasAnyRole("ADMIN", "EXAM")
 				.antMatchers("/user/**", "/role/**", "/menu/**", "/permission/**").hasAnyRole("ADMIN")
 				.anyRequest().authenticated() //任何请求,登录后可以访问

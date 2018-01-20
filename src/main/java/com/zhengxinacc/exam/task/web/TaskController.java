@@ -40,7 +40,7 @@ public class TaskController extends BaseController {
 	private TaskService taskService;
 	
 	@RequestMapping("/loadList")
-	public JSONObject list(HttpServletRequest request){
+	public JSONObject loadList(HttpServletRequest request){
 		List<Paper> paperList = paperService.findByUser(getCurrentUser(request));
 		if (paperList==null) paperList = new ArrayList<Paper>();
 		
@@ -62,6 +62,34 @@ public class TaskController extends BaseController {
 			if (task!=null){
 				tmp.put("task", task);
 			}
+			dataArr.add(tmp);
+		}
+		
+		result.put("data", dataArr);
+		
+		return result;
+	}
+	
+	@RequestMapping("/loadMyList")
+	public JSONObject loadMyList(HttpServletRequest request){
+		List<Task> list = taskRepository.findByCreateUser(getUsername(request));
+		
+		JSONObject result = new JSONObject();
+		result.put("code", 0);
+		result.put("message", "");
+		result.put("count", list.size());
+		
+		JSONArray dataArr = new JSONArray();
+		for (Task task : list){
+			JSONObject tmp = (JSONObject)JSONObject.toJSON(task);
+			tmp.put("createDate", DateFormatUtils.format(task.getCreateDate(), "yyyy-MM-dd HH:mm"));
+			tmp.put("modifyDate", DateFormatUtils.format(task.getModifyDate(), "yyyy-MM-dd HH:mm"));
+			if (task.getStatus()==1){
+				tmp.put("statusDesc", "已完成");
+			}else{
+				tmp.put("statusDesc", "考试中");
+			}
+			tmp.put("paperName", task.getPaper().getName());
 			dataArr.add(tmp);
 		}
 		

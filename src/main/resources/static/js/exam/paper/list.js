@@ -44,7 +44,7 @@ $('#btnAdd, #btnEdit').click(function(){
 			if (checked.data.length>0){
 				var row = checked.data[0];
 				
-				console.log(row);
+				//console.log(row);
 				
 				$('#id').val(row.id);
 				$('input[name="name"]').val(row.name);
@@ -53,8 +53,10 @@ $('#btnAdd, #btnEdit').click(function(){
 				//渲染班级
 				if (row.grades!=null && row.grades.length>0){
 					$(row.grades).each(function(i, item){
-						gradeIds.push(item.id);
-						gradeNames.push(item.name);
+						if (item){
+							gradeIds.push(item.id);
+							gradeNames.push(item.name);
+						}
 					});
 					$('.zx-grade-panel').html(gradeNames.join(' '));
 				}
