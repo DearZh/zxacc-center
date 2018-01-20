@@ -39,5 +39,26 @@ layui.use('element', function(){
 		}
 		element.tabChange('zxTab', $(_this).attr('id'));
 	});
+	
+	element.on('tabDelete(zxTab)', function(data){
+		if (data.index==0){
+			return false;
+		}
+	});
 });
 
+//
+$('#navInfo, #navPasswd').click(function(){
+	var _this = this;
+	layui.use('element', function(){
+		var element = layui.element;
+		if ($('[lay-id="' + $(_this).attr('id') + '"]').length==0){
+			element.tabAdd('zxTab', {
+			    title: $(_this).text(),
+			    content: '<iframe src="' + $.kbase.ctx + $(_this).attr('_url') + '"></iframe>',
+			    id: $(_this).attr('id')
+			});
+		}
+		element.tabChange('zxTab', $(_this).attr('id'));
+	});
+});

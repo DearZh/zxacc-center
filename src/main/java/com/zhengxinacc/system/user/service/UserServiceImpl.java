@@ -183,5 +183,13 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 	}
+
+	@Override
+	public void changePwd(User user, String passwd) {
+		String saltBase64 = user.getSalt();
+		String salt = new String(Base64.decodeBase64(saltBase64));
+		user.setPassword(EncryptUtils.encode(passwd, salt));
+		save(user);
+	}
 	
 }

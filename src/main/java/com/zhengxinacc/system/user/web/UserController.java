@@ -28,6 +28,7 @@ import com.zhengxinacc.config.BaseController;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.domain.UserInfo;
 import com.zhengxinacc.system.user.service.UserService;
+import com.zhengxinacc.util.SystemKeys;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
@@ -127,6 +128,10 @@ public class UserController extends BaseController {
 		
 		try{
 			user = userService.save(user);
+			//如果是当前用户，则刷新session
+			if (user.getId().equals(getCurrentUser(request).getId())){
+				request.getSession().setAttribute(SystemKeys.CURRENT_USER, user);
+			}
 			return writeSuccess(user);
 		}catch(UsernameNotFoundException e){
 			return writeFailure(e.getMessage());

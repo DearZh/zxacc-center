@@ -39,6 +39,10 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
         /*我的试卷*/registry.addViewController("/exam/task/list").setViewName("exam/task/list");
         /*我答完后的试卷*/registry.addViewController("/exam/task/read").setViewName("exam/task/read");
         /*我的答题卡*/registry.addViewController("/exam/task/exec").setViewName("exam/task/exec");
+        
+        //个人中心
+        /*基本资料*/registry.addViewController("/personal/info").setViewName("personal/info");
+        /*安全设置*/registry.addViewController("/personal/passwd").setViewName("personal/passwd");
 
 		super.addViewControllers(registry);
 	}

@@ -63,4 +63,10 @@ public interface UserService extends UserDetailsService {
 	 * @param file
 	 */
 	public void importUsers(MultipartFile file, String username);
+	/**
+	 * 更新密码
+	 * @author eko.zhan at 2018年1月20日 下午1:30:57
+	 * @param passwd
+	 */
+	public void changePwd(User user, String passwd);
 }
