@@ -4,7 +4,7 @@
 ### 技术点
 * spring-boot v1.5.8
 * mongodb v3.4.3
-* spring-security
+* spring-security v4.2.3
 
 ### 业务
 1. 组织架构管理
@@ -15,7 +15,7 @@
 3. 学员考试
 
 ### 界面预览
-![scan](src/main/resources/static/DATAS/demo-scan.jpg)
-![login](src/main/resources/static/DATAS/demo-login.jpg)
-![list](src/main/resources/static/DATAS/demo-list.jpg)
-![task](src/main/resources/static/DATAS/demo-task.jpg)
+![scan](src/main/resources/static/DATAS/demo-scan.jpg =400)
+![login](src/main/resources/static/DATAS/demo-login.jpg =400)
+![list](src/main/resources/static/DATAS/demo-list.jpg =400)
+![task](src/main/resources/static/DATAS/demo-task.jpg =400)
