@@ -118,9 +118,22 @@ public class PaperController extends BaseController {
 		return writeSuccess();
 	}
 	
+	/**
+	 * 试卷删除
+	 * 如果试卷已经存在考试记录，则不能删除
+	 * @author eko.zhan at 2018年3月9日 上午10:23:08
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("/delete")
 	public JSONObject delete(String id){
-		paperRepository.delete(id);
+		Paper paper = paperRepository.findOne(id);
+		List<Task> taskList = taskRepository.findByPaper(paper);
+		if (taskList.size()==0){
+			//paperRepository.delete(id);
+		}else{
+			return writeFailure("当前试卷已存在考试，无法删除");
+		}
 		return writeSuccess();
 	}
 	

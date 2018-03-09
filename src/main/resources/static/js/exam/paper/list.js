@@ -172,6 +172,8 @@ $('#btnDel').click(function(){
 				$.post($.kbase.ctx + '/exam/paper/delete', param, function(data){
 					if (data.success){
 						table.reload('grid', {page: {curr: 1}});
+					}else{
+						layer.alert(data.response.message);
 					}
 				}, 'json');
 			}else{
