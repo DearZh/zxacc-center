@@ -198,4 +198,41 @@ public class QuestionController extends BaseController {
 		questionCateRepository.delete(cate);
 		return writeSuccess();
 	}
+	
+	/**
+	 * 移动知识点至分类
+	 * @author eko.zhan at 2018年3月8日 下午9:11:47
+	 * @param cateId
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping("/move")
+	public JSONObject move(String cateId, String ids){
+		QuestionCate cate = questionCateRepository.findOne(cateId);
+		
+		String[] idArr = ids.split(",");
+		for (String id : idArr){
+			Question question = questionRepository.findOne(id);
+			question.setCate(cate);
+			questionRepository.save(question);
+		}
+		
+		return writeSuccess();
+	}
+	
+	/**
+	 * 分类移动
+	 * @author eko.zhan at 2018年3月9日 上午10:10:52
+	 * @param cateId
+	 * @param ids
+	 * @return
+	 */
+	@RequestMapping("/moveCate")
+	public JSONObject moveCate(String cateId, String targetCateId){
+		QuestionCate cate = questionCateRepository.findOne(cateId);
+		
+		cate.setPid(targetCateId);
+		questionCateRepository.save(cate);
+		return writeSuccess();
+	}
 }

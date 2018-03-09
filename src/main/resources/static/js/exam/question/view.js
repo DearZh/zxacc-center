@@ -80,6 +80,11 @@ layui.use(['layer', 'table', 'form'], function(){
 
 /***********************  左侧分类目录树  ****************************/
 var setting = {
+	edit: {
+		enable: true,
+		showRemoveBtn: false,
+		showRenameBtn: false
+	},
     view: {
         addHoverDom: addHoverDom,
         removeHoverDom: removeHoverDom
@@ -109,6 +114,21 @@ var setting = {
 			var cateId = treeNode.id;
 			cateId = cateId=='ROOT'?'':cateId;
 			laytable.reload('grid', {page: {curr: 1}, where: {cateId: cateId}});
+		},
+		onDrop: function(event, treeId, treeNodes, targetNode, moveType){
+//			console.log(treeNodes);
+//			console.log(targetNode);
+//			console.log(moveType);
+			if (treeNodes.length>0){
+				var node = treeNodes[0];
+				var param = {
+					targetCateId: targetNode.id,
+					cateId: node.id
+				}
+				$.post($.kbase.ctx + '/exam/question/moveCate', param, function(data){
+					
+				}, 'json');
+			}
 		}
 	}
 };
@@ -348,6 +368,57 @@ $('#btnDel').click(function(){
 		layer.close(index);
 	});
 });
+//移动题目至分类
+$('#btnMove').click(function(){
+	var checked = laytable.checkStatus('grid');
+	if (checked.data.length==0) return false;
+	
+	layer.open({
+		type: 2,
+		btn: ['确定', '取消'],
+		area: ['600px', '400px'],
+		content: $.kbase.ctx + '/exam/question/cate',
+		yes: function(index, layero){
+			//TODO 保存问题和答案
+			
+			console.log(layero);
+			console.log($(layero).find('iframe').length);
+			
+			var _win = $(layero).find('iframe')[0].contentWindow;
+			var zTree = _win.$.fn.zTree.getZTreeObj("tree");
+			var treeNodes = zTree.getSelectedNodes();
+			if (treeNodes.length==0){
+				layer.alert('请选择所属分类');
+				return false;
+			}
+			var treeNode = treeNodes[0];
+			if (treeNode.id=='ROOT'){
+				layer.alert('请选择子分类');
+				return false;
+			}
+			
+			var ids = [];
+			$(checked.data).each(function(i, item){
+				ids.push(item.id);
+			});
+			var param = {
+				ids: ids.join(','),
+				cateId: treeNode.id
+			}
+			$.post($.kbase.ctx + '/exam/question/move', param, function(data){
+				//刷新grid
+				laytable.reload('grid', {
+					page: {
+						curr: 1 //重新从第 1 页开始
+					}
+				});
+				layer.close(index);
+			}, 'json');
+		}
+	});
+	
+});
+
 //增加答案
 $('body').on('click', '.zx-ans-add', function(){
 	var type = $('input[name="type"]:checked').val();
