@@ -7,6 +7,8 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.util.SystemKeys;
@@ -126,4 +128,16 @@ public class BaseController {
 			return user.getUserInfo().getUsername();
 		}
 	}
+	
+	/**
+	 * 全局异常捕获
+	 * @author eko.zhan at 2018年3月14日 下午8:44:09
+	 * @param e
+	 * @return
+	 */
+	@ExceptionHandler(Exception.class)
+    public JSONObject handleException(Exception e) {
+        e.printStackTrace();
+        return writeFailure(e.getMessage());
+    }
 }
