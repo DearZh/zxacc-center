@@ -135,6 +135,9 @@ public class UserController extends BaseController {
 			return writeSuccess(user);
 		}catch(UsernameNotFoundException e){
 			return writeFailure(e.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return writeFailure(e.getMessage());
 		}
 	}
 	

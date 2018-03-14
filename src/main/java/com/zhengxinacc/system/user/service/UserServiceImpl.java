@@ -81,6 +81,8 @@ public class UserServiceImpl implements UserService {
 				//BeanUtils.copyProperties(tmpUser, user, new String[]{"id"});
 				logger.warn("用户名 " + user.getUsername() + " 存在重复");
 				throw new UsernameNotFoundException("用户名 " + user.getUsername() + " 存在重复");
+			}else{
+				user = tmpUser;
 			}
 		}
 		//用户密码为空，初始化
