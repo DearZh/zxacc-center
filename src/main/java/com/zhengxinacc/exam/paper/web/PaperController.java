@@ -130,7 +130,7 @@ public class PaperController extends BaseController {
 		Paper paper = paperRepository.findOne(id);
 		List<Task> taskList = taskRepository.findByPaper(paper);
 		if (taskList.size()==0){
-			//paperRepository.delete(id);
+			paperRepository.delete(id);
 		}else{
 			return writeFailure("当前试卷已存在考试，无法删除");
 		}
