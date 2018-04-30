@@ -28,6 +28,16 @@ layui.use(['table', 'laydate'], function(){
 	    page: true
 	});
 	
+	var date = new Date();
+	$('#startDate').val(dateFns.format(date, 'YYYY-MM-DD'));
+	date.setTime(date.getTime() + 604800000);
+	$('#endDate').val(dateFns.format(date, 'YYYY-MM-DD'));
+	laydate.render({
+	    elem: '#startDate'
+	});
+	laydate.render({
+	    elem: '#endDate'
+	});
 });
 
 //新增和编辑
@@ -162,8 +172,10 @@ $('#btnDel').click(function(){
 		var layer = layui.layer;
 		var table = layui.table;
 		
+		var checked = table.checkStatus('grid');
+		if (checked.data.length==0) return false;
+		
 		layer.confirm('确定删除吗', function(index){
-			var checked = table.checkStatus('grid');
 			if (checked.data.length>0){
 				var row = checked.data[0];
 				var param = {
@@ -182,6 +194,36 @@ $('#btnDel').click(function(){
 			layer.close(index);
 		});
 	});
+});
+//试卷复制
+$('#btnCopy').click(function(){
+	layui.use(['layer', 'table'], function(){
+		var layer = layui.layer;
+		var table = layui.table;
+		
+		var checked = table.checkStatus('grid');
+		if (checked.data.length==0) return false;
+		
+		layer.confirm('确定复制吗', function(index){
+			if (checked.data.length>0){
+				var row = checked.data[0];
+				var param = {
+					id: row.id
+				}
+				$.post($.kbase.ctx + '/exam/paper/copy', param, function(data){
+					if (data.success){
+						table.reload('grid', {page: {curr: 1}});
+					}else{
+						layer.alert(data.response.message);
+					}
+				}, 'json');
+			}else{
+				return false;
+			}
+			layer.close(index);
+		});
+	});
+	
 });
 //查询
 $('#btnQuery').click(function(){

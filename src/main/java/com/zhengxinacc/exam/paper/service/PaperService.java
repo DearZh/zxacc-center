@@ -50,4 +50,10 @@ public interface PaperService {
 	 * @return
 	 */
 	public Page<Paper> findAll(Integer page, Integer size, JSONObject data, Direction desc);
+	/**
+	 * 复制试卷
+	 * @author eko.zhan at 2018年3月15日 下午8:02:54
+	 * @param id
+	 */
+	public void copy(String id);
 }

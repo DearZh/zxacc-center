@@ -167,4 +167,12 @@ public class PaperController extends BaseController {
 		result.put("data", dataArr);
 		return result;
 	}
+	
+	@RequestMapping("/copy")
+	public JSONObject copy(String id){
+		paperService.copy(id);
+		
+		
+		return writeSuccess();
+	}
 }

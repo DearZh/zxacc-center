@@ -135,4 +135,15 @@ public class PaperServiceImpl implements PaperService {
 			return paperRepository.findByNameLike(keyword, pageable);
 		}
 	}
+
+	@Override
+	public void copy(String id) {
+		/*
+		 * 步骤
+		 * 1、复制试卷
+		 * 2、复制班级
+		 * 3、复制题目
+		 */
+		Paper oPaper = paperRepository.findOne(id);
+	}
 }
