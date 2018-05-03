@@ -175,7 +175,7 @@ $('.zx-next').click(function(){
 $('.zx-submit').click(function(){
 	//校验用户是否有未回答的试题
 	if ($('.zx-ques-panel').find('.layui-btn-primary').length>0){
-		layer.alert('尚有未完成的试题，请完成后提交');
+		layer.msg('尚有未完成的试题，请完成后提交');
 		return false;
 	}
 	
@@ -192,6 +192,14 @@ $('.zx-submit').click(function(){
 			//layer.close(index);
 		}, 'json');
 	});
+});
+/* 答题卡 */
+$('.zx-card').click(function(){
+	if ($('.zx-card-panel:hidden').length>0){
+		$('.zx-card-panel').show(200);
+	}else{
+		$('.zx-card-panel').hide(200);
+	}
 });
 //监听 window 离开事件，
 //TODO 离开之前自动保存
