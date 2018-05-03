@@ -33,6 +33,7 @@ layui.use(['table', 'laydate', 'layer'], function(){
 });
 
 $('.zx-nav-img').click(function(){
+	//有管理权限的用户，才可以进入首页，在前端通过 sec:authorize 控制
 	layer.confirm('确定进入首页吗', function(index, layero){
 		location.href = $.kbase.ctx + '/main';
 	});
