@@ -10,11 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +25,6 @@ import com.zhengxinacc.exam.grade.repository.GradeRepository;
 import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.exam.paper.repository.PaperRepository;
 import com.zhengxinacc.exam.paper.service.PaperService;
-import com.zhengxinacc.exam.question.repository.QuestionRepository;
 import com.zhengxinacc.exam.task.domain.Task;
 import com.zhengxinacc.exam.task.repository.TaskRepository;
 
@@ -56,7 +53,7 @@ public class PaperController extends BaseController {
 	 * @param limit
 	 * @return
 	 */
-	@RequestMapping("/loadList")
+	@GetMapping("/loadList")
 	public JSONObject loadList(Integer page, Integer limit, String keyword){
 		JSONObject param = new JSONObject();
 		param.put("property", "createDate");
@@ -98,13 +95,12 @@ public class PaperController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/save")
+	@PostMapping("/save")
 	public JSONObject save(HttpServletRequest request){
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
 		String[] gradeIds = request.getParameterValues("gradeIds[]"); //班级id数组
 		String questions = request.getParameter("questions"); //json数组字符串
-		System.out.println(questions);
 		
 		JSONObject param = new JSONObject();
 		param.put("id", id);
@@ -119,13 +115,31 @@ public class PaperController extends BaseController {
 	}
 	
 	/**
+	 * 设置试卷启用/停用状态
+	 * @author eko.zhan at 2018年5月5日 下午2:13:25
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/enable")
+	public JSONObject enable(String id){
+		Paper paper = paperRepository.findOne(id);
+		if (paper.getDelFlag()==0){
+			paper.setDelFlag(1);
+		}else{
+			paper.setDelFlag(0);
+		}
+		paperRepository.save(paper);
+		return writeSuccess();
+	}
+	
+	/**
 	 * 试卷删除
 	 * 如果试卷已经存在考试记录，则不能删除
 	 * @author eko.zhan at 2018年3月9日 上午10:23:08
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
+	@PostMapping("/delete")
 	public JSONObject delete(String id){
 		Paper paper = paperRepository.findOne(id);
 		List<Task> taskList = taskRepository.findByPaper(paper);
@@ -142,7 +156,7 @@ public class PaperController extends BaseController {
 	 * @author eko.zhan at 2018年1月12日 下午12:58:31
 	 * @return
 	 */
-	@RequestMapping("/loadTask")
+	@GetMapping("/loadTask")
 	public JSONObject loadTask(String paperId){
 		Paper paper = paperRepository.findOne(paperId);
 		List<Task> list = taskRepository.findByPaper(paper);

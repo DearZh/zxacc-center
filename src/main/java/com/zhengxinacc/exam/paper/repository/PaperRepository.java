@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.zhengxinacc.exam.grade.domain.Grade;
 import com.zhengxinacc.exam.paper.domain.Paper;
@@ -25,6 +26,7 @@ public interface PaperRepository extends MongoRepository<Paper, String> {
 	 * @param grades
 	 * @return
 	 */
+	@Query("{'delFlag': 0}")
 	public List<Paper> findByGradesIn(List<Grade> grades);
 
 	public Page<Paper> findByNameLike(String keyword, Pageable pageable);

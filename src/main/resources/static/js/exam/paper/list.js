@@ -23,7 +23,10 @@ layui.use(['table', 'laydate'], function(){
 	        {field:'total', title: '总分', width: 80, sort: true},
 	        {field:'limit', title: '限时', width: 80, sort: true},
 	        {field:'createDate', title: '创建日期', width: 120, sort: true},
-	        {field:'createUser', title: '创建人', width: 120, sort: true}
+	        {field:'createUser', title: '创建人', width: 120, sort: true},
+	        {field:'delFlag', title: '状态', width: 80, templet: function(data){
+	        	return data.delFlag==0?'启用':'停用';
+	        }, sort: true}
 	    ]],
 	    page: true
 	});
@@ -156,15 +159,40 @@ $('#btnAdd, #btnEdit').click(function(){
 		});
 	});
 });
+//试卷启用或停用
+$('#btnEnable').click(function(){
+	layui.use(['layer', 'table'], function(){
+		var layer = layui.layer;
+		var table = layui.table;
+		var checked = table.checkStatus('grid');
+		if (checked.data.length>0){
+			var row = checked.data[0];
+			var desc = row.delFlag==0?'停用':'启用';
+			layer.confirm('确定' + desc + '吗', function(index){
+				var param = {
+					id: row.id
+				}
+				$.post($.kbase.ctx + '/exam/paper/enable', param, function(data){
+					if (data.success){
+						table.reload('grid', {page: {curr: 1}});
+					}else{
+						layer.alert(data.response.message);
+					}
+					layer.close(index);
+				}, 'json');
+			});
+		}
+	});
+});
 //删除
 $('#btnDel').click(function(){
 	layui.use(['layer', 'table'], function(){
 		var layer = layui.layer;
 		var table = layui.table;
 		
-		layer.confirm('确定删除吗', function(index){
-			var checked = table.checkStatus('grid');
-			if (checked.data.length>0){
+		var checked = table.checkStatus('grid');
+		if (checked.data.length>0){
+			layer.confirm('删除试卷会相应的删除所有考试记录，无法恢复，确定删除吗', function(index){
 				var row = checked.data[0];
 				var param = {
 					id: row.id
@@ -175,12 +203,10 @@ $('#btnDel').click(function(){
 					}else{
 						layer.alert(data.response.message);
 					}
+					layer.close(index);
 				}, 'json');
-			}else{
-				return false;
-			}
-			layer.close(index);
-		});
+			});
+		}
 	});
 });
 //查询
