@@ -6,5 +6,5 @@
 	<logger name="org.mongodb" level="ERROR"/>
 	<logger name="com.netflix" level="ERROR"/>
 	<logger name="springfox" level="ERROR"/>
-	<logger name="com.eastrobot" level="DEBUG"/>
+	<logger name="com.zhengxinacc" level="DEBUG"/>
 </configuration>

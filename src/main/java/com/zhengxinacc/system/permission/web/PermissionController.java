@@ -1,23 +1,29 @@
 /*
  * Power by www.xiaoi.com
  */
-package com.zhengxinacc.system.permission;
+package com.zhengxinacc.system.permission.web;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.config.BaseController;
 import com.zhengxinacc.system.permission.domain.Permission;
+import com.zhengxinacc.system.permission.repository.PermissionRepository;
 import com.zhengxinacc.system.permission.service.PermissionService;
 
 /**
@@ -29,6 +35,7 @@ import com.zhengxinacc.system.permission.service.PermissionService;
 @RequestMapping("/permission")
 public class PermissionController extends BaseController {
 
+	private final static Log logger = LogFactory.getLog(PermissionController.class);
 	@Autowired
 	private PermissionService permissionService;
 	/**
@@ -38,7 +45,7 @@ public class PermissionController extends BaseController {
 	 * @param limit
 	 * @return
 	 */
-	@RequestMapping("/loadList")
+	@GetMapping("/loadList")
 	public JSONObject loadList(Integer page, Integer limit, String keyword){
 		
 		JSONObject param = new JSONObject();
@@ -65,7 +72,7 @@ public class PermissionController extends BaseController {
 		return result;
 	}
 	
-	@RequestMapping("/save")
+	@PostMapping("/save")
 	public JSONObject save(HttpServletRequest request){
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
@@ -82,9 +89,9 @@ public class PermissionController extends BaseController {
 		return writeSuccess();
 	}
 	
-	@RequestMapping("/delete")
-	public JSONObject delete(String id){
-		permissionService.delete(id);
+	@PostMapping("/delete")
+	public JSONObject delete(@RequestParam(value="ids[]") String[] ids){
+		permissionService.delete(ids);
 		return writeSuccess();
 	}
 }

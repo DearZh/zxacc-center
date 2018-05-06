@@ -25,6 +25,7 @@ public interface PermissionService {
 	public void save(JSONObject param);
 
 	public void delete(String id);
+	public void delete(String[] ids);
 	
 	public List<GrantedAuthority> getAuthorities(User user);
 
