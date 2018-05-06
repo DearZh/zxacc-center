@@ -3,6 +3,7 @@
  */
 package com.zhengxinacc.exam.paper.service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -67,6 +69,20 @@ public class PaperServiceImpl implements PaperService {
 		}
 		paper.setModifyUser(data.getString("username"));
 		paper.setName(data.getString("name"));
+		if (data.get("startDate")!=null){
+			try {
+				paper.setStartDate(DateUtils.parseDate(data.getString("startDate"), "yyyy-MM-dd"));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		if (data.get("endDate")!=null){
+			try {
+				paper.setEndDate(DateUtils.parseDate(data.getString("endDate"), "yyyy-MM-dd"));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
 		paper.setLimit(Integer.valueOf(data.getString("limit")));
 		paper.setTotal(Integer.valueOf(data.getString("total")));
 		

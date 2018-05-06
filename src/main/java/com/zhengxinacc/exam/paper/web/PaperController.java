@@ -89,7 +89,7 @@ public class PaperController extends BaseController {
 	}
 	
 	/**
-	 * 保存班级信息
+	 * 保存试卷信息
 	 * @author eko.zhan at 2017年12月23日 下午7:01:05
 	 * @param principal
 	 * @param request
@@ -99,12 +99,16 @@ public class PaperController extends BaseController {
 	public JSONObject save(HttpServletRequest request){
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
+		String startDate = request.getParameter("startDate");
+		String endDate = request.getParameter("endDate");
 		String[] gradeIds = request.getParameterValues("gradeIds[]"); //班级id数组
 		String questions = request.getParameter("questions"); //json数组字符串
 		
 		JSONObject param = new JSONObject();
 		param.put("id", id);
 		param.put("name", name);
+		param.put("startDate", startDate);
+		param.put("endDate", endDate);
 		param.put("total", request.getParameter("total"));
 		param.put("limit", request.getParameter("limit"));
 		param.put("gradeIds", JSON.toJSONString(gradeIds));

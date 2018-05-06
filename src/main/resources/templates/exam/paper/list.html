@@ -4,7 +4,7 @@
 		<th:block th:include="script :: headerFragment" th:with="title='考试系统管理后台'"/>
 		<link th:href="@{/css/exam/paper/list.css}" rel="stylesheet" />
 	</head>
-	<body>
+	<body class="layui-layout-body">
 		<div class="zx-btn-group">
 			<div th:style="${param._p}?'display:none;':'display:inline;'">
 			    <button class="layui-btn" id="btnAdd">新增</button>
@@ -32,9 +32,9 @@
 					<div class="layui-inline">
 						<label class="layui-form-label">有效期</label>
 						<div class="layui-input-inline" style="width:300px;">
-							<input type="text" class="layui-input" id="startDate" placeholder="yyyy-MM-dd" style="width:100px;display:inline;"/>
+							<input type="text" class="layui-input" id="startDate" name="startDate" placeholder="yyyy-MM-dd" style="width:100px;display:inline;"/>
 							 ~ 
-							<input type="text" class="layui-input" id="endDate" placeholder="yyyy-MM-dd" style="width:100px;display:inline;"/>
+							<input type="text" class="layui-input" id="endDate" name="endDate" placeholder="yyyy-MM-dd" style="width:100px;display:inline;"/>
 						</div>
 					</div>
 				</div>

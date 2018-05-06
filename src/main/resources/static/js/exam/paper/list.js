@@ -6,9 +6,8 @@ function init(){
 	window.questions = []; //存储json数组
 };
 //渲染grid
-layui.use(['table', 'laydate'], function(){
+layui.use(['table'], function(){
 	var table = layui.table;
-	var laydate = layui.laydate;
 
 	table.render({
 		elem: '#grid',
@@ -22,7 +21,11 @@ layui.use(['table', 'laydate'], function(){
 	        {field:'gradeName', title: '班级', width: 120, sort: true},
 	        {field:'total', title: '总分', width: 80, sort: true},
 	        {field:'limit', title: '限时', width: 80, sort: true},
-	        {field:'createDate', title: '创建日期', width: 120, sort: true},
+	        {title: '有效期', width: 220, templet: function(data){
+	        	var startDate = data.startDate!=null?dateFns.format(data.startDate, 'YYYY-MM-DD'):'';
+	        	var endDate = data.endDate!=null?dateFns.format(data.endDate, 'YYYY-MM-DD'):'';
+	        	return startDate + ' ~ ' + endDate;
+	        }, sort: true},
 	        {field:'createUser', title: '创建人', width: 120, sort: true},
 	        {field:'delFlag', title: '状态', width: 80, templet: function(data){
 	        	return data.delFlag==0?'启用':'停用';
@@ -30,26 +33,16 @@ layui.use(['table', 'laydate'], function(){
 	    ]],
 	    page: true
 	});
-	
-	var date = new Date();
-	$('#startDate').val(dateFns.format(date, 'YYYY-MM-DD'));
-	date.setTime(date.getTime() + 604800000);
-	$('#endDate').val(dateFns.format(date, 'YYYY-MM-DD'));
-	laydate.render({
-	    elem: '#startDate'
-	});
-	laydate.render({
-	    elem: '#endDate'
-	});
 });
 
 //新增和编辑
 $('#btnAdd, #btnEdit').click(function(){
 	init();
 	var _this = this;
-	layui.use(['layer', 'table'], function(){
+	layui.use(['layer', 'table', 'laydate'], function(){
 		var layer = layui.layer;
 		var table = layui.table;
+		var laydate = layui.laydate;
 		
 		if (_this.id=='btnEdit'){
 			//编辑
@@ -89,8 +82,18 @@ $('#btnAdd, #btnEdit').click(function(){
 					});
 					$('#quesPanel').html(template('templateQues', questions));
 				}
-				//TODO 编辑渲染
-				
+				var date = new Date();
+				if (row.startDate!=null){
+					laydate.render({elem: '#startDate', value: dateFns.format(row.startDate, 'YYYY-MM-DD')});
+				}else{
+					laydate.render({elem: '#startDate', value: dateFns.format(date, 'YYYY-MM-DD')});
+				}
+				date.setTime(date.getTime() + 604800000);
+				if (row.endDate!=null){
+					laydate.render({elem: '#endDate', value: dateFns.format(row.endDate, 'YYYY-MM-DD')});
+				}else{
+					laydate.render({elem: '#endDate', value: dateFns.format(date, 'YYYY-MM-DD')});
+				}
 			}else{
 				return false;
 			}
@@ -101,6 +104,11 @@ $('#btnAdd, #btnEdit').click(function(){
 			$('input[name="name"]').val('');
 			$('.zx-grade-panel').empty();
 			$('#quesPanel').empty();
+			//有效期默认一个月
+			var date = new Date();
+			laydate.render({elem: '#startDate', value: dateFns.format(date, 'YYYY-MM-DD')});
+			date.setTime(date.getTime() + 31*24*60*60*1000);
+			laydate.render({elem: '#endDate', value: dateFns.format(date, 'YYYY-MM-DD')});
 		}
 		
 		layer.open({
@@ -144,12 +152,13 @@ $('#btnAdd, #btnEdit').click(function(){
 					layer.alert('总分不匹配，请仔细检查分值');
 					return false;
 				}
-				
 				var param = {
 					id: $('#id').val(),
 					name: $('input[name="name"]').val(),
 					limit: $('input[name="limit"]').val(),
 					total: $('input[name="total"]').val(),
+					startDate: $('input[name="startDate"]').val(),
+					endDate: $('input[name="endDate"]').val(),
 					gradeIds: gradeIds,
 					questions: JSON.stringify(_arr)
 				}
