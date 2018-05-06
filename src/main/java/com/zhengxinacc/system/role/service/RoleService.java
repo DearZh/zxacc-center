@@ -22,4 +22,6 @@ public interface RoleService {
 	public void save(JSONObject param);
 
 	public void delete(String id);
+
+	public void delete(String[] ids);
 }

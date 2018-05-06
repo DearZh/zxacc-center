@@ -9,11 +9,13 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
@@ -41,7 +43,7 @@ public class RoleController extends BaseController {
 	 * @param limit
 	 * @return
 	 */
-	@RequestMapping("/loadList")
+	@GetMapping("/loadList")
 	public JSONObject loadList(Integer page, Integer limit, String keyword){
 		
 		JSONObject param = new JSONObject();
@@ -61,14 +63,18 @@ public class RoleController extends BaseController {
 			JSONObject tmp = (JSONObject)JSONObject.toJSON(role);
 			tmp.put("createDate", DateFormatUtils.format(role.getCreateDate(), "yyyy-MM-dd"));
 			tmpList.clear();
-			role.getPermissions().forEach(permission -> {
-				tmpList.add(permission.getName());
-			});
+			if (role.getPermissions()!=null){
+				role.getPermissions().forEach(permission -> {
+					tmpList.add(permission.getName());
+				});
+			}
 			tmp.put("permissionNames", tmpList.toArray(new String[tmpList.size()]));
 			tmpList.clear();
-			role.getUsers().forEach(user -> {
-				tmpList.add(user.getUserInfo().getUsername());
-			});
+			if (role.getUsers()!=null){
+				role.getUsers().forEach(user -> {
+					tmpList.add(user.getUserInfo().getUsername());
+				});
+			}
 			tmp.put("userNames", tmpList.toArray(new String[tmpList.size()]));
 			dataArr.add(tmp);
 		}
@@ -79,7 +85,7 @@ public class RoleController extends BaseController {
 		return result;
 	}
 	
-	@RequestMapping("/save")
+	@PostMapping("/save")
 	public JSONObject save(HttpServletRequest request){
 		String id = request.getParameter("id");
 		String name = request.getParameter("name");
@@ -100,9 +106,9 @@ public class RoleController extends BaseController {
 		return writeSuccess();
 	}
 	
-	@RequestMapping("/delete")
-	public JSONObject delete(String id){
-		roleService.delete(id);
+	@PostMapping("/delete")
+	public JSONObject delete(@RequestParam(value="ids[]") String[] ids){
+		roleService.delete(ids);
 		return writeSuccess();
 	}
 }

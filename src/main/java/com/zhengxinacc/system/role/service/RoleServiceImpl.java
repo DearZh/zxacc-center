@@ -110,4 +110,10 @@ public class RoleServiceImpl implements RoleService {
 		roleRepository.delete(id);
 	}
 
+	@Override
+	public void delete(String[] ids) {
+		List<String> idList = Arrays.asList(ids);
+		idList.forEach(id -> delete(id));
+	}
+
 }
