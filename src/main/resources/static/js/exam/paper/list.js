@@ -88,7 +88,7 @@ $('#btnAdd, #btnEdit').click(function(){
 				}else{
 					laydate.render({elem: '#startDate', value: dateFns.format(date, 'YYYY-MM-DD')});
 				}
-				date.setTime(date.getTime() + 604800000);
+				date.setTime(date.getTime() + 31*24*60*60*1000);
 				if (row.endDate!=null){
 					laydate.render({elem: '#endDate', value: dateFns.format(row.endDate, 'YYYY-MM-DD')});
 				}else{
