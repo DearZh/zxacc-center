@@ -3,15 +3,19 @@
  */
 package com.zhengxinacc.config;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.eastrobot.log.annotation.Interval;
+import com.zhengxinacc.exam.paper.domain.Paper;
+import com.zhengxinacc.exam.paper.repository.PaperRepository;
 import com.zhengxinacc.exam.question.domain.QuestionCate;
 import com.zhengxinacc.exam.question.repository.QuestionCateRepository;
 import com.zhengxinacc.system.permission.domain.Permission;
@@ -21,6 +25,10 @@ import com.zhengxinacc.system.role.repository.RoleRepository;
 import com.zhengxinacc.util.SystemKeys;
 
 /**
+ * <pre class="code">
+ * 注意 spring quartz 和 schedule 的区别
+ * &#064;Configuration 和 &#064;Component 的区别 https://blog.csdn.net/isea533/article/details/78072133
+ * </pre>
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
  * @date 2018年1月3日 上午9:55:12
  * @version 1.0
@@ -35,6 +43,24 @@ public class StartupRunner implements CommandLineRunner {
 	private PermissionRepository permissionRepository;
 	@Resource
 	private RoleRepository roleRepository;
+	
+	@Resource
+	private PaperRepository paperRepository;
+	
+	
+	/**
+	 * 每天凌晨2点执行试卷有效期检查
+	 * @author eko.zhan at 2018年5月6日 下午5:29:57
+	 */
+	@Scheduled(cron="0 0 2 * * ?")
+	//@Scheduled(cron="0/5 * * * * ?") //测试用
+	public void validPaper(){
+		List<Paper> list = paperRepository.findByEndDateLessThan(new Date());
+		list.forEach(paper -> {
+			paper.setDelFlag(1);
+			paperRepository.save(paper);
+		});
+	}
 	
 	@Override
 	@Interval
