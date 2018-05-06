@@ -24,6 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -56,6 +59,8 @@ public class PaperServiceImpl implements PaperService {
 	private GradeService gradeService;
 	@Resource
 	private QuestionRepository questionRepository;
+	@Resource
+	private MongoTemplate mongoTemplate;
 	
 	@Override
 	public Paper save(JSONObject data) {
@@ -116,7 +121,12 @@ public class PaperServiceImpl implements PaperService {
 		List<User> users = Arrays.asList(new User[]{user});
 		List<Grade> gradeList = gradeRepository.findByUsersIn(users);
 		
-		return paperRepository.findByGradesIn(gradeList);
+		Query query = new Query(Criteria.where("delFlag").is(0)
+				.andOperator(Criteria.where("grades").in(gradeList)));
+		return mongoTemplate.find(query, Paper.class);
+		
+		//TODO 为什么用下面这个方法无法获取返回值
+//		return paperRepository.findByGradesIn(gradeList);
 	}
 
 	@Override
