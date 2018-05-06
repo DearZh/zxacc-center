@@ -39,6 +39,12 @@ public class TaskController extends BaseController {
 	@Resource
 	private TaskService taskService;
 	
+	/**
+	 * 我的考试任务
+	 * @author eko.zhan
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/loadList")
 	public JSONObject loadList(HttpServletRequest request){
 		List<Paper> paperList = paperService.findByUser(getCurrentUser(request));

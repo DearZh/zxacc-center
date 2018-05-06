@@ -107,10 +107,10 @@ $('#btnDel').click(function(){
 		var layer = layui.layer;
 		var table = layui.table;
 		
-		layer.confirm('确定删除吗', function(index){
-			var checked = table.checkStatus('grid');
-			if (checked.data.length>0){
-				var row = checked.data[0];
+		var checked = table.checkStatus('grid');
+		if (checked.data.length>0){
+			var row = checked.data[0];
+			layer.confirm('确定删除吗', function(index){
 				var param = {
 					id: row.id
 				}
@@ -118,12 +118,11 @@ $('#btnDel').click(function(){
 					if (data.success){
 						table.reload('grid', {page: {curr: 1}});
 					}
+					layer.close(index);
 				}, 'json');
-			}else{
-				return false;
-			}
-			layer.close(index);
-		});
+			});
+			
+		}
 	});
 });
 //查询

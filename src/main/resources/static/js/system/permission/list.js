@@ -103,23 +103,26 @@ $('#btnDel').click(function(){
 		var layer = layui.layer;
 		var table = layui.table;
 		
-		layer.confirm('确定删除吗', function(index){
-			var checked = table.checkStatus('grid');
-			if (checked.data.length>0){
-				var row = checked.data[0];
+		var checked = table.checkStatus('grid');
+		if (checked.data.length>0){
+			layer.confirm('确定删除吗', function(index){
+				var rows = checked.data;
+				var ids = [];
+				$(rows).each(function(index, item){
+					ids.push(item.id);
+				});
 				var param = {
-					id: row.id
+					ids: ids
 				}
 				$.post($.kbase.ctx + '/permission/delete', param, function(data){
 					if (data.success){
 						table.reload('grid', {page: {curr: 1}});
 					}
+					layer.close(index);
 				}, 'json');
-			}else{
-				return false;
-			}
-			layer.close(index);
-		});
+			});
+		}
+			
 	});
 });
 //用户查询

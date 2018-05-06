@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 	<head>
 		<th:block th:include="script :: headerFragment" th:with="title='我的试卷'"/>
 		<link th:href="@{/css/exam/task/list.css}" rel="stylesheet" />
 	</head>
 	<body class="layui-layout-body">
 		<div class="layui-anim" data-anim="layui-anim-scale">
-			<img th:src="@{/DATAS/zhengxin_logo_600_230.png}" class="zx-nav-img" />
+			<img th:src="@{/DATAS/zhengxin_logo_600_230.png}" class="zx-nav-img" sec:authorize="hasAnyRole('ADMIN', 'EXAM')"/>
+			<img th:src="@{/DATAS/zhengxin_logo_600_230.png}" sec:authorize="hasAnyRole('USER')"/>
 		</div>
 		<table class="layui-hide" id="grid" lay-filter="grid"></table>
 		<script type="text/html" id="toolbar">

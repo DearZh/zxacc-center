@@ -41,9 +41,22 @@ $.post($.kbase.ctx + '/exam/exec/loadPaper', {id: $('#id').val()}, function(data
 	var limit = data.limit || 120*60; //120分钟 limit单位是秒
 	var t = limit; //秒数
 	formatSandglass(t);
-	window.setInterval(function(){
+	window.__sandglass = window.setInterval(function(){
 		formatSandglass(t--);
 		window.tmpLimit = t;
+		//如果倒计时少于10分钟，则给出提示
+		if (t==10*60){
+			layer.msg('距离考试结束还有10分钟');
+		}
+		//如果倒计时少于1分钟，则给出提示
+		if (t==1*60){
+			layer.msg('距离考试结束还有1分钟');
+		}
+		//倒计时结束，强制交卷
+		if (t==0){
+			$('.zx-submit').click();
+			window.clearInterval(window.__sandglass);
+		}
 	}, 1*1000);
 }, 'json');
 //沙漏
@@ -162,7 +175,7 @@ $('.zx-next').click(function(){
 $('.zx-submit').click(function(){
 	//校验用户是否有未回答的试题
 	if ($('.zx-ques-panel').find('.layui-btn-primary').length>0){
-		layer.alert('尚有未完成的试题，请完成后提交');
+		layer.msg('尚有未完成的试题，请完成后提交');
 		return false;
 	}
 	
@@ -179,6 +192,14 @@ $('.zx-submit').click(function(){
 			//layer.close(index);
 		}, 'json');
 	});
+});
+/* 答题卡 */
+$('.zx-card').click(function(){
+	if ($('.zx-card-panel:hidden').length>0){
+		$('.zx-card-panel').show(200);
+	}else{
+		$('.zx-card-panel').hide(200);
+	}
 });
 //监听 window 离开事件，
 //TODO 离开之前自动保存

@@ -73,6 +73,12 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
+	public void delete(String[] ids) {
+		List<String> idList = Arrays.asList(ids);
+		idList.forEach(id -> permissionRepository.delete(id));
+	}
+
+	@Override
 	public List<GrantedAuthority> getAuthorities(User user) {
 		List<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
         List<Role> roles = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));//user.getRoles();
@@ -93,7 +99,5 @@ public class PermissionServiceImpl implements PermissionService {
         }
         return auths;
 	}
-	
-	
 
 }

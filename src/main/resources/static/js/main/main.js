@@ -29,7 +29,8 @@ layui.use('element', function(){
 	
 	//监听Y轴左侧的导航
 	element.on('nav(zxYNav)', function(elem){
-		var _this = $(elem).find('a');
+		if ($(elem).attr('_url')==undefined) return false;
+		var _this = $(elem);
 		if ($('[lay-id="' + $(_this).attr('id') + '"]').length==0){
 			element.tabAdd('zxTab', {
 			    title: $(_this).text(),
