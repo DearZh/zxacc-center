@@ -64,28 +64,34 @@ public class PaperController extends BaseController {
 		result.put("code", 0);
 		result.put("message", "");
 		result.put("count", pager.getTotalElements());
-		
-		JSONArray dataArr = new JSONArray();
+
 		List<Paper> list = pager.getContent();
-		for (Paper paper : list){
-			paper = paperService.setQuestionList(paper);
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(paper);
-			tmp.put("createDate", DateFormatUtils.format(paper.getCreateDate(), "yyyy-MM-dd"));
-			String grades = "";
-			if (paper.getGrades()!=null){
-				for (Grade grade : paper.getGrades()){
-					if (grade!=null){
-						grades += grade.getName() + " ";
-					}
-				}
-			}
-			tmp.put("gradeName", grades);
-			dataArr.add(tmp);
-		}
+//		JSONArray dataArr = new JSONArray();
+//		for (Paper paper : list){
+//			paper = paperService.setQuestionList(paper);
+//			JSONObject tmp = (JSONObject)JSONObject.toJSON(paper);
+//			tmp.put("createDate", DateFormatUtils.format(paper.getCreateDate(), "yyyy-MM-dd"));
+//			String grades = "";
+//			if (paper.getGrades()!=null){
+//				for (Grade grade : paper.getGrades()){
+//					if (grade!=null){
+//						grades += grade.getName() + " ";
+//					}
+//				}
+//			}
+//			tmp.put("gradeName", grades);
+//			dataArr.add(tmp);
+//		}
 		
-		result.put("data", dataArr);
+		result.put("data", list);
 		
 		return result;
+	}
+	
+	@GetMapping("sort")
+	public Paper sort(String id){
+		Paper paper = paperRepository.findOne(id);
+		return paperService.setQuestionList(paper);
 	}
 	
 	/**
@@ -169,20 +175,20 @@ public class PaperController extends BaseController {
 		result.put("message", "");
 		result.put("count", list.size());
 		
-		JSONArray dataArr = new JSONArray();
-		for (Task task : list){
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(task);
-			tmp.put("createDate", DateFormatUtils.format(task.getCreateDate(), "yyyy-MM-dd HH:mm"));
-			tmp.put("modifyDate", DateFormatUtils.format(task.getModifyDate(), "yyyy-MM-dd HH:mm"));
-			if (task.getStatus()==1){
-				tmp.put("statusDesc", "已完成");
-			}else{
-				tmp.put("statusDesc", "考试中");
-			}
-			dataArr.add(tmp);
-		}
+//		JSONArray dataArr = new JSONArray();
+//		for (Task task : list){
+//			JSONObject tmp = (JSONObject)JSONObject.toJSON(task);
+//			tmp.put("createDate", DateFormatUtils.format(task.getCreateDate(), "yyyy-MM-dd HH:mm"));
+//			tmp.put("modifyDate", DateFormatUtils.format(task.getModifyDate(), "yyyy-MM-dd HH:mm"));
+//			if (task.getStatus()==1){
+//				tmp.put("statusDesc", "已完成");
+//			}else{
+//				tmp.put("statusDesc", "考试中");
+//			}
+//			dataArr.add(tmp);
+//		}
 		
-		result.put("data", dataArr);
+		result.put("data", list);
 		return result;
 	}
 	

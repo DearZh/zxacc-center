@@ -18,7 +18,16 @@ layui.use(['table'], function(){
 		    {type:'checkbox'},
 		    {type:'numbers'},
 	        {field:'name', title: '试卷名称', sort: true},
-	        {field:'gradeName', title: '班级', width: 120, sort: true},
+	        {field:'gradeName', title: '班级', width: 120, sort: true, templet: function(data){
+	        	var desc = [];
+	        	var grades = data.grades;
+	        	if (grades!=null){
+	        		$(grades).each(function(index, item){
+	        			desc.push(item.name);
+	        		});
+	        	}
+	        	return desc.join(', ');
+	        }},
 	        {field:'total', title: '总分', width: 80, sort: true},
 	        {field:'limit', title: '限时', width: 80, sort: true},
 	        {title: '有效期', width: 220, templet: function(data){
@@ -67,7 +76,8 @@ $('#btnAdd, #btnEdit').click(function(){
 					$('.zx-grade-panel').html(gradeNames.join(' '));
 				}
 				//问答渲染
-				if (row.questionList!=null && row.questionList.length>0){
+				//if (row.questionList!=null && row.questionList.length>0){
+				$.get($.kbase.ctx + '/exam/paper/sort?id=' + row.id, function(row){
 					$(row.questionList).each(function(i, question){
 						for (var key in question){
 							var item = question[key];
@@ -81,7 +91,9 @@ $('#btnAdd, #btnEdit').click(function(){
 						}
 					});
 					$('#quesPanel').html(template('templateQues', questions));
-				}
+				});
+					
+				//}
 				var date = new Date();
 				if (row.startDate!=null){
 					laydate.render({elem: '#startDate', value: dateFns.format(row.startDate, 'YYYY-MM-DD')});
@@ -298,9 +310,17 @@ $('#btnView').click(function(){
 				    {type:'numbers'},
 			        {field:'createUser', title: '学员', width: 120, sort: true},
 			        {field:'score', title: '得分', width: 80, sort: true},
-			        {field:'createDate', title: '开始时间', width: 160, sort: true},
-			        {field:'modifyDate', title: '完成时间', width: 160, sort: true},
-			        {field:'statusDesc', title: '状态', width: 120, sort: true}
+			        {field:'createDate', title: '开始时间', width: 160, sort: true, templet: function(data){
+			        	var createDate = data.createDate!=null?dateFns.format(data.createDate, 'YYYY-MM-DD HH:mm'):'';
+			        	return createDate;
+			        }},
+			        {field:'modifyDate', title: '完成时间', width: 160, sort: true, templet: function(data){
+			        	var modifyDate = data.modifyDate!=null?dateFns.format(data.modifyDate, 'YYYY-MM-DD HH:mm'):'';
+			        	return modifyDate;
+			        }},
+			        {field:'status', title: '状态', width: 120, sort: true, templet: function(data){
+			        	return data.status==1?'已完成':'考试中';
+			        }}
 			    ]],
 			    width: 700,
 			    height: 260,
@@ -310,11 +330,11 @@ $('#btnView').click(function(){
 			});
 			layer.open({
 				type: 1,
-				btn: ['关闭'],
+				btn: ['分析', '关闭'],
 				area: ['720px', '380px'],
 				content: $('.layui-table-view:eq(1)'),
 				yes: function(index, layero){
-					layer.close(index);
+					alert('开发中，敬请期待');
 				}
 			});
 		}
