@@ -88,6 +88,12 @@ public class PaperController extends BaseController {
 		return result;
 	}
 	
+	/**
+	 * 编辑时试题排序
+	 * @author eko.zhan at 2018年5月11日 下午8:16:00
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("sort")
 	public Paper sort(String id){
 		Paper paper = paperRepository.findOne(id);
