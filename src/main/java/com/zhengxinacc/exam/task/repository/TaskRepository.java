@@ -6,6 +6,7 @@ package com.zhengxinacc.exam.task.repository;
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.exam.task.domain.Task;
@@ -24,6 +25,15 @@ public interface TaskRepository extends MongoRepository<Task, String> {
 	 * @return
 	 */
 	public List<Task> findByPaper(Paper paper);
+	/**
+	 * 根据试卷获取考试任务，主要用于成绩分析，此时不需要带出考试中的试题等多余数据
+	 * @author eko.zhan at 2018年5月12日 下午6:03:56
+	 * @param paper
+	 * @param type 用于识别区分第一个方法
+	 * @return
+	 */
+	@Query(fields="{'id': 1, 'score': 1, 'status': 1, 'createDate': 1, 'modifyDate': 1, 'createUser': 1}")
+	public List<Task> findByPaper(Paper paper, int type);
 	/**
 	 * 根据试卷和用户获取考试任务
 	 * @author eko.zhan

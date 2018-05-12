@@ -54,7 +54,6 @@ public class AnalysisController extends BaseController {
 	public JSONObject execute(String paperId){
 		JSONObject result = new JSONObject();
 		Paper paper = paperRepository.findOne(paperId);
-		result.put("paper", paper);
 		List<Grade> gradeList = paper.getGrades();
 		
 		Double passLine = paper.getTotal()*0.6; //及格线
@@ -70,7 +69,7 @@ public class AnalysisController extends BaseController {
 		List<Task> passUserList = new ArrayList<Task>(); //考试及格学生
 		List<Task> failUserList = new ArrayList<Task>(); //考试不及格学生
 		List<Task> unfinishedUserList = new ArrayList<Task>(); //还在答卷中的学生
-		List<Task> taskList = taskRepository.findByPaper(paper);
+		List<Task> taskList = taskRepository.findByPaper(paper, 1);
 		taskList.forEach(task -> {
 			taskUserSet.add(task.getCreateUser());
 			if (task.getStatus()==1){
@@ -126,6 +125,12 @@ public class AnalysisController extends BaseController {
 //			log.debug(task.getCreateUser() + " --> " + DateFormatUtils.format(task.getModifyDate(), "yyyy-MM-dd HH:mm"));
 //		});
 		result.put("firstFinishList", firstFinishList);
+		
+
+		paper.setGrades(null);
+		paper.setQuestions(null);
+		paper.setQuestionList(null);
+		result.put("paper", paper);
 		
 		return result;
 	}
