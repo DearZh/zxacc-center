@@ -40,7 +40,7 @@ public class TaskController extends BaseController {
 	private TaskService taskService;
 	
 	/**
-	 * 我的考试任务
+	 * 我的考试任务，求速度
 	 * @author eko.zhan
 	 * @param request
 	 * @return
@@ -57,15 +57,15 @@ public class TaskController extends BaseController {
 		
 		JSONArray dataArr = new JSONArray();
 		for (Paper paper : paperList){
+			paper.setGrades(null);
+			paper.setQuestionList(null);
+			paper.setQuestions(null);
 			JSONObject tmp = (JSONObject)JSONObject.toJSON(paper);
-			tmp.put("createDate", DateFormatUtils.format(paper.getCreateDate(), "yyyy-MM-dd"));
-			String grades = "";
-			for (Grade grade : paper.getGrades()){
-				grades += grade.getName() + " ";
-			}
-			tmp.put("gradeName", grades);
 			Task task = taskRepository.findByPaperAndCreateUser(paper, getUsername(request));
-			if (task!=null){
+			if (task!=null){ //判断用户是否考试完毕，只用到了 status 字段
+				task.setPaper(null);
+				task.setQuestionList(null);
+				task.setQuestions(null);
 				tmp.put("task", task);
 			}
 			dataArr.add(tmp);
