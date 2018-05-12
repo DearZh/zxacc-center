@@ -334,7 +334,12 @@ $('#btnView').click(function(){
 				area: ['720px', '380px'],
 				content: $('.layui-table-view:eq(1)'),
 				yes: function(index, layero){
-					alert('开发中，敬请期待');
+					//alert('开发中，敬请期待');
+					parent.addTab({
+						id: 'taskResult', 
+						url: $.kbase.ctx + '/exam/analysis/view?paperId=' + row.id,
+						title: '考试结果分析'
+					});
 				}
 			});
 		}

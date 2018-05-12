@@ -34,13 +34,14 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
         
         //考试管理
         /*试题管理*/registry.addViewController("/exam/question/view").setViewName("exam/question/view");
-        registry.addViewController("/exam/question/cate").setViewName("exam/question/cate");
+        /*?????题目管理*/registry.addViewController("/exam/question/cate").setViewName("exam/question/cate");
         /*班级管理*/registry.addViewController("/exam/grade/list").setViewName("exam/grade/list");
         /*试卷管理*/registry.addViewController("/exam/paper/list").setViewName("exam/paper/list");
         /*我的试卷-后台*/registry.addViewController("/exam/task/view").setViewName("exam/task/view");
         /*我的试卷*/registry.addViewController("/exam/task/list").setViewName("exam/task/list");
         /*我答完后的试卷*/registry.addViewController("/exam/task/read").setViewName("exam/task/read");
         /*我的答题卡*/registry.addViewController("/exam/task/exec").setViewName("exam/task/exec");
+        /*考试结果分析*/registry.addViewController("/exam/analysis/view").setViewName("exam/analysis/view");
         
         //个人中心
         /*基本资料*/registry.addViewController("/personal/info").setViewName("personal/info");
