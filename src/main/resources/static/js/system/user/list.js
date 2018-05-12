@@ -21,12 +21,24 @@ layui.use(['table', 'laydate'], function(){
 		    {type:'checkbox'},
 		    {type:'numbers'},
 	        {field:'username', title: '账号', sort: true},
-	        {field:'usernameCN', title: '用户名', sort: true},
-	        {field:'sexDesc', title: '性别', sort: true},
-	        {field:'birthday', title: '生日', sort: true},
-	        {field:'phone', title: '手机', sort: true},
-	        {field:'email', title: '邮箱', sort: true},
-	        {field:'createDate', title: '创建日期', sort: true},
+	        {field:'usernameCN', title: '用户名', sort: true, templet: function(data){
+	        	return data.userInfo.username;
+	        }},
+	        {field:'sexDesc', title: '性别', sort: true, templet: function(data){
+	        	return data.userInfo.sex==1?'男':'女';
+	        }},
+	        {field:'birthday', title: '生日', sort: true, templet: function(data){
+	        	return data.userInfo.birthday!=null?dateFns.format(data.userInfo.birthday, 'YYYY-MM-DD'):'';
+	        }},
+	        {field:'phone', title: '手机', sort: true, templet: function(data){
+	        	return data.userInfo.phone;
+	        }},
+	        {field:'email', title: '邮箱', sort: true, templet: function(data){
+	        	return data.userInfo.email;
+	        }},
+	        {field:'createDate', title: '创建日期', sort: true, templet: function(data){
+	        	return data.createDate!=null?dateFns.format(data.createDate, 'YYYY-MM-DD'):'';;
+	        }},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
 	    done: function(res, curr, count){
@@ -58,11 +70,11 @@ $('#btnAdd, #btnEdit').click(function(){
 				
 				$('#id').val(row.id);
 				$('input[name="username"]').val(row.username);
-				$('input[name="usernameCN"]').val(row.usernameCN);
-				$('input[name="sex"][value="' + row.sex + '"]').attr('checked', 'checked');
-				$('input[name="birthday"]').val(row.birthday);
-				$('input[name="phone"]').val(row.phone);
-				$('input[name="email"]').val(row.email);
+				$('input[name="usernameCN"]').val(row.userInfo.username);
+				$('input[name="sex"][value="' + row.userInfo.sex + '"]').attr('checked', 'checked');
+				$('input[name="birthday"]').val(row.userInfo.birthday!=null?dateFns.format(row.userInfo.birthday, 'YYYY-MM-DD'):'');
+				$('input[name="phone"]').val(row.userInfo.phone);
+				$('input[name="email"]').val(row.userInfo.email);
 			}else{
 				return false;
 			}

@@ -5,10 +5,12 @@ package com.zhengxinacc.system.user.service;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.CellType;
@@ -16,8 +18,9 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +37,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
-import com.zhengxinacc.system.permission.repository.PermissionRepository;
 import com.zhengxinacc.system.permission.service.PermissionService;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.domain.UserInfo;
@@ -117,7 +119,8 @@ public class UserServiceImpl implements UserService {
 			Criteria criteria = new Criteria();
 			criteria.orOperator(Criteria.where("username").regex(keyword),
 					Criteria.where("userInfo.username").regex(keyword),
-					Criteria.where("userInfo.phone").regex(keyword));
+					Criteria.where("userInfo.phone").regex(keyword))
+					.andOperator(Criteria.where("delFlag").is(0));
 			Query query = new Query(criteria);
 			long total = mongoTemplate.count(query, User.class);
 			query.limit(size);
@@ -126,12 +129,23 @@ public class UserServiceImpl implements UserService {
 			Page<User> pager = new PageImpl<User>(list, pageable, total);
 			return pager;
 		}
-		return userRepository.findAll(pageable);
+		User user = new User();
+		user.setDelFlag(0);
+		ExampleMatcher matcher = ExampleMatcher.matchingAny();
+		Example<User> example = Example.of(user, matcher);
+		return userRepository.findAll(example, pageable);
 	}
 
 	@Override
 	public void delete(String id) {
-		userRepository.delete(id);
+		//用户删除由物理删除修改为逻辑删除
+		String stamp = DateFormatUtils.format(new Date(), "yyyyMMddHHmm");
+		User user = userRepository.findOne(id);
+		user.setDelFlag(1);
+		user.setUsername(user.getUsername() + "_" + stamp);
+		user.getUserInfo().setUsername(user.getUserInfo().getUsername() + "_" + stamp);
+		save(user);
+		//userRepository.delete(id);
 	}
 
 	@Override

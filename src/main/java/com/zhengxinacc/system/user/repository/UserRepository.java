@@ -7,6 +7,7 @@ package com.zhengxinacc.system.user.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.zhengxinacc.system.user.domain.User;
@@ -20,6 +21,7 @@ import com.zhengxinacc.system.user.domain.UserInfo;
 @Repository
 public interface UserRepository extends MongoRepository<User, String>{
 
+	@Query("{'delFlag': 0, 'username': ?0}")
 	public User findByUsername(String username);
 	
 	public Page<User> findByUsernameLike(String username, Pageable pageable);

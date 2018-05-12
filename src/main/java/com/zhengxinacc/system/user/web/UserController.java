@@ -61,24 +61,24 @@ public class UserController extends BaseController {
 		result.put("code", 0);
 		result.put("message", "");
 		result.put("count", pager.getTotalElements());
-		
-		JSONArray dataArr = new JSONArray();
+
 		List<User> list = pager.getContent();
-		for (User user : list){
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(user);
-			tmp.put("usernameCN", user.getUserInfo().getUsername());
-			tmp.put("sexDesc", user.getUserInfo().getSex()==1?"男":"女");
-			tmp.put("email", user.getUserInfo().getEmail());
-			tmp.put("phone", user.getUserInfo().getPhone());
-			if (user.getUserInfo().getBirthday()!=null){
-				tmp.put("birthday", DateFormatUtils.format(user.getUserInfo().getBirthday(), "yyyy-MM-dd"));
-			}
-			tmp.put("createDate", DateFormatUtils.format(user.getCreateDate(), "yyyy-MM-dd"));
-			
-			dataArr.add(tmp);
-		}
+//		JSONArray dataArr = new JSONArray();
+//		for (User user : list){
+//			JSONObject tmp = (JSONObject)JSONObject.toJSON(user);
+//			tmp.put("usernameCN", user.getUserInfo().getUsername());
+//			tmp.put("sexDesc", user.getUserInfo().getSex()==1?"男":"女");
+//			tmp.put("email", user.getUserInfo().getEmail());
+//			tmp.put("phone", user.getUserInfo().getPhone());
+//			if (user.getUserInfo().getBirthday()!=null){
+//				tmp.put("birthday", DateFormatUtils.format(user.getUserInfo().getBirthday(), "yyyy-MM-dd"));
+//			}
+//			tmp.put("createDate", DateFormatUtils.format(user.getCreateDate(), "yyyy-MM-dd"));
+//			
+//			dataArr.add(tmp);
+//		}
 		
-		result.put("data", dataArr);
+		result.put("data", list);
 		
 		return result;
 	}
