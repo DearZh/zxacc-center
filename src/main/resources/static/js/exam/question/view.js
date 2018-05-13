@@ -65,8 +65,12 @@ layui.use(['layer', 'table', 'form'], function(){
 		    {type:'checkbox'},
 		    {type:'numbers'},
 	        {field:'name', title: '问题名称', sort: true},
-	        {field:'typeDesc', title: '类型', width: 100, sort: true},
-	        {field:'createDate', title: '创建日期', width: 120, sort: true},
+	        {field:'typeDesc', title: '类型', width: 100, sort: true, templet: function(row){
+	        	return row.type==0?'单选题':(row.type==1?'多选题':'判断题');
+	        }},
+	        {field:'createDate', title: '创建日期', width: 120, sort: true, templet: function(row){
+	        	return dateFns.format(row.createDate, 'YYYY-MM-DD');
+	        }},
 	        {field:'createUser', title: '创建人', width: 100, sort: true}
 	    ]],
 	    done: function(res, curr, count){
@@ -91,6 +95,7 @@ var setting = {
     },
     async: {
 		enable: true,
+		type: 'GET',
 		url: $.kbase.ctx + '/exam/question/loadCate',
 		autoParam: ['id', 'name', 'level'],
 		otherParam: {},
@@ -221,10 +226,11 @@ $('#btnAdd, #btnEdit').click(function(){
 		var checked = laytable.checkStatus('grid');
 		if (checked.data.length>0){
 			var row = checked.data[0];
-			console.log(row);
 			$('#id').val(row.id); //试题id
-			$('input[name="catename"]').val(row.catename);
-			$('input[name="cateid"]').val(row.cateid);
+			$.get($.kbase.ctx + '/exam/question/loadCateByQuesId?quesId=' + row.id, function(row){
+				$('input[name="catename"]').val(row.name);
+				$('input[name="cateid"]').val(row.id);
+			}, 'json');
 			$('input[name="name"]').val(row.name);
 			$('input[name="type"]').removeAttr('checked');
 			$('input[name="type"][value="' + row.type + '"]').attr('checked', 'checked');

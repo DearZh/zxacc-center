@@ -8,10 +8,13 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.extern.log4j.Log4j;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +33,7 @@ import com.zhengxinacc.exam.question.service.QuestionService;
  * @date 2017年12月24日 上午9:38:06
  * @version 1.0
  */
+@Log4j
 @RestController
 @RequestMapping("/exam/question")
 public class QuestionController extends BaseController {
@@ -104,30 +108,48 @@ public class QuestionController extends BaseController {
 		result.put("message", "");
 		result.put("count", pager.getTotalElements());
 		
-		JSONArray dataArr = new JSONArray();
-		List<Question> list = pager.getContent();
-		for (Question question : list){
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(question);
-			tmp.put("typeDesc", question.getType()==0?"单选题":(question.getType()==1?"多选题":"判断题"));
-			tmp.put("createDate", DateFormatUtils.format(question.getCreateDate(), "yyyy-MM-dd"));
-			tmp.put("cateid", question.getCate().getId());
-			tmp.put("catename", question.getCate().getName());
-			
-			dataArr.add(tmp);
-		}
+//		JSONArray dataArr = new JSONArray();
+//		List<Question> list = pager.getContent();
+//		for (Question question : list){
+//			JSONObject tmp = (JSONObject)JSONObject.toJSON(question);
+//			
+//			log.debug(tmp);
+//			log.debug(question.getCate());
+//			
+//			tmp.put("typeDesc", question.getType()==0?"单选题":(question.getType()==1?"多选题":"判断题"));
+//			tmp.put("createDate", DateFormatUtils.format(question.getCreateDate(), "yyyy-MM-dd"));
+//			tmp.put("cateid", question.getCate().getId());
+//			tmp.put("catename", question.getCate().getName());
+//			
+//			dataArr.add(tmp);
+//		}
 		
-		result.put("data", dataArr);
+		result.put("data", pager.getContent());
 		
 		return result;
 	}
 	
 	/**
-	 * 加载分类树
+	 * 根据题目id获取所在的分类信息
+	 * @author eko.zhan at 2018年5月13日 下午2:06:35
+	 * @param quesId
+	 * @return
+	 */
+	@GetMapping("/loadCateByQuesId")
+	public QuestionCate loadCateByQuesId(String quesId){
+		Question question = questionRepository.findOne(quesId);
+		QuestionCate cate = question.getCate();
+		cate.setQuestions(null);
+		return cate;
+	}
+	
+	/**
+	 * 根据指定的题目分类加载分类树
 	 * @author eko.zhan at 2017年12月24日 上午9:55:37
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/loadCate")
+	@GetMapping("/loadCate")
 	public JSONArray loadCate(String id){
 		JSONArray arr = new JSONArray();
 		if (StringUtils.isBlank(id)){
