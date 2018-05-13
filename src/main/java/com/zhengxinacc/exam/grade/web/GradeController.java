@@ -54,21 +54,21 @@ public class GradeController extends BaseController {
 		result.put("message", "");
 		result.put("count", pager.getTotalElements());
 		
-		JSONArray dataArr = new JSONArray();
-		List<Grade> list = pager.getContent();
-		for (Grade grade : list){
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(grade);
-			tmp.put("createDate", DateFormatUtils.format(grade.getCreateDate(), "yyyy-MM-dd"));
-			if (grade.getUsers()!=null){
-				tmp.put("count", grade.getUsers().size());
-			}else{
-				tmp.put("count", 0);
-			}
-			
-			dataArr.add(tmp);
-		}
+//		JSONArray dataArr = new JSONArray();
+//		List<Grade> list = pager.getContent();
+//		for (Grade grade : list){
+//			JSONObject tmp = (JSONObject)JSONObject.toJSON(grade);
+//			tmp.put("createDate", DateFormatUtils.format(grade.getCreateDate(), "yyyy-MM-dd"));
+//			if (grade.getUsers()!=null){
+//				tmp.put("count", grade.getUsers().size());
+//			}else{
+//				tmp.put("count", 0);
+//			}
+//			
+//			dataArr.add(tmp);
+//		}
 		
-		result.put("data", dataArr);
+		result.put("data", pager.getContent());
 		
 		return result;
 	}
