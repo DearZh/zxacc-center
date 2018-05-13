@@ -28,9 +28,23 @@ layui.use(['table', 'laydate'], function(){
 		    {type:'numbers'},
 	        {field:'name', title: '名称', sort: true},
 	        {field:'key', title: '标识', sort: true},
-	        {field:'permissionNames', title: '权限', sort: true},
-	        {field:'userNames', title: '用户', sort: true},
-	        {field:'createDate', title: '创建日期', sort: true},
+	        {field:'permissionNames', title: '权限', sort: true, templet: function(row){
+	        	var desc = [];
+	        	$(row.permissions).each(function(index, item){
+	        		desc.push(item.name);
+	        	});
+	        	return desc.join(', ');
+	        }},
+	        {field:'userNames', title: '用户', sort: true, templet: function(row){
+	        	var desc = [];
+	        	$(row.users).each(function(index, item){
+	        		desc.push(item.userInfo.username);
+	        	});
+	        	return desc.join(', ');
+	        }},
+	        {field:'createDate', title: '创建日期', sort: true, templet: function(row){
+	        	return dateFns.format(row.createDate, 'YYYY-MM-DD');
+	        }},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
 	    done: function(res, curr, count){

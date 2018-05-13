@@ -56,31 +56,31 @@ public class RoleController extends BaseController {
 		result.put("message", "");
 		result.put("count", pager.getTotalElements());
 		
-		JSONArray dataArr = new JSONArray();
-		List<Role> list = pager.getContent();
-		List<String> tmpList = new ArrayList<String>();
-		for (Role role : list){
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(role);
-			tmp.put("createDate", DateFormatUtils.format(role.getCreateDate(), "yyyy-MM-dd"));
-			tmpList.clear();
-			if (role.getPermissions()!=null){
-				role.getPermissions().forEach(permission -> {
-					tmpList.add(permission.getName());
-				});
-			}
-			tmp.put("permissionNames", tmpList.toArray(new String[tmpList.size()]));
-			tmpList.clear();
-			if (role.getUsers()!=null){
-				role.getUsers().forEach(user -> {
-					tmpList.add(user.getUserInfo().getUsername());
-				});
-			}
-			tmp.put("userNames", tmpList.toArray(new String[tmpList.size()]));
-			dataArr.add(tmp);
-		}
+//		JSONArray dataArr = new JSONArray();
+//		List<Role> list = pager.getContent();
+//		List<String> tmpList = new ArrayList<String>();
+//		for (Role role : list){
+//			JSONObject tmp = (JSONObject)JSONObject.toJSON(role);
+//			tmp.put("createDate", DateFormatUtils.format(role.getCreateDate(), "yyyy-MM-dd"));
+//			tmpList.clear();
+//			if (role.getPermissions()!=null){
+//				role.getPermissions().forEach(permission -> {
+//					tmpList.add(permission.getName());
+//				});
+//			}
+//			tmp.put("permissionNames", tmpList.toArray(new String[tmpList.size()]));
+//			tmpList.clear();
+//			if (role.getUsers()!=null){
+//				role.getUsers().forEach(user -> {
+//					tmpList.add(user.getUserInfo().getUsername());
+//				});
+//			}
+//			tmp.put("userNames", tmpList.toArray(new String[tmpList.size()]));
+//			dataArr.add(tmp);
+//		}
 		
 		
-		result.put("data", dataArr);
+		result.put("data", pager.getContent());
 		
 		return result;
 	}
