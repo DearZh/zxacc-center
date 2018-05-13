@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import lombok.extern.log4j.Log4j;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
@@ -48,13 +50,12 @@ import com.zhengxinacc.util.EncryptUtils;
  * @date 2017年10月23日 下午3:47:24
  * @version 1.0
  */
+@Log4j
 @Service
 public class UserServiceImpl implements UserService {
 	/* 默认密码 */
 	private final static String DEFAULT_PASSWORD = "888888";
 
-	private final static Log logger = LogFactory.getLog(UserServiceImpl.class);
-	
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -69,7 +70,7 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("用户名不存在");
         }
         user.setAuthorities(permissionService.getAuthorities(user));
-        logger.debug("username:" + user.getUsername()+";password:" + user.getPassword());
+        log.debug("username:" + user.getUsername()+";password:" + user.getPassword());
         return user;
 	}
 
@@ -81,7 +82,7 @@ public class UserServiceImpl implements UserService {
 			user = userRepository.findByUsername(tmpUser.getUsername());
 			if (user!=null){
 				//BeanUtils.copyProperties(tmpUser, user, new String[]{"id"});
-				logger.warn("用户名 " + user.getUsername() + " 存在重复");
+				log.warn("用户名 " + user.getUsername() + " 存在重复");
 				throw new UsernameNotFoundException("用户名 " + user.getUsername() + " 存在重复");
 			}else{
 				user = tmpUser;

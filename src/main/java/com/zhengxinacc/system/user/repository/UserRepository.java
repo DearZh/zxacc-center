@@ -21,6 +21,12 @@ import com.zhengxinacc.system.user.domain.UserInfo;
 @Repository
 public interface UserRepository extends MongoRepository<User, String>{
 
+	/**
+	 * 根据指定的账号获取生效中的用户
+	 * @author eko.zhan at 2018年5月13日 下午1:23:43
+	 * @param username
+	 * @return
+	 */
 	@Query("{'delFlag': 0, 'username': ?0}")
 	public User findByUsername(String username);
 	

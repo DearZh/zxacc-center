@@ -11,6 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.log4j.Log4j;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,9 @@ import com.zhengxinacc.util.SystemKeys;
  * @date 2017年12月24日 上午10:32:53
  * @version 1.0
  */
+@Log4j
 @Component(value="successHandler")
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler  {
-	
-	private static final Log logger = LogFactory.getLog(MyAuthenticationSuccessHandler.class);
 	
 	@Autowired
 	private UserService userService;
@@ -52,9 +53,9 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 //		String username = securityContext.getAuthentication().getName();
 		
 		String username = authentication.getName();
-		logger.debug(username);
+		log.debug(username);
 		User user = userService.findByUsername(username);
-		logger.debug(user);
+		log.debug(user);
 		request.getSession().setAttribute(SystemKeys.CURRENT_USER, user);
 		
 //		List<Role> list = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));

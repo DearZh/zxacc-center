@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.extern.log4j.Log4j;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -23,11 +25,10 @@ import org.springframework.stereotype.Component;
  * @date 2018年1月10日 下午1:42:56
  * @version 1.0
  */
+@Log4j
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
 
-	private static Log logger = LogFactory.getLog(MyAccessDeniedHandler.class);
-	
 	@Override
 	public void handle(HttpServletRequest request,
 			HttpServletResponse response,
@@ -36,7 +37,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
-            logger.info("User '" + auth.getName()
+            log.info("User '" + auth.getName()
                     + "' attempted to access the protected URL: "
                     + request.getRequestURI());
         }
