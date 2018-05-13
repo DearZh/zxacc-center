@@ -35,7 +35,6 @@ import com.zhengxinacc.system.permission.service.PermissionService;
 @RequestMapping("/permission")
 public class PermissionController extends BaseController {
 
-	private final static Log logger = LogFactory.getLog(PermissionController.class);
 	@Autowired
 	private PermissionService permissionService;
 	/**
@@ -57,17 +56,7 @@ public class PermissionController extends BaseController {
 		result.put("code", 0);
 		result.put("message", "");
 		result.put("count", pager.getTotalElements());
-		
-		JSONArray dataArr = new JSONArray();
-		List<Permission> list = pager.getContent();
-		for (Permission permission : list){
-			JSONObject tmp = (JSONObject)JSONObject.toJSON(permission);
-			tmp.put("createDate", DateFormatUtils.format(permission.getCreateDate(), "yyyy-MM-dd"));
-			
-			dataArr.add(tmp);
-		}
-		
-		result.put("data", dataArr);
+		result.put("data", pager.getContent());
 		
 		return result;
 	}

@@ -22,7 +22,9 @@ layui.use(['table', 'laydate'], function(){
 		    {type:'numbers'},
 	        {field:'name', title: '名称', sort: true},
 	        {field:'key', title: '标识', sort: true},
-	        {field:'createDate', title: '创建日期', sort: true},
+	        {field:'createDate', title: '创建日期', sort: true, templet: function(row){
+	        	return dateFns.format(row.createDate, 'YYYY-MM-DD');
+	        }},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
 	    done: function(res, curr, count){
