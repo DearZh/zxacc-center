@@ -21,23 +21,23 @@ layui.use(['table', 'laydate'], function(){
 		    {type:'checkbox'},
 		    {type:'numbers'},
 	        {field:'username', title: '账号', sort: true},
-	        {field:'usernameCN', title: '用户名', sort: true, templet: function(data){
-	        	return data.userInfo.username;
+	        {field:'usernameCN', title: '用户名', sort: true, templet: function(row){
+	        	return row.userInfo.username;
 	        }},
-	        {field:'sexDesc', title: '性别', sort: true, templet: function(data){
-	        	return data.userInfo.sex==1?'男':'女';
+	        {field:'sexDesc', title: '性别', sort: true, templet: function(row){
+	        	return row.userInfo.sex==1?'男':'女';
 	        }},
-	        {field:'birthday', title: '生日', sort: true, templet: function(data){
-	        	return data.userInfo.birthday!=null?dateFns.format(data.userInfo.birthday, 'YYYY-MM-DD'):'';
+	        {field:'birthday', title: '生日', sort: true, templet: function(row){
+	        	return row.userInfo.birthday!=null?dateFns.format(row.userInfo.birthday, 'YYYY-MM-DD'):'';
 	        }},
-	        {field:'phone', title: '手机', sort: true, templet: function(data){
-	        	return data.userInfo.phone;
+	        {field:'phone', title: '手机', sort: true, templet: function(row){
+	        	return row.userInfo.phone;
 	        }},
-	        {field:'email', title: '邮箱', sort: true, templet: function(data){
-	        	return data.userInfo.email;
+	        {field:'email', title: '邮箱', sort: true, templet: function(row){
+	        	return row.userInfo.email;
 	        }},
-	        {field:'createDate', title: '创建日期', sort: true, templet: function(data){
-	        	return data.createDate!=null?dateFns.format(data.createDate, 'YYYY-MM-DD'):'';;
+	        {field:'createDate', title: '创建日期', sort: true, templet: function(row){
+	        	return row.createDate!=null?dateFns.format(row.createDate, 'YYYY-MM-DD'):'';;
 	        }},
 	        {field:'createUser', title: '创建人', sort: true}
 	    ]],
@@ -57,9 +57,10 @@ layui.use(['table', 'laydate'], function(){
 //新增
 $('#btnAdd, #btnEdit').click(function(){
 	var _this = this;
-	layui.use(['layer', 'table'], function(){
+	layui.use(['layer', 'table', 'form'], function(){
 		var layer = layui.layer;
 		var table = layui.table;
+		var form = layui.form;
 		
 		
 		//编辑
@@ -75,6 +76,8 @@ $('#btnAdd, #btnEdit').click(function(){
 				$('input[name="birthday"]').val(row.userInfo.birthday!=null?dateFns.format(row.userInfo.birthday, 'YYYY-MM-DD'):'');
 				$('input[name="phone"]').val(row.userInfo.phone);
 				$('input[name="email"]').val(row.userInfo.email);
+				
+				form.render();
 			}else{
 				return false;
 			}

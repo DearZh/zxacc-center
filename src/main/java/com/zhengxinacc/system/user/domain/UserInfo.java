@@ -18,7 +18,7 @@ import lombok.Setter;
 public class UserInfo {
 	
 	private String username;
-	private Integer sex;
+	private Integer sex; //1-男 0-女
 	private Date birthday;
 	private String phone;
 	private String email;
