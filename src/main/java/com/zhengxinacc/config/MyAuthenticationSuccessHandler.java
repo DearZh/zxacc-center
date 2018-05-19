@@ -54,7 +54,7 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 		User user = userService.findByUsername(username);
 		log.debug(user.toString());
 		request.getSession().setAttribute(SystemKeys.CURRENT_USER, user);
-		LogUtils.infoLogin(user, getRemoteIp(request));
+		LogUtils.infoLogin(user, LogUtils.getRemoteIp(request));
 		
 //		List<Role> list = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));
 //		if (list!=null){
@@ -68,28 +68,4 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}
-
-	/**
-	 * 获取请求的真实ip地址
-	 * @author eko.zhan at 2018年5月19日 下午12:54:11
-	 * @param request
-	 * @return
-	 */
-	private static String getRemoteIp(HttpServletRequest request) {
-        String ip = request.getHeader("X-Forwarded-For");
-        if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
-            //多次反向代理后会有多个ip值，第一个ip才是真实ip
-            int index = ip.indexOf(",");
-            if(index != -1){
-                return ip.substring(0, index);
-            }else{
-                return ip;
-            }
-        }
-        ip = request.getHeader("X-Real-IP");
-        if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
-            return ip;
-        }
-        return request.getRemoteAddr();
-    }
 }

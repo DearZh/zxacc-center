@@ -3,6 +3,7 @@
  */
 package com.zhengxinacc.config;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Getter;
@@ -15,7 +16,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class BaseBean {
+public class BaseBean implements Serializable {
 
 	private String createUser;
 	private Date createDate = new Date();
