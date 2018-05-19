@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +32,7 @@ import com.zhengxinacc.exam.task.repository.TaskRepository;
  * @date 2018年5月11日 下午8:42:58
  * @version 1.0
  */
-@Log4j
+@Slf4j
 @RestController
 @RequestMapping("/exam/analysis")
 public class AnalysisController extends BaseController {

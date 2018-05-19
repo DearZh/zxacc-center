@@ -8,13 +8,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -50,7 +48,7 @@ import com.zhengxinacc.util.EncryptUtils;
  * @date 2017年10月23日 下午3:47:24
  * @version 1.0
  */
-@Log4j
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 	/* 默认密码 */

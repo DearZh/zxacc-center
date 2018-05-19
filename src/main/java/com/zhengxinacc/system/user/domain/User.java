@@ -10,6 +10,7 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
@@ -35,6 +36,7 @@ import com.zhengxinacc.system.role.domain.Role;
 @Document(collection="sys_user")
 @Getter
 @Setter
+@ToString
 public class User extends BaseBean implements UserDetails {
 	/**
 	 * @author eko.zhan at 2017年12月23日 下午3:23:39

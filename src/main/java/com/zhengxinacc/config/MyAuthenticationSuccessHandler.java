@@ -4,26 +4,23 @@
 package com.zhengxinacc.config;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import com.zhengxinacc.system.role.domain.Role;
 import com.zhengxinacc.system.role.repository.RoleRepository;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.service.UserService;
+import com.zhengxinacc.util.LogUtils;
 import com.zhengxinacc.util.SystemKeys;
 
 /**
@@ -31,10 +28,10 @@ import com.zhengxinacc.util.SystemKeys;
  * @date 2017年12月24日 上午10:32:53
  * @version 1.0
  */
-@Log4j
+@Slf4j
 @Component(value="successHandler")
 public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler  {
-	
+
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -55,8 +52,9 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 		String username = authentication.getName();
 		log.debug(username);
 		User user = userService.findByUsername(username);
-		log.debug(user);
+		log.debug(user.toString());
 		request.getSession().setAttribute(SystemKeys.CURRENT_USER, user);
+		LogUtils.infoLogin(user, getRemoteIp(request));
 		
 //		List<Role> list = roleRepository.findByUsersIn(Arrays.asList(new User[]{user}));
 //		if (list!=null){
@@ -71,5 +69,27 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 		
 	}
 
-	
+	/**
+	 * 获取请求的真实ip地址
+	 * @author eko.zhan at 2018年5月19日 下午12:54:11
+	 * @param request
+	 * @return
+	 */
+	private static String getRemoteIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
+            //多次反向代理后会有多个ip值，第一个ip才是真实ip
+            int index = ip.indexOf(",");
+            if(index != -1){
+                return ip.substring(0, index);
+            }else{
+                return ip;
+            }
+        }
+        ip = request.getHeader("X-Real-IP");
+        if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
+            return ip;
+        }
+        return request.getRemoteAddr();
+    }
 }

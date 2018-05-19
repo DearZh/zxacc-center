@@ -8,10 +8,9 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +32,7 @@ import com.zhengxinacc.exam.question.service.QuestionService;
  * @date 2017年12月24日 上午9:38:06
  * @version 1.0
  */
-@Log4j
+@Slf4j
 @RestController
 @RequestMapping("/exam/question")
 public class QuestionController extends BaseController {
