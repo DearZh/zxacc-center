@@ -1,7 +1,16 @@
-body{
+html, body{
 	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+body{
 	background: url(../../DATAS/bg.jpg) no-repeat;
-	background-size: 1366px;
+	background-size: 100% 100%;
+}
+@media screen and (max-width: 414px) {
+    body{
+		background: url(../../DATAS/bg-m.png) no-repeat;
+	}
 }
 .zx-nav-img{
 	width: 260px;
