@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -110,8 +111,8 @@ public class TaskController extends BaseController {
 	 * @param taskId
 	 */
 	@RequestMapping("loadTask")
-	public Task loadTask(String taskId){
-		Task task = taskRepository.findOne(taskId);
+	public Task loadTask(@RequestBody JSONObject param){
+		Task task = taskRepository.findOne(param.getString("taskId"));
 		return taskService.setQuestionList(task);
 	}
 }

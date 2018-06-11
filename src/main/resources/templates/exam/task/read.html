@@ -1,61 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<th:block th:include="script :: headerFragment" th:with="title='我的试卷'"/>
-		<link th:href="@{/css/exam/task/read.css}" rel="stylesheet" />
-	</head>
-	<body class="layui-layout-body">
-		<input type="hidden" id="taskId" th:value="${param.taskId[0]}" />
-		<fieldset class="layui-elem-field">
-			<legend class="zx-name"></legend>
-			<div class="layui-field-box">本轮测试得分 <span class="zx-total"></span></div>
-		</fieldset>
-		<form class="layui-form" id="panel">
+	<body>
+		
+		<div data-name="task-read" class="page">
+			<!-- Fixed/Dynamic Navbar -->
+			<div class="navbar">
+				<div class="navbar-inner sliding bg-color-blue text-color-white">
+					<div class="left">
+						<a class="link back">
+							<i class="icon f7-icons color-white">left</i>
+							<span class="ios-only text-color-white">返回</span>
+						</a>
+					</div>
+					<div class="title">正欣会计</div>
+				</div>
+			</div>
+			<div class="page-content">
+				<div class="zx-block-title"><span class="zx-paper-title"></span>  本轮测试得分<span class="badge color-blue zx-total"></span></div>
+				
+				<div class="block zx-read-panel zx-ans" id="panel">
+					
+				</div>
+			</div>
+
+			<script type="text/template7" id="templetFaq">
+				<div class="row">
+					{{quesName}} ({{score}} 分)
+				</div>
+				<div class="row">
+					{{content}}
+				</div>
+			</script>
+			<script type="text/template7" id="templetSingle">
+				<div class="list">
+					<ul>
+					{{#each answers}}
+						<li>
+							<label class="item-radio item-content">
+								<input type="radio" name="ans_{{../id}}" value="{{id}}" {{#if mark}}checked=""{{/if}}>
+								<i class="icon icon-radio"></i>
+								<div class="item-inner">
+          							<div class="item-title">{{name}}  {{#if key}}<span class="badge color-green">正确答案</span>{{/if}}</div>
+        						</div>
+							</label>
+						</li>
+					{{/each}}
+					</ul>
+				</div>
+			</script>
+			<script type="text/template7" id="templetMulti">
+				<div class="list">
+					<ul>
+					{{#each answers}}
+						<li>
+							<label class="item-checkbox item-content">
+								<input name="ans_{{id}}" type="checkbox" value="{{id}}" {{#if mark}}checked=""{{/if}}>
+								<i class="icon icon-checkbox"></i>
+								<div class="item-inner">
+	          						<div class="item-title">{{name}}  {{#if key}}<span class="badge color-green">正确答案</span>{{/if}}</div>
+	        					</div>
+							</label>
+						</li>
+					{{/each}}
+					</ul>
+				</div>
+			</script>
+			<script type="text/template7" id="templetTof">
+				<p class="col block">
+					<label class="radio item-content">
+						<input name="ans_{{id}}" type="radio" value="true" {{#if keyMark}}checked=""{{/if}}>
+						<i class="icon-radio"></i>
+						<span>正确  </span>
+						{{#if key}}<span class="badge color-green">正确答案</span>{{/if}}
+					</label>
+				</p>
+				<p class="col block">
+					<label class="radio item-content">
+						<input name="ans_{{id}}" type="radio" value="false" {{#unless keyMark}}checked=""{{/unless}}>
+						<i class="icon-radio"></i>
+						<span>错误  </span>
+						{{#unless key}}<span class="badge color-green">正确答案</span>{{/unless}}
+					</label>
+				</p>
+			</script>
 			
-		</form>
-		
-		<script type="text/html" id="templateFaq">
-			<div class="layui-form-item">
-				{{quesName}} ({{score}} 分)
-			</div>
-			<div class="layui-form-item">
-				{{@content}}
-			</div>
-		</script>
-		
-		<!-- 单选题 -->
-		<script type="text/html" id="templateSingle">
-			{{each $data value index}}
-				{{if value.mark}}
-					<input type="radio" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" checked="" disabled=""/><br/>
-				{{else}}
-					<input type="radio" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" disabled=""/><br/>					
-				{{/if}}
-			{{/each}}
-		</script>
-		<!-- 多选题 -->
-		<script type="text/html" id="templateMulti">
-			{{each $data value index}}
-				{{if value.mark}}
-					<input type="checkbox" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" lay-skin="primary" checked="" disabled=""/><br/>
-				{{else}}
-					<input type="checkbox" name="ans_{{value.id}}" value="{{value.id}}" title="{{value.name}} {{if value.key}}(正确答案){{/if}}" lay-skin="primary" disabled=""/><br/>
-				{{/if}}
-			{{/each}}
-		</script>
-		<!-- 判断题 -->
-		<script type="text/html" id="templateTof">
-			{{if keyMark}}
-				<input type="radio" name="ans_{{id}}" value="true" title="正确 {{if key}}(正确答案){{/if}}" checked="" disabled=""/>
-			{{else}}
-				<input type="radio" name="ans_{{id}}" value="true" title="正确 {{if key}}(正确答案){{/if}}" disabled=""/>
-			{{/if}}
-			{{if !keyMark}}
-				<input type="radio" name="ans_{{id}}" value="false" title="错误 {{if !key}}(正确答案){{/if}}" checked="" disabled=""/>
-			{{else}}
-				<input type="radio" name="ans_{{id}}" value="false" title="错误 {{if !key}}(正确答案){{/if}}" disabled="" />
-			{{/if}}
-		</script>
-		<script type="text/javascript" th:src="@{/js/exam/task/read.js}"></script>
+		</div> <!-- //end page -->
 	</body>
 </html>

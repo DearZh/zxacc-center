@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
@@ -124,8 +126,9 @@ public class ExecController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("save")
-	public JSONObject save(String paperId, String quesId, String ans, Integer limit, HttpServletRequest request){
-		taskService.saveQuestion(paperId, quesId, ans, limit, getUsername(request));
+//	public JSONObject save(String paperId, String quesId, String ans, Integer limit, HttpServletRequest request){
+	public JSONObject save(@RequestBody JSONObject param, HttpServletRequest request){
+		taskService.saveQuestion(param.getString("paperId"), param.getString("quesId"), param.getString("ans"), param.getInteger("limit"), getUsername(request));
 		return writeSuccess();
 	}
 	/**
@@ -136,7 +139,7 @@ public class ExecController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("submit")
-	public Task submit(String id, HttpServletRequest request){
-		return taskService.submit(id, getUsername(request));
+	public Task submit(@RequestBody JSONObject param, HttpServletRequest request){
+		return taskService.submit(param.getString("id"), getUsername(request));
 	}
 }

@@ -29,4 +29,38 @@
 	    })(jQuery);
     </script>
 </head>
+<head th:fragment="mheaderFragment">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui, viewport-fit=cover">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#2196f3">
+	<meta name="ctx" th:content="${#httpServletRequest.getContextPath()}"/>
+	<title th:text="${title}"></title>
+	<link rel="shortcut icon" th:href="@{/DATAS/zx_64.ico}" />
+    <link rel="stylesheet" th:href="@{/plugins/framework7/v3.0.0-beta.6/css/framework7.ios.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/framework7-icons/0.9.1/css/framework7-icons.css}">
+    
+    <script type="text/javascript">
+	    window.__ctx = document.querySelector('meta[name="ctx"]').content;
+    </script>
+</head>
+<div th:fragment="mfooterFragment">
+	<!-- Toolbar -->
+	<div class="toolbar tabbar tabbar-labels">
+		<div class="toolbar-inner">
+			<a href="#tab-home" th:class="${key=='tab-home'?'tab-link tab-link-active':'tab-link'}">
+	        <i class="icon f7-icons">home_fill</i>
+	        <span class="tabbar-label">首页</span>
+	      </a>
+	      <a href="#tab-task" th:class="${key=='tab-task'?'tab-link tab-link-active':'tab-link'}">
+	        <i class="icon f7-icons">stopwatch_fill</i>
+	        <span class="tabbar-label">考试</span>
+	      </a>
+	      <a href="#tab-conf" th:class="${key=='tab-conf'?'tab-link tab-link-active':'tab-link'}">
+	        <i class="icon f7-icons">person_fill</i>
+	        <span class="tabbar-label">我</span>
+	      </a>
+		</div>
+	</div>
+</div>
 </html>
