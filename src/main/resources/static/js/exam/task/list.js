@@ -1,12 +1,17 @@
+alert(navigator.language);
 var $$ = Dom7;
 var app = new Framework7({
 	root: '#app',
 	name: '正欣会计',
-	language: 'zh',
+	language: 'zh-CN',
 	theme: 'ios',
 	id: 'com.zhengxinacc.exam.task',
 	panel: {
 		swipe: 'left'
+	},
+	dialog: {
+		buttonOk: '确定',
+		buttonCancel: '取消'
 	},
 	toast: {
 		position: 'center',
