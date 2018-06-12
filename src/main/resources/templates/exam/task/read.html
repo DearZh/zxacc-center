@@ -37,7 +37,7 @@
 					{{#each answers}}
 						<li>
 							<label class="item-radio item-content">
-								<input type="radio" name="ans_{{../id}}" value="{{id}}" {{#if mark}}checked=""{{/if}}>
+								<input type="radio" name="ans_{{../id}}" value="{{id}}" {{#if mark}}checked=""{{/if}} disabled>
 								<i class="icon icon-radio"></i>
 								<div class="item-inner">
           							<div class="item-title">{{name}}  {{#if key}}<span class="badge color-green">正确答案</span>{{/if}}</div>
@@ -54,7 +54,7 @@
 					{{#each answers}}
 						<li>
 							<label class="item-checkbox item-content">
-								<input name="ans_{{id}}" type="checkbox" value="{{id}}" {{#if mark}}checked=""{{/if}}>
+								<input name="ans_{{id}}" type="checkbox" value="{{id}}" {{#if mark}}checked=""{{/if}} disabled>
 								<i class="icon icon-checkbox"></i>
 								<div class="item-inner">
 	          						<div class="item-title">{{name}}  {{#if key}}<span class="badge color-green">正确答案</span>{{/if}}</div>
@@ -68,7 +68,7 @@
 			<script type="text/template7" id="templetTof">
 				<p class="col block">
 					<label class="radio item-content">
-						<input name="ans_{{id}}" type="radio" value="true" {{#if keyMark}}checked=""{{/if}}>
+						<input name="ans_{{id}}" type="radio" value="true" {{#if keyMark}}checked=""{{/if}} disabled>
 						<i class="icon-radio"></i>
 						<span>正确  </span>
 						{{#if key}}<span class="badge color-green">正确答案</span>{{/if}}
@@ -76,7 +76,7 @@
 				</p>
 				<p class="col block">
 					<label class="radio item-content">
-						<input name="ans_{{id}}" type="radio" value="false" {{#unless keyMark}}checked=""{{/unless}}>
+						<input name="ans_{{id}}" type="radio" value="false" {{#unless keyMark}}checked=""{{/unless}} disabled>
 						<i class="icon-radio"></i>
 						<span>错误  </span>
 						{{#unless key}}<span class="badge color-green">正确答案</span>{{/unless}}
