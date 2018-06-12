@@ -8,5 +8,6 @@ $('#btnSubmit').click(function(){
 		$('input[name="password"]').focus();
 		return false;
 	}
+	layer.open({type: 2, shadeClose: false});
 	return true;
 });
