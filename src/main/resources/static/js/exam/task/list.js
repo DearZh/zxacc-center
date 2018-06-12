@@ -1,4 +1,3 @@
-alert(navigator.language);
 var $$ = Dom7;
 var app = new Framework7({
 	root: '#app',
