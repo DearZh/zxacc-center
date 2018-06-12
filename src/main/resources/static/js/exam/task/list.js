@@ -133,6 +133,11 @@ var taskPopup = app.popup.create({
 });
 
 //TODO 安卓监听手机物理返回键
-//document.addEventListener('backbutton', function(){
-//	
-//}, false); 
+window.history.pushState({}, 'title');
+window.addEventListener("popstate", function(e) {
+	app.dialog.confirm('确认退出吗', function(){
+		location.href = __ctx + '/logout';
+	}, function(){
+		window.history.pushState({}, 'title');
+	})
+}, false);
