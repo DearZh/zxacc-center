@@ -14,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Component;
 
 import com.zhengxinacc.system.role.repository.RoleRepository;
@@ -65,6 +68,15 @@ public class MyAuthenticationSuccessHandler extends SavedRequestAwareAuthenticat
 //				}
 //			}
 //		}
+		//Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.38 (KHTML, like Gecko) Version/11.0 Mobile/15A372 Safari/604.1
+		//Mozilla/5.0 (Linux; Android 7.0; FRD-AL00 Build/HUAWEIFRD-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/6.2 TBS/044034 Mobile Safari/537.36 MicroMessenger/6.6.7.1321(0x26060737) NetType/WIFI Language/zh_CN
+		//Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36
+		String userAgent = request.getHeader("User-Agent");
+		if (userAgent.indexOf("Windows NT")==-1){ //移动端
+			super.setDefaultTargetUrl("/");
+		}else{
+			super.setDefaultTargetUrl("/main");
+		}
 		super.onAuthenticationSuccess(request, response, authentication);
 		
 	}

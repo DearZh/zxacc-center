@@ -46,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.formLogin()
 				.loginPage("/login")
-				.defaultSuccessUrl("/")
+				.defaultSuccessUrl("/main", true) //默认进入main，注意，设置为true后不会进入上一个页面了，具体在  successHandler 中根据条件跳转
 				.failureUrl("/login?error")
 				.permitAll()
 				.successHandler(successHandler) //登录页面用户任意访问
