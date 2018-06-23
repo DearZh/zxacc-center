@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhengxinacc.common.util.EncryptUtils;
 import com.zhengxinacc.config.BaseController;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.service.UserService;
-import com.zhengxinacc.util.EncryptUtils;
 
 /**
  * 个人中心

@@ -16,9 +16,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import com.zhengxinacc.common.util.EncryptUtils;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.service.UserService;
-import com.zhengxinacc.util.EncryptUtils;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>

@@ -13,7 +13,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.eastrobot.log.annotation.Interval;
+import com.zhengxinacc.common.logger.annotation.Interval;
+import com.zhengxinacc.common.util.SystemKeys;
 import com.zhengxinacc.exam.paper.domain.Paper;
 import com.zhengxinacc.exam.paper.repository.PaperRepository;
 import com.zhengxinacc.exam.question.domain.QuestionCate;
@@ -22,7 +23,6 @@ import com.zhengxinacc.system.permission.domain.Permission;
 import com.zhengxinacc.system.permission.repository.PermissionRepository;
 import com.zhengxinacc.system.role.domain.Role;
 import com.zhengxinacc.system.role.repository.RoleRepository;
-import com.zhengxinacc.util.SystemKeys;
 
 /**
  * <pre class="code">

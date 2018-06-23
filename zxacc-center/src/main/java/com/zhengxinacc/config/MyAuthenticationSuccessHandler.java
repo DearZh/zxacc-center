@@ -11,20 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Component;
 
+import com.zhengxinacc.common.util.SystemKeys;
 import com.zhengxinacc.system.role.repository.RoleRepository;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.service.UserService;
 import com.zhengxinacc.util.LogUtils;
-import com.zhengxinacc.util.SystemKeys;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>

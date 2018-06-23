@@ -37,11 +37,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhengxinacc.common.util.EncryptUtils;
 import com.zhengxinacc.system.permission.service.PermissionService;
 import com.zhengxinacc.system.user.domain.User;
 import com.zhengxinacc.system.user.domain.UserInfo;
 import com.zhengxinacc.system.user.repository.UserRepository;
-import com.zhengxinacc.util.EncryptUtils;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>

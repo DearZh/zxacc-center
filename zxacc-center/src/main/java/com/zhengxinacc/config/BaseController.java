@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zhengxinacc.common.util.SystemKeys;
 import com.zhengxinacc.system.user.domain.User;
-import com.zhengxinacc.util.SystemKeys;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>
