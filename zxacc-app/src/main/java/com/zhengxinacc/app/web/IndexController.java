@@ -1,4 +1,4 @@
-package com.zxacc.app.web;
+package com.zhengxinacc.app.web;
 
 import javax.annotation.Resource;
 
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.zxacc.app.remote.UserService;
+import com.zhengxinacc.app.remote.UserService;
 
 @RestController
 public class IndexController {

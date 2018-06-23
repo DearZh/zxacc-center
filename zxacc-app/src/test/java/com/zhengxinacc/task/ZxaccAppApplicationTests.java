@@ -1,4 +1,4 @@
-package com.zxacc.task;
+package com.zhengxinacc.task;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
