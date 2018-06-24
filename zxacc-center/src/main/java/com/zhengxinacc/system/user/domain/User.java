@@ -3,30 +3,21 @@
  */
 package com.zhengxinacc.system.user.domain;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zhengxinacc.config.BaseBean;
-import com.zhengxinacc.system.permission.domain.Permission;
-import com.zhengxinacc.system.permission.service.PermissionService;
-import com.zhengxinacc.system.role.domain.Role;
+import com.zhengxinacc.common.config.BaseBean;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>

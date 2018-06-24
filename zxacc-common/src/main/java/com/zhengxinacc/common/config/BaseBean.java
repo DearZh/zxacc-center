@@ -1,7 +1,7 @@
 /*
  * Power by www.xiaoi.com
  */
-package com.zhengxinacc.config;
+package com.zhengxinacc.common.config;
 
 import java.io.Serializable;
 import java.util.Date;

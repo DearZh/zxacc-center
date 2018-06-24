@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.zhengxinacc.config.BaseBean;
+import com.zhengxinacc.common.config.BaseBean;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>

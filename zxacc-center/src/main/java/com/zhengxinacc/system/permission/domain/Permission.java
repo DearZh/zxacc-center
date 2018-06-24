@@ -3,16 +3,13 @@
  */
 package com.zhengxinacc.system.permission.domain;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.zhengxinacc.config.BaseBean;
-import com.zhengxinacc.system.role.domain.Role;
+import com.zhengxinacc.common.config.BaseBean;
 
 /**
  * @author <a href="mailto:eko.z@outlook.com">eko.zhan</a>

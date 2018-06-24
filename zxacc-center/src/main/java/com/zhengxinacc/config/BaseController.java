@@ -20,8 +20,6 @@ import com.zhengxinacc.system.user.domain.User;
  */
 public class BaseController {
 	
-	protected final String UTF8 = "UTF-8";
-
 	/**
 	 * 输出成功
 	 * @author eko.zhan at 2017年12月23日 下午4:12:35

@@ -14,7 +14,7 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.zhengxinacc.config.BaseBean;
+import com.zhengxinacc.common.config.BaseBean;
 import com.zhengxinacc.exam.paper.domain.Paper;
 
 /**
