@@ -14,8 +14,8 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -53,7 +53,7 @@ public class UserController extends BaseController {
 		@ApiImplicitParam(name="limit", value="每页显示多少条数据", required=true, dataType="Integer", paramType="query"),
 		@ApiImplicitParam(name="keyword", value="关键词", required=false, dataType="String", paramType="query")
 	})
-	@RequestMapping(value="/loadList", method=RequestMethod.POST)
+	@PostMapping("/loadList")
 	public JSONObject loadList(@RequestParam("page") Integer page, 
 			@RequestParam("limit") Integer limit, 
 			@RequestParam(value="keyword", required=false) String keyword){
@@ -79,7 +79,7 @@ public class UserController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/save", method=RequestMethod.POST)
+	@PostMapping("/save")
 	public JSONObject save(@RequestBody User user){
 		String id = user.getId();
 		
@@ -98,7 +98,7 @@ public class UserController extends BaseController {
 		}
 	}
 	
-	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	@PostMapping("/delete")
 	public JSONObject delete(@RequestParam("id") String id){
 		userService.delete(id);
 		return writeSuccess();
@@ -108,13 +108,13 @@ public class UserController extends BaseController {
 	 * 批量导入用户
 	 * @author eko.zhan at 2018年1月7日 下午2:45:13
 	 */
-	@RequestMapping(value="/import", method=RequestMethod.POST)
+	@PostMapping("/import")
 	public JSONObject importUsers(@RequestParam("userFile") MultipartFile file, @RequestParam("username") String username){
 		userService.importUsers(file, username);
 		return writeSuccess();
 	}
 	
-	@RequestMapping(value="/findByUsername", method=RequestMethod.POST)
+	@PostMapping("/findByUsername")
 	public User findByUsername(@RequestParam("username") String username){
 		return userService.findByUsername(username);
 	}
