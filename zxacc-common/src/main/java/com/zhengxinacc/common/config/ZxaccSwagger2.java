@@ -18,6 +18,12 @@ import springfox.documentation.spring.web.plugins.Docket;
  */
 public class ZxaccSwagger2 {
 	
+	/**
+	 * 创建Api
+	 * @param packageName 需要扫描的 controller 层
+	 * @param serviceUrl 需要显示的 api 地址
+	 * @return
+	 */
     public Docket createRestApi(String packageName, String serviceUrl) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo(serviceUrl))

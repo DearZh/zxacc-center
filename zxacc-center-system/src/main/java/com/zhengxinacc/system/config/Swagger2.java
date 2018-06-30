@@ -22,7 +22,7 @@ public class Swagger2 extends ZxaccSwagger2{
 	
 	@Bean
     public Docket createRestApi() {
-        return super.createRestApi("com.zhengxinacc.system.web", "");
+        return super.createRestApi("com.zhengxinacc.system.web", "http://localhost:8084/");
     }
 
 }
