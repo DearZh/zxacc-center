@@ -18,7 +18,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -97,7 +96,10 @@ public class UserController extends BaseController {
 			return writeFailure(e.getMessage());
 		}
 	}
-	
+	@ApiOperation(value="根据指定的用户id删除用户对象", notes="")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="id", value="用户id", required=true, dataType="String")
+	})
 	@PostMapping("/delete")
 	public JSONObject delete(@RequestParam("id") String id){
 		userService.delete(id);
@@ -113,9 +115,20 @@ public class UserController extends BaseController {
 		userService.importUsers(file, username);
 		return writeSuccess();
 	}
-	
+	@ApiOperation(value="根据指定的用户账号获取用户", notes="")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="username", value="用户账号", required=true, dataType="String")
+	})
 	@PostMapping("/findByUsername")
 	public User findByUsername(@RequestParam("username") String username){
 		return userService.findByUsername(username);
+	}
+	@ApiOperation(value="根据指定的主键id获取用户", notes="")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="id", value="用户主键id", required=true, dataType="String")
+	})
+	@PostMapping("/findByUserId")
+	public User findByUserId(@RequestParam("id") String id){
+		return userService.findOne(id);
 	}
 }

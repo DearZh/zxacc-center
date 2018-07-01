@@ -35,6 +35,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
@@ -99,6 +100,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findOne(String id) {
+		Assert.notNull(id, "主键id不能为空");
 		return userRepository.findOne(id);
 	}
 
