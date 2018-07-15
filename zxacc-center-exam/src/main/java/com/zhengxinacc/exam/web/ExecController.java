@@ -10,8 +10,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
@@ -55,9 +58,9 @@ public class ExecController extends BaseController {
 	@Resource
 	private UserClient userClient;
 	
-	@RequestMapping("/loadPaper")
-	public Task loadPaper(String id, String username){
-		Task task = taskService.init(id, username);
+	@PostMapping("/loadPaper")
+	public Task loadPaper(@RequestParam("id") String id, @RequestBody User user){
+		Task task = taskService.init(id, user.getUsername());
 		task = taskService.setQuestionList(task);
 		return task;
 	}
@@ -69,9 +72,9 @@ public class ExecController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/loadQues")
-	public TaskQuestion loadQues(String paperId, String id, String username){
-		Task task = taskService.init(paperId, username);
+	@PostMapping("/loadQues")
+	public TaskQuestion loadQues(@RequestParam("paperId") String paperId, @RequestParam("id") String id, @RequestBody User user){
+		Task task = taskService.init(paperId, user.getUsername());
 		//需要处理答案，标准答案不应该抛出到答题界面
 		TaskQuestion taskQuestion = task.getQuestions().get(id);
 		taskQuestion.setKey(null);
@@ -125,10 +128,10 @@ public class ExecController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("save")
-//	public JSONObject save(String paperId, String quesId, String ans, Integer limit, HttpServletRequest request){
-	public JSONObject save(@RequestBody JSONObject param){
-		taskService.saveQuestion(param.getString("paperId"), param.getString("quesId"), param.getString("ans"), param.getInteger("limit"), param.getString("username"));
+	@PostMapping("/save")
+	public JSONObject save(@RequestParam("paperId") String paperId, @RequestParam("quesId") String quesId, 
+			@RequestParam("ans") String ans, @RequestParam("limit") Integer limit, @RequestBody User user){
+		taskService.saveQuestion(paperId, quesId, ans, limit, user.getUsername());
 		return writeSuccess();
 	}
 	/**
@@ -138,8 +141,8 @@ public class ExecController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("submit")
-	public Task submit(@RequestBody JSONObject param){
-		return taskService.submit(param.getString("id"), param.getString("username"));
+	@PostMapping("/submit")
+	public Task submit(@RequestParam("id") String id, @RequestBody User user){
+		return taskService.submit(id, user.getUsername());
 	}
 }

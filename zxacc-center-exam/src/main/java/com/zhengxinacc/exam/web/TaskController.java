@@ -10,8 +10,10 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
@@ -50,7 +52,7 @@ public class TaskController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/loadList")
-	public JSONObject loadList(String userid){
+	public JSONObject loadList(@RequestParam("userid") String userid){
 		User user = userClient.findByUserId(userid);
 		List<Paper> paperList = paperService.findByUser(user);
 		if (paperList==null) paperList = new ArrayList<Paper>();
@@ -114,9 +116,9 @@ public class TaskController extends BaseController {
 	 * @author eko.zhan at 2018年1月6日 下午2:36:30
 	 * @param taskId
 	 */
-	@RequestMapping("loadTask")
-	public Task loadTask(@RequestBody JSONObject param){
-		Task task = taskRepository.findOne(param.getString("taskId"));
+	@PostMapping("/loadTask")
+	public Task loadTask(@RequestParam("taskId") String taskId){
+		Task task = taskRepository.findOne(taskId);
 		return taskService.setQuestionList(task);
 	}
 }

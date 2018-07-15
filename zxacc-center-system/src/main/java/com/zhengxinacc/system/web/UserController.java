@@ -14,6 +14,8 @@ import javax.annotation.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.common.config.BaseController;
+import com.zhengxinacc.common.util.EncryptUtils;
 import com.zhengxinacc.system.domain.User;
 import com.zhengxinacc.system.service.UserService;
 
@@ -130,5 +133,31 @@ public class UserController extends BaseController {
 	@PostMapping("/findByUserId")
 	public User findByUserId(@RequestParam("id") String id){
 		return userService.findOne(id);
+	}
+	@ApiOperation(value="根据指定的账号获取用户UserDetails对象", notes="")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="usernmae", value="用户账号", required=true, dataType="String")
+	})
+	@PostMapping("/loadUserByUsername")
+	public UserDetails loadUserByUsername(@RequestParam("username") String username){
+		return userService.loadUserByUsername(username);
+	}
+	@ApiOperation(value="校验账号有效性", notes="")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name="username", value="用户账号", required=true, dataType="String", paramType="query"),
+		@ApiImplicitParam(name="password", value="用户密码", required=true, dataType="String", paramType="query")
+	})
+	@PostMapping("/verify")
+	public User verify(@RequestParam("username") String username, @RequestParam("password") String password){
+		UserDetails userDetails = userService.loadUserByUsername(username);
+		if (userDetails==null){
+			throw new BadCredentialsException("用户名不存在");
+		}
+		User user = (User) userDetails;
+		if (!EncryptUtils.verify(password, user.getPassword(), user.getSalt())) {
+		    throw new BadCredentialsException("用户名或密码错误");
+		}
+		user.setAuthorities(null);
+		return user;
 	}
 }
