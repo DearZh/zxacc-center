@@ -32,11 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
-				.antMatchers("/about").permitAll()
-				.antMatchers("/user/loadData", "/user/save").authenticated()
-				.antMatchers("/exam/task/**", "/exam/exec/**").hasAnyRole("ADMIN", "EXAM", "USER")
-				.antMatchers("/exam/**").hasAnyRole("ADMIN", "EXAM")
-				.antMatchers("/user/**", "/role/**", "/menu/**", "/permission/**").hasAnyRole("ADMIN")
+				.antMatchers("/index/**").authenticated()
 				.anyRequest().authenticated() //任何请求,登录后可以访问
 			//注意顺序
 			.and()
