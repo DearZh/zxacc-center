@@ -12,7 +12,7 @@ window.AppRead = {
 		//axios 第二个参数有坑，用的时候当心哦，技术尝试 application/x-www-form-urlencoded 与 application/json 的区别
 		axios.post(__ctx + '/index/loadTask', {taskId: taskId})
 		.then(function (response) {
-			console.log(response.data);
+			//console.log(response.data);
 			var task = response.data;
 			$$('.zx-paper-title').text(task.paper.name);
 			$$('.zx-total').text(task.score);
