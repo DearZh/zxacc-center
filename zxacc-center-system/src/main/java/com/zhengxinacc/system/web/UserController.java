@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zhengxinacc.common.config.BaseController;
 import com.zhengxinacc.common.util.EncryptUtils;
@@ -148,7 +149,7 @@ public class UserController extends BaseController {
 		@ApiImplicitParam(name="password", value="用户密码", required=true, dataType="String", paramType="query")
 	})
 	@PostMapping("/verify")
-	public User verify(@RequestParam("username") String username, @RequestParam("password") String password){
+	public JSONObject verify(@RequestParam("username") String username, @RequestParam("password") String password){
 		UserDetails userDetails = userService.loadUserByUsername(username);
 		if (userDetails==null){
 			throw new BadCredentialsException("用户名不存在");
@@ -157,7 +158,6 @@ public class UserController extends BaseController {
 		if (!EncryptUtils.verify(password, user.getPassword(), user.getSalt())) {
 		    throw new BadCredentialsException("用户名或密码错误");
 		}
-		user.setAuthorities(null);
-		return user;
+		return (JSONObject)JSON.toJSON(userDetails);
 	}
 }
