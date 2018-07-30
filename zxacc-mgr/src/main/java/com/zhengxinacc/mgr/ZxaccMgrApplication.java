@@ -13,4 +13,5 @@ public class ZxaccMgrApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ZxaccMgrApplication.class, args);
 	}
+	
 }
