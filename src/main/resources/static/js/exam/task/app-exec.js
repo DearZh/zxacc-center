@@ -183,7 +183,8 @@ window.AppExec = {
 				app.request.postJSON(__ctx + '/exam/exec/submit', params, function(data){
 					var taskId = data.id;
 					app.dialog.alert('提交成功', function(){
-						location.href = __ctx + '/exam/task/read?taskId=' + taskId;
+						//location.href = __ctx + '/exam/task/read?taskId=' + taskId;
+						location.reload();
 					});
 				});
 			});

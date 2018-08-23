@@ -23,7 +23,9 @@ layui.use(['table'], function(){
 	        	var grades = data.grades;
 	        	if (grades!=null){
 	        		$(grades).each(function(index, item){
-	        			desc.push(item.name);
+	        			if (item){
+	        				desc.push(item.name);
+	        			}
 	        		});
 	        	}
 	        	return desc.join(', ');

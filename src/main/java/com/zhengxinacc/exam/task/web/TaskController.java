@@ -68,6 +68,11 @@ public class TaskController extends BaseController {
 				task.setQuestionList(null);
 				task.setQuestions(null);
 				tmp.put("task", task);
+			} else {
+				task = new Task();
+				task.setId("0");
+				task.setStatus(0);
+				tmp.put("task", task);
 			}
 			dataArr.add(tmp);
 		}
