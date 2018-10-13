@@ -20,27 +20,27 @@ import com.zhengxinacc.system.domain.User;
  * @version 1.0
  */
 
-@FeignClient(name="zxacc-center-exam")
+@FeignClient(name="zxacc-zuul")
 public interface TaskClient {
 
-	@RequestMapping(value="/exam/task/loadList", method=RequestMethod.POST)
+	@RequestMapping(value="/api-exam/exam/task/loadList", method=RequestMethod.POST)
 	public JSONObject loadList(@RequestParam("userid") String userid);
 	
 	
-	@RequestMapping(value="/exam/exec/loadPaper", method=RequestMethod.POST)
+	@RequestMapping(value="/api-exam/exam/exec/loadPaper", method=RequestMethod.POST)
 	public Task loadPaper(@RequestParam("id") String id, @RequestBody User user);
 	
-	@RequestMapping(value="/exam/exec/loadQues", method=RequestMethod.POST)
+	@RequestMapping(value="/api-exam/exam/exec/loadQues", method=RequestMethod.POST)
 	public TaskQuestion loadQues(@RequestParam("paperId") String paperId, @RequestParam("id") String id, @RequestBody User user);
 	
-	@RequestMapping(value="/exam/exec/save", method=RequestMethod.POST)
+	@RequestMapping(value="/api-exam/exam/exec/save", method=RequestMethod.POST)
 	public JSONObject saveExec(@RequestParam("paperId") String paperId, @RequestParam("quesId") String quesId, 
 			@RequestParam("ans") String ans, @RequestParam("limit") Integer limit, @RequestBody User user);
 	
 	
-	@RequestMapping(value="/exam/exec/submit", method=RequestMethod.POST)
+	@RequestMapping(value="/api-exam/exam/exec/submit", method=RequestMethod.POST)
 	public Task submitExec(@RequestParam("id") String id, @RequestBody User user);
 
-	@RequestMapping(value="/exam/task/loadTask", method=RequestMethod.POST)
+	@RequestMapping(value="/api-exam/exam/task/loadTask", method=RequestMethod.POST)
 	public Task loadTask(@RequestParam("taskId") String taskId);
 }

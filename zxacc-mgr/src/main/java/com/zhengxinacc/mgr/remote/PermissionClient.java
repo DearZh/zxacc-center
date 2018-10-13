@@ -18,9 +18,9 @@ import com.zhengxinacc.system.domain.User;
  * @date 2018年7月28日 下午1:44:16
  * @version 1.0
  */
-@FeignClient(name="zxacc-center-system")
+@FeignClient(name="zxacc-zuul")
 public interface PermissionClient {
 	
-	@RequestMapping(value="/permission/getAuthorities", method=RequestMethod.POST)
+	@RequestMapping(value="/api-system/permission/getAuthorities", method=RequestMethod.POST)
 	public List<GrantedAuthority> getAuthorities(@RequestBody User user);
 }

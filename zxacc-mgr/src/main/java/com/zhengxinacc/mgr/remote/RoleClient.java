@@ -15,10 +15,10 @@ import com.alibaba.fastjson.JSONObject;
  * @date 2018年7月30日 下午7:31:58
  * @version 1.0
  */
-@FeignClient(name="zxacc-center-system")
+@FeignClient(name="zxacc-zuul")
 public interface RoleClient {
 
-	@RequestMapping(value="/role/loadList", method=RequestMethod.POST)
+	@RequestMapping(value="/api-system/role/loadList", method=RequestMethod.POST)
 	public JSONObject loadList(@RequestParam("page") Integer page, 
 			@RequestParam("limit") Integer limit, 
 			@RequestParam(value="keyword", required=false) String keyword);
