@@ -70,6 +70,9 @@ layui.use('element', function(){
 			return false;
 		}
 	});
+
+    //首页Tab不删除
+    $('.layui-tab-close').hide();
 });
 
 //

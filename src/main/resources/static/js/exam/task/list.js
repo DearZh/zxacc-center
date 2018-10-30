@@ -14,7 +14,7 @@ var app = new Framework7({
 	},
 	toast: {
 		position: 'center',
-		closeTimeout: 2000,
+		closeTimeout: 2000
 	},
 	routes: [
 	     {
@@ -63,11 +63,35 @@ var app = new Framework7({
 	    			 }
 	     		 }
 	    	 }
-	     },
+	     },{
+            path: '/home-item/:id/',
+            async(routeTo, routeFrom, resolve, reject) {
+                var id = routeTo.params.id;
+                resolve({url: __ctx + '/article?id='+id});
+            },
+            on: {
+                pageInit: function (event, page) {
+                	var _h = $$(window).height()-50;
+                    axios.get(__ctx + '/article/loadHtml?id=' + event.detail.route.params.id)
+					.then(function (response) {
+						$$('#homeItemPage').css({'height': _h + 'px'}).html(response.data);
+						$$('.rich_media_content img').each(function(i, item){
+							$$(this).css({'width': ($$(window).width()-40)+'px', 'height': 'auto'}).attr('src', __ctx + $$(this).attr('data-src'));
+						})
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+                }, //end pageInit
+                pageAfterOut: function(event, page) {
+
+                }
+            }
+        }
 	],
 	lazy: {
 		threshold: 500,
-		sequential: false,
+		sequential: false
 	},
 	on: {
 		init: function(){
@@ -108,8 +132,8 @@ var swiper = app.swiper.create('.swiper-container', {
 	spaceBetween: 10,
 	loop: true,
 	autoplay: {
-		delay: 5000,
-	},
+		delay: 5000
+	}
 });
 var view = app.views.create('.view');
 var toastLimit = app.toast.create({
@@ -132,6 +156,17 @@ var taskPopup = app.popup.create({
 			
 		}
 	}
+});
+
+//加载 HomeList
+var homeListCompile = Template7.compile($$('#templateHomeList').html());
+axios.get(__ctx + '/article/loadHomeList')
+.then(function (response) {
+    console.log(response);
+	$$('#homeList').html(homeListCompile({list: response.data}));
+})
+.catch(function (error) {
+	console.log(error);
 });
 
 //TODO 安卓监听手机物理返回键

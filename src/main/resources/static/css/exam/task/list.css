@@ -1,19 +1,18 @@
 .layui-table-body{
-	height: 360px;
+    height: 360px;
 }
 
 @media screen and (max-width: 414px) {
     .zx-nav-img{
-		width: 360px;
-	}
+        width: 360px;
+    }
 }
 @media screen and (max-width: 320px) {
     .zx-nav-img{
-		width: 300px;
-	}
+        width: 300px;
+    }
 }
-
-/* A bit of demo styles */;
+/* A bit of demo styles */
 .demo-swiper .swiper-slide {
   font-size: 25px;
   font-weight: 300;
@@ -78,4 +77,12 @@
 .zx-read-panel .list{
 	margin: 5px 0;
 	width: 100%;
+}
+
+.rich_media_content{
+	background: #fff;
+	padding: 40px 20px 20px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 100%;
 }
