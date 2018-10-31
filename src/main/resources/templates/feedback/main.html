@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+		
+		<div class="page">
+			<!-- Fixed/Dynamic Navbar -->
+			<div class="navbar">
+				<div class="navbar-inner sliding bg-color-blue text-color-white">
+					<div class="left">
+						<a class="link back zx-prev">
+							<i class="icon f7-icons color-white">left</i>
+							<span class="ios-only text-color-white">返回</span>
+						</a>
+					</div>
+					<div class="title">正欣会计</div>
+                    <div class="right">
+                        <a class="link zx-send">
+                            <i class="icon f7-icons color-white">paper_plane</i>
+                            <span class="ios-only text-color-white">发送</span>
+                        </a>
+                    </div>
+				</div>
+			</div>
+
+			<div class="list no-hairlines-md">
+				<ul>
+					<li class="item-content item-input item-input-with-info">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<textarea placeholder="感谢您的反馈" style="height:300px;" class="zx-fb-content"></textarea>
+								<span class="input-clear-button"></span>
+								<div class="item-input-info">必填</div>
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input item-input-with-info">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="text" placeholder="请输入姓名" class="zx-fb-name">
+								<span class="input-clear-button"></span>
+								<div class="item-input-info">选填</div>
+							</div>
+						</div>
+					</li>
+					<li class="item-content item-input item-input-with-info">
+						<div class="item-inner">
+							<div class="item-input-wrap">
+								<input type="password" placeholder="请输入联系方式" class="zx-fb-phone">
+								<span class="input-clear-button"></span>
+								<div class="item-input-info">选填</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div> <!-- //end page -->
+	</body>
+</html>

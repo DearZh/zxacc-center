@@ -28,6 +28,7 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter{
 
 
 		registry.addViewController( "/article" ).setViewName("article/main");
+		registry.addViewController( "/feedback" ).setViewName("feedback/main");
 		
         //系统管理
         /*用户管理*/registry.addViewController("/user/list").setViewName("system/user/list");

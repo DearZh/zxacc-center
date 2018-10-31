@@ -87,7 +87,33 @@ var app = new Framework7({
 
                 }
             }
-        }
+        },{
+			path: '/feedback/',
+            url: __ctx + '/feedback',
+            on: {
+                pageInit: function (event, page) {
+                    $$('.zx-send').click(function(){
+                        if ($$('.zx-fb-content').val().trim()==''){
+                            $$('.zx-fb-content').focus();
+                            return false;
+                        }
+                        axios.post(__ctx + '/feedback/save', {
+                            content: $$('.zx-fb-content').val(),
+                            name: $$('.zx-fb-name').val(),
+                            phone: $$('.zx-fb-phone').val()
+                        })
+                        .then(function (response) {
+                        	if (response.data.success){
+                                toastFeedback.open();
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                    });
+                }
+            }
+		}
 	],
 	lazy: {
 		threshold: 500,
@@ -142,6 +168,14 @@ var toastLimit = app.toast.create({
 var toastLimitLast = app.toast.create({
 	text: '距离考试结束仅剩1分钟，请抓紧时间'
 });
+var toastFeedback = app.toast.create({
+    text: '感谢您的意见和反馈，我们会努力改进',
+    on: {
+        close: function () {
+            $$('.zx-prev').click();
+        }
+    }
+});
 
 var taskPopup = app.popup.create({
 	el: '.popup-task',
@@ -153,7 +187,7 @@ var taskPopup = app.popup.create({
 			console.log('Popup opened');
 		},
 		close: function (popup) {
-			
+		    
 		}
 	}
 });
